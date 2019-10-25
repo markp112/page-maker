@@ -7,7 +7,7 @@ import { Component, OnInit, ViewChild, ElementRef, HostListener, Output, EventEm
 })
 
 export class ColorSliderComponent implements OnInit {
-  @ViewChild("canvas", { static: false })
+  @ViewChild("canvas", { static: true })
   
   @HostListener("window:mouseup", ["$event"])
   
@@ -26,6 +26,7 @@ export class ColorSliderComponent implements OnInit {
     const width = this.canvas.nativeElement.width;
     const height = this.canvas.nativeElement.height;
     this.ctx.clearRect(0, 0, width, height);
+
     const gradient = this.ctx.createLinearGradient(0, 0, 0, height);
     gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
     gradient.addColorStop(0.17, "rgba(255, 255, 0, 1)");
