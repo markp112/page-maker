@@ -1,0 +1,16 @@
+fa-icon {
+    width: 60px;
+    height: 60px;
+    display: inline-block;
+    background-color: rgb(146, 139, 139);
+    font-size: 2em;
+    text-align: center;
+    padding: 10px;
+    -webkit-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+    -moz-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+    box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+
+    &:hover {
+        background-color: rgb(189, 173, 173);
+    }
+}
