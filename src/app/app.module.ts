@@ -8,13 +8,21 @@ import { ComponentCardComponent } from './components/component-card/component-ca
 import { IconButtonComponent } from './components/icon-button/icon-button.component';
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { ColorPickerModule } from "./color-picker/color-picker.module";
+import { ColorPickerWrapperComponent } from './components/color-picker-wrapper/color-picker-wrapper.component';
+import { NavComponent } from './components/nav/nav.component';
+import { TemplateSqImgTxtComponent } from './components/templates/template-sq-img-txt/template-sq-img-txt.component';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     TextInputComponent,
     ComponentCardComponent,
-    IconButtonComponent
+    IconButtonComponent,
+    ColorPickerWrapperComponent,
+    NavComponent,
+    TemplateSqImgTxtComponent,
+
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,6 @@
+@import '../../../styles.scss';
+
+.wrapper {
+  border: 1px solid grey;
+  @include box-shadow;
+}

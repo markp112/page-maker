@@ -3,6 +3,7 @@
     padding: 0px;
     margin: 0px;
     box-sizing: border-box;
+    list-style: none;
 
 }
 
@@ -12,3 +13,31 @@ body {
     font-family: Montserrat;
     font-size: 16px;
 }
+// mixins
+@mixin box-shadow {
+  -webkit-box-shadow: 6px 7px 38px -2px rgba(0,0,0,0.54);
+  -moz-box-shadow: 6px 7px 38px -2px rgba(0,0,0,0.54);
+  box-shadow: 6px 7px 38px -2px rgba(0,0,0,0.54);
+}
+
+/* Color Theme Swatches in Hex */
+$primary-1-hex: #730217;
+$secondary-2-hex: #260259;
+$accent-3-hex: #F28322;
+$text-4-hex: #F2E3D5;
+$text-5-hex: #D9C4B8;
+
+/* Color Theme Swatches in RGBA */
+$Camphora-1-rgba: rgba(114,2,22, 1);
+$Camphora-2-rgba: rgba(38,1,89, 1);
+$Camphora-3-rgba: rgba(242,131,33, 1);
+$Camphora-4-rgba: rgba(242,226,213, 1);
+$Camphora-5-rgba: rgba(216,196,184, 1);
+
+/* Color Theme Swatches in HSLA */
+
+// standard layout variables
+$content-spacing: 10px;
+
+// nav
+$nav-height: 60px

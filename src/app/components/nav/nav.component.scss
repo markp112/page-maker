@@ -1,0 +1,26 @@
+@import '../../../styles.scss';
+
+nav {
+  width: 100vw;
+  height: $nav-height;
+  background-color: $primary-1-hex;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  color: $text-4-hex;
+  font-size: 1.2em;
+  align-items: center;
+
+  .nav-lhs, .nav-rhs {
+    width: 20%;
+    padding: $content-spacing;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+
+    fa-icon {
+      font-size: 2em;
+    }
+  }
+}

@@ -1,0 +1,37 @@
+@import '../../../../styles.scss';
+
+
+.template-sq-img-txt  {
+  width: 1000px;
+  height: 100%;
+  border: 1px solid black;
+  display: grid;
+  grid-template-columns: 6fr 6fr;
+  grid-template-rows: 0.5fr 4fr;
+  grid-template-areas: "toolbar ."
+                        "image-area text-area";
+}
+
+.toolbar {
+  grid-area: toolbar;
+  height: 40px;
+  width: 100%;
+}
+  .image-area {
+    grid-area: image-area;
+    width: 500px;
+    height: 400px;
+    background-image: url('../../../../assets/images/placeholder-image.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-image: center;
+  }
+
+  .text-area {
+    grid-area: text-area;
+    width: 500px;
+    height: 400px;
+    background-color: $secondary-2-hex;
+  }
+
+
