@@ -8,10 +8,14 @@ import { templateInitial } from 'src/assets/data/mock/template-toolbar';
   styleUrls: ["./template-sq-img-txt.component.scss"]
 })
 export class TemplateSqImgTxtComponent implements OnInit {
-  
   buttons: IIconButton[] = templateInitial;
-  
-  @Input() contentText:string;
+  isEditing: boolean = false;
+
+  @Input() contentText: string;
+
+  setEdit() {
+    this.isEditing = !this.isEditing;
+  }
 
   constructor() {}
 
