@@ -27,10 +27,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
     }
   }
-
+  //event handlers
   closeTextInput(){
-    console.log("came here ", this.showTextEditor, this.isEditing)
-    this.isEditing = false;
+    this.showTextEditor = false;
+  }
+
+  textChanged(content){
+    this.contentText = content;
   }
 
   setEdit() {

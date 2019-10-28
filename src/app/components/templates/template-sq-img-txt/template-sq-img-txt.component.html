@@ -15,7 +15,7 @@
 
     <div class="text-area">{{ contentText }}
         <div class="text-editor">
-          <app-text-input *ngIf="showTextEditor" (closeEvent)="closeTextInput()"></app-text-input>
+          <app-text-input *ngIf="showTextEditor" (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"></app-text-input>
         </div>
     </div>
   </div>
