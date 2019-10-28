@@ -1,8 +1,22 @@
 <section >
   <div class="template-sq-img-txt">
 
-    <div class="toolbar"><app-toolbar-group [buttons]="buttons"></app-toolbar-group> </div>
+    <div class="toolbar">
+      <div class="image-options">
+        <app-toolbar-group [buttons]="nonEditButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
+      </div>
+      <div class="text-options">
+        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp1"></app-toolbar-group>
+        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp2"></app-toolbar-group>
+        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp3"></app-toolbar-group>
+      </div>
+    </div>
     <div class="image-area">image</div>
-    <div class="text-area" (click) = "setEdit()">{{ contentText }}</div>
+
+    <div class="text-area">{{ contentText }}
+        <div class="text-editor">
+          <app-text-input *ngIf="showTextEditor" (closeEvent)="closeTextInput()"></app-text-input>
+        </div>
+    </div>
   </div>
 </section>

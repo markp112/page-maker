@@ -1,5 +1,5 @@
 <section>
     <div class="wrapper">
-        <app-icon-button *ngFor="let button of buttons" [iconButton]="button"></app-icon-button>
+        <app-icon-button *ngFor="let button of buttons" [iconButton]="button" (clickEvent)="clickEventHandler($event)"></app-icon-button>
     </div>
 </section>

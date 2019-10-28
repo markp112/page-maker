@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {textEditorButtonsGrp1, textEditorButtonsGrp2, textEditorButtonsGrp3} from 'src/assets/data/mock/text-input-toolbar';
-import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+
 
 @Component({
   selector: "app-text-input",
@@ -8,14 +7,21 @@ import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
   styleUrls: ["./text-input.component.scss"]
 })
 export class TextInputComponent implements OnInit {
-  buttonGroup1: IIconButton[] = textEditorButtonsGrp1;
-  buttonGroup2: IIconButton[] = textEditorButtonsGrp2;
-  buttonGroup3: IIconButton[] = textEditorButtonsGrp3;
+
+  rows:number = 12;
+  cols:number = 70;
+  placeholder:string = "Enter text to appear on page";
+  content:string;
+
+  @Output() closeEvent: EventEmitter<string> = new EventEmitter();
+  @Output() textChangedEvent: EventEmitter<string> = new EventEmitter();
+
+  closeClick() {
+    this.closeEvent.emit("closeme");
+  }
 
   constructor() {}
-  rows = 12;
-  cols = 70;
-  placeholder = "Enter text to appear on page";
+
 
   ngOnInit() {}
 }

@@ -1,7 +1,7 @@
 @import '../../../styles.scss';
 section {
     margin: 1px;
-
+    cursor: pointer;
 fa-icon {
     width: 100%;
     height: 100%;
@@ -26,7 +26,7 @@ fa-icon {
     color: $primary-text-hex;
     text-align: center;
     padding: $content-spacing - 1 $content-spacing + 2; //match font awesome sizing
-    
+
     -webkit-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
     -moz-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
     box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);

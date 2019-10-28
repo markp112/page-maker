@@ -20,6 +20,12 @@ body {
   box-shadow: 6px 7px 38px -2px rgba(0,0,0,0.54);
 }
 
+@mixin flex-row($justify) {
+  display: flex;
+  flex-direction: row;
+  justify-content: $justify;
+}
+
 /* Color Theme Swatches in Hex */
 $primary-1-hex: #730217;
 $secondary-2-hex: #260259;

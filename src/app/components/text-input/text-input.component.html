@@ -1,10 +1,5 @@
 
 <section class="text-input">
-    <div class="toolbar">
-        <div class="wrapper"> <app-toolbar-group [buttons]="buttonGroup1"></app-toolbar-group></div>
-        <div class="wrapper"> <app-toolbar-group [buttons]="buttonGroup2"></app-toolbar-group></div>
-        <div class="wrapper"> <app-toolbar-group [buttons]="buttonGroup3"></app-toolbar-group></div>
-    </div>
-
+    <div class="close"><p (click)="closeClick()">X</p></div>
     <textarea [rows] = "rows" [cols]="cols" [placeholder]="placeholder"></textarea>
 </section>
