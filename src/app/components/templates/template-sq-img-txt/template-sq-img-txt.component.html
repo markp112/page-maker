@@ -3,6 +3,6 @@
 
     <div class="toolbar"><app-toolbar-group [buttons]="buttons"></app-toolbar-group> </div>
     <div class="image-area">image</div>
-    <div class="text-area">text</div>
+    <div class="text-area" (click) = "setEdit()">{{ contentText }}</div>
   </div>
 </section>
