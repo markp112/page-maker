@@ -1,3 +1,4 @@
-<section>
-    <fa-icon [icon]="iconButton"></fa-icon>
-</section>
+
+    <fa-icon  *ngIf="iconButton.style === styles.Icon"  [icon]="iconButton.icon"></fa-icon>
+    <p class="text-style" *ngIf="iconButton.style === styles.Text">{{ iconButton.text }}</p>
+

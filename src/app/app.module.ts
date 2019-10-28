@@ -11,6 +11,9 @@ import { ColorPickerModule } from "./color-picker/color-picker.module";
 import { ColorPickerWrapperComponent } from './components/color-picker-wrapper/color-picker-wrapper.component';
 import { NavComponent } from './components/nav/nav.component';
 import { TemplateSqImgTxtComponent } from './components/templates/template-sq-img-txt/template-sq-img-txt.component';
+import { ToolbarGroupComponent } from './components/toolbar-group/toolbar-group.component';
+
+
 
 
 @NgModule({
@@ -22,7 +25,8 @@ import { TemplateSqImgTxtComponent } from './components/templates/template-sq-im
     ColorPickerWrapperComponent,
     NavComponent,
     TemplateSqImgTxtComponent,
-
+    ToolbarGroupComponent,
+  
   ],
   imports: [
     BrowserModule,
