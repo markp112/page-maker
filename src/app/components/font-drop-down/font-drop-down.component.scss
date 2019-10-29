@@ -1,4 +1,19 @@
-.font-list {
-    width: 150px;
-    font-family: 'Liu Jian Mao Cao'
+@import '../../../styles.scss';
+@import '../../../styles-fonts.scss';
+ul {
+  border: 1px solid $secondary-2-hex;
+  width: 175px;
+  height: 400px;
+  padding:$content-spacing;
+  background-color: $primary-text-hex;
+
+  overflow-y: scroll;
+
+  li {
+    padding: $content-spacing / 5;
+    cursor: pointer;
+    &:hover{
+      background-color: $seconday-text-hex;
+    }
+  }
 }

@@ -1,4 +1,6 @@
 @import '../../../../styles.scss';
+@import '../../../../styles-fonts.scss';
+$toolbar-height: 50px;
 
 .template-sq-img-txt  {
   display: grid;
@@ -12,7 +14,7 @@
 .toolbar {
   grid-area: toolbar;
   border: 1px solid black;
-  height: 50px;
+  height: $toolbar-height;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -26,6 +28,13 @@
     display: flex;
     flex-direction: row;
     justify-content: center;
+    position: relative;
+
+    .font-wrapper {
+      position: absolute;
+      top: $toolbar-height;
+      left: 288px;
+    }
   }
 }
   .image-area {

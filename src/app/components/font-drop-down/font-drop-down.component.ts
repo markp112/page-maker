@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import  {IGooglefont, } from 'src/app/models/interfaces/google-font-api'
 import { googleFont } from 'src/assets/data/mock/google-font';
 import * as WebFont from "webfontloader";
@@ -11,20 +11,25 @@ import * as WebFont from "webfontloader";
 })
 export class FontDropDownComponent implements OnInit {
 
+
   googleFont:IGooglefont = googleFont;
-  fontFamilies:string[];
- 
+  fontFamilies:string[] =[];
+
+  @Output() handleFontSelected:EventEmitter<string> = new EventEmitter();
+
+  handleListItemClick(fontName){
+    this.handleFontSelected.emit(fontName);
+  }
 
   constructor() { }
 
   ngOnInit() {
     googleFont.items.forEach(font =>{
-      this.fontFamilies.push(font.family);
+      this.fontFamilies.push(font.family.toString());
     })
-  
 
     WebFont.load({
-      
+
       google: {
         families: this.fontFamilies
       }
