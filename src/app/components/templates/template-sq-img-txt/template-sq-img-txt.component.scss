@@ -44,6 +44,7 @@
     height: 400px;
     background-color: $secondary-2-hex;
     color: $seconday-text-hex;
+    
 
     .text-editor{
       display:flex;
@@ -56,4 +57,19 @@
     }
   }
 
+  .text-area-non-edit {
+    display: flex;
+    flex-direction: column;
+  }
 
+.align-content-left {
+  align-items: flex-start;
+}
+
+.align-content-right {
+  align-items: flex-end;
+}
+
+.align-content-center {
+  align-items: center;
+}

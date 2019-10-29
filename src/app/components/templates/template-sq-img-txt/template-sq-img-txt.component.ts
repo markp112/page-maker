@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵConsole } from '@angular/core';
 import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
 import { templateInitial } from 'src/assets/data/mock/template-toolbar';
 import { textEditorButtonsGrp1, textEditorButtonsGrp2, textEditorButtonsGrp3 } from 'src/assets/data/mock/text-input-toolbar';
@@ -15,15 +15,38 @@ export class TemplateSqImgTxtComponent implements OnInit {
   textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
 
   isEditing: boolean = false;
-
   showTextEditor: boolean = false;
+
+  // variable definitions to support applying classes based on user selection
+  alignLeft: boolean = true;
+  alignRight: boolean = false;
+  alignCenter: boolean = false;
+
 
   @Input() contentText: string;
 
   handleClick(event){
-    switch(event){
+    console.log(event)
+    switch (event) {
       case "editClicked":
         this.setEdit();
+        break;
+      case "alignRight":
+        console.log("alignRight");
+        this.alignRight = true;
+        this.alignLeft = false;
+        this.alignCenter = false;
+        break;
+      case "alignLeft":
+        console.log("alignLeft")
+        this.alignRight = false;
+        this.alignLeft = true;
+        this.alignCenter = false;
+        break;
+      case "alignCenter":
+        this.alignRight = false;
+        this.alignLeft = false;
+        this.alignCenter = true;
         break;
     }
   }
