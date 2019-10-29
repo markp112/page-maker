@@ -1,6 +1,5 @@
 @import '../../../../styles.scss';
 
-
 .template-sq-img-txt  {
   display: grid;
   grid-template-columns: 6fr 6fr;
@@ -31,7 +30,6 @@
 }
   .image-area {
     grid-area: image-area;
-
     background-image: url('../../../../assets/images/placeholder-image.png');
     background-size: cover;
     background-repeat: no-repeat;
@@ -44,7 +42,7 @@
     height: 400px;
     background-color: $secondary-2-hex;
     color: $seconday-text-hex;
-    
+    padding: $content-spacing;
 
     .text-editor{
       display:flex;
@@ -57,19 +55,35 @@
     }
   }
 
-  .text-area-non-edit {
+.text-area-non-edit {
     display: flex;
     flex-direction: column;
-  }
+}
 
 .align-content-left {
-  align-items: flex-start;
+  text-align: left;
 }
 
 .align-content-right {
-  align-items: flex-end;
+  text-align: right;
 }
 
 .align-content-center {
-  align-items: center;
+  text-align: center;
+}
+
+.text-align-justify {
+  text-align: justify;
+}
+
+.vertical-align-center {
+  justify-content: center;
+}
+
+.vertical-align-top {
+  justify-content: flex-start;
+}
+
+.vertical-align-bottom {
+  justify-content: flex-end;
 }

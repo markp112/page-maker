@@ -3,34 +3,45 @@ import {
   faAlignLeft,
   faAlignRight,
   faAlignCenter,
+  faAlignJustify,
   faMehBlank,
   faPlus,
   faMinus,
   faPalette,
-  faPaintBrush
+  faPaintBrush,
+  faGripLines,
+  faSortAmountUpAlt,
+  faSortAmountDownAlt,
+  
 } from "@fortawesome/free-solid-svg-icons";
 import { styles } from "src/app/models/enums/icon-buton-styles.enum";
 
 export const textEditorButtonsGrp1: IIconButton[] = [
-  {
-    icon: faAlignLeft,
-    style: styles.Icon,
-    text: "",
-    eventName: "alignLeft"
-  },
-  {
-    icon: faAlignCenter,
-    style: styles.Icon,
-    text: "",
-    eventName: "alignCenter"
-  },
-  {
-    icon: faAlignRight,
-    style: styles.Icon,
-    text: "",
-    eventName: "alignRight"
-  }
-];
+    {
+      icon: faAlignLeft,
+      style: styles.Icon,
+      text: "",
+      eventName: "alignLeft"
+    },
+    {
+      icon: faAlignCenter,
+      style: styles.Icon,
+      text: "",
+      eventName: "alignCenter"
+    },
+    {
+      icon: faAlignJustify,
+      style: styles.Icon,
+      text: "",
+      eventName: "textAlignJustify"
+    },
+    {
+      icon: faAlignRight,
+      style: styles.Icon,
+      text: "",
+      eventName: "alignRight"
+    }
+  ];
 
 export const textEditorButtonsGrp2: IIconButton[] = [
   {
@@ -66,4 +77,26 @@ export const textEditorButtonsGrp3: IIconButton[] = [
     text: "",
     eventName: "backgroundColor"
   }
+];
+
+
+export const textEditorButtonsGrp4: IIconButton[] = [
+  {
+    icon: faSortAmountUpAlt,
+    style: styles.Icon,
+    text: "",
+    eventName: "verticalAlignTop"
+  },
+  {
+    icon: faGripLines,
+    style: styles.Icon,
+    text: "",
+    eventName: "verticalAlignCentre"
+  },
+   {
+    icon: faSortAmountDownAlt,
+    style: styles.Icon,
+    text: "",
+    eventName: "verticalAlignBottom"
+  },
 ];

@@ -7,24 +7,34 @@
       </div>
       <div class="text-options">
         <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp1"
-          (clickEvent)="handleClick($event)"
-        ></app-toolbar-group>
-        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp2"></app-toolbar-group>
+          (clickEvent)="handleClick($event)">
+        </app-toolbar-group>
+        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp4"
+          (clickEvent)="handleClick($event)">
+        </app-toolbar-group>
+        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp2"
+          (clickEvent)="handleClick($event)">
+        </app-toolbar-group>
         <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp3"></app-toolbar-group>
       </div>
     </div>
     <div class="image-area">image</div>
 
     <div class="text-area"
+    [ngStyle]="{'font-size': fontSize + 'px'}"
       [ngClass]="{
         'text-area-non-edit':!showTextEditor, 
         'align-content-left': alignLeft,
         'align-content-right': alignRight,
-        'align-content-center': alignCenter
+        'align-content-center': alignCenter,
+        'text-align-justify': alignTextJustify,
+        'vertical-align-center': verticalAlignCentre,
+        'vertical-align-bottom': verticalAlignBottom,
+        'vertical-align-top': verticalAlignTop
       }"
     >{{ contentText }}
-        <div class="text-editor">  
-          <app-text-input *ngIf="showTextEditor" (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"></app-text-input>
+        <div class="text-editor" *ngIf="showTextEditor">  
+          <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"></app-text-input>
         </div>
     </div>
   </div>

@@ -12,6 +12,7 @@ import { ColorPickerWrapperComponent } from './components/color-picker-wrapper/c
 import { NavComponent } from './components/nav/nav.component';
 import { TemplateSqImgTxtComponent } from './components/templates/template-sq-img-txt/template-sq-img-txt.component';
 import { ToolbarGroupComponent } from './components/toolbar-group/toolbar-group.component';
+import { FontDropDownComponent } from './components/font-drop-down/font-drop-down.component';
 
 
 
@@ -26,6 +27,7 @@ import { ToolbarGroupComponent } from './components/toolbar-group/toolbar-group.
     NavComponent,
     TemplateSqImgTxtComponent,
     ToolbarGroupComponent,
+    FontDropDownComponent,
   
   ],
   imports: [
