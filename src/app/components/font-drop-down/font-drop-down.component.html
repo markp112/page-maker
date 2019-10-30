@@ -1,5 +1,5 @@
 <ul class="font-list">
-  <li *ngFor="let font of googleFont.items"
+  <li *ngFor="let font of filteredFonts.items"
         [ngClass]="font.family.toLowerCase().replace(' ','-')"
         (click)="handleListItemClick(font.family)">
         {{font.family}}
