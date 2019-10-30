@@ -23,7 +23,7 @@ export class FontDropDownComponent implements OnInit {
   }
 
   handleSearchInput(searchValue:string) {
-
+    this.fontFamilies = this.fontService.filterFontNames(searchValue);
   }
 
 

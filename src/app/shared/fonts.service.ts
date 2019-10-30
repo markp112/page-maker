@@ -15,6 +15,10 @@ export class FontsService {
     return this.fontNames
   }
 
+  filterFontNames(searchTerm:string):string[]{
+    let filtered:string[] = this.fontNames.filter(font => font.toLowerCase().includes(searchTerm.toLowerCase().trim()))
+    return filtered;
+  }
   constructor(private apiService: FontApiService) { 
     this.fontNames = [];
     apiService.getFonts().subscribe(res =>{

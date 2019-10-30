@@ -8,8 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class FontApiService {
   apiUrl: string = "https://www.googleapis.com/webfonts/v1/webfonts";
-
- 
+  key: string = "?key=";
 
   public currentPage: number;
   public pageSize: number;

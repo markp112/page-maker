@@ -3,7 +3,8 @@
 </div>
 <ul class="font-list">
     <li *ngFor="let font of fontFamilies"
-        [ngClass]="font.toLowerCase().replace(' ','-')"
+        [ngStyle]="{'font-family':font}"
+      
         (click)="handleListItemClick(font)">
         {{font}}
     </li>

@@ -125,7 +125,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.fontFamily = font.toLowerCase().replace(' ', '-');
+    this.fontFamily = font;
   }
 
   setEdit() {

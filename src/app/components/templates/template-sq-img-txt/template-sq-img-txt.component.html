@@ -24,7 +24,7 @@
     <div class="image-area">image</div>
 
     <div class="text-area"
-    [ngStyle]="{'font-size': fontSize + 'px'}"
+    [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily}"
       [ngClass]="getClasses()"
     >{{ contentText }}
         <div class="text-editor" *ngIf="showTextEditor">
