@@ -1,7 +1,10 @@
+<div class="search-area">
+    <input type="text" name="" #content (input)='handleSearchInput(content.value)'>
+</div>
 <ul class="font-list">
-  <li *ngFor="let font of filteredFonts.items"
+    <li *ngFor="let font of filteredFonts.items"
         [ngClass]="font.family.toLowerCase().replace(' ','-')"
         (click)="handleListItemClick(font.family)">
         {{font.family}}
-  </li>
+    </li>
 </ul>

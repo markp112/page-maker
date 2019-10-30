@@ -23,12 +23,14 @@ export class FontDropDownComponent implements OnInit {
     this.handleFontSelected.emit(fontName);
   }
 
+  handleSearchInput(searchValue:string) {
+
+}
+
   constructor(private apiService: FontApiService) { }
 
   ngOnInit() {
-    // googleFont.items.forEach(font =>{
-    //   this.fontFamilies.push(font.family.toString());
-    // })
+
     this.apiService.getFonts().subscribe(res=>{
       this.filteredFonts = res;
       this.filteredFonts.items.forEach(font =>{
