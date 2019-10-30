@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import  {IGooglefont, } from 'src/app/models/interfaces/google-font-api'
 import { googleFont } from 'src/assets/data/mock/google-font';
-import { FontApiService } from 'src/app/shared/font-api.service';
+import { FontsService  } from 'src/app/shared/fonts.service';
 import * as WebFont from "webfontloader";
 
 
@@ -11,7 +11,6 @@ import * as WebFont from "webfontloader";
   styleUrls: ['./font-drop-down.component.scss']
 })
 export class FontDropDownComponent implements OnInit {
-
 
   googleFont:IGooglefont = googleFont;
   fontFamilies:string[] = [];
@@ -25,24 +24,27 @@ export class FontDropDownComponent implements OnInit {
 
   handleSearchInput(searchValue:string) {
 
-}
+  }
 
-  constructor(private apiService: FontApiService) { }
+
+
+  constructor(private fontService: FontsService) { }
 
   ngOnInit() {
 
-    this.apiService.getFonts().subscribe(res=>{
-      this.filteredFonts = res;
-      this.filteredFonts.items.forEach(font =>{
-        this.fontFamilies.push(font.family.toString());
-      })
+    this.fontFamilies = this.fontService.getFontNames();
+    // // this.apiService.getFonts().subscribe(res=>{
+    // //   this.filteredFonts = res;
+    // //   this.filteredFonts.items.forEach(font =>{
+    // //     this.fontFamilies.push(font.family.toString());
+    //   // })
       
-      WebFont.load({
-        google: {
-          families: this.fontFamilies
-        }
-      });
-    });
+      // WebFont.load({
+      //   google: {
+      //     families: this.fontFamilies
+      //   }
+      // });
+    // });
 
   }
 

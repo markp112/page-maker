@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { HttpClientModule } from "@angular/common/http";
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -13,7 +14,7 @@ import { NavComponent } from './components/nav/nav.component';
 import { TemplateSqImgTxtComponent } from './components/templates/template-sq-img-txt/template-sq-img-txt.component';
 import { ToolbarGroupComponent } from './components/toolbar-group/toolbar-group.component';
 import { FontDropDownComponent } from './components/font-drop-down/font-drop-down.component';
-import { HttpClientModule } from "@angular/common/http";
+import { FontApiService }  from './shared/font-api.service';
 
 
 
@@ -27,8 +28,7 @@ import { HttpClientModule } from "@angular/common/http";
     NavComponent,
     TemplateSqImgTxtComponent,
     ToolbarGroupComponent,
-    FontDropDownComponent,
-  
+    FontDropDownComponent
   ],
   imports: [
     BrowserModule,
@@ -37,7 +37,7 @@ import { HttpClientModule } from "@angular/common/http";
     ColorPickerModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [FontApiService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
