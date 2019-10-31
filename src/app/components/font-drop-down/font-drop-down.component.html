@@ -1,11 +1,14 @@
-<div class="search-area">
-    <input type="text" name="" #content (input)='handleSearchInput(content.value)'>
+<div class="font-wrapper">
+    <div class="search-area">
+        <input type="text" name="" #content (input)='handleSearchInput(content.value)'>
+        
+    </div>
+    <ul class="font-list">
+        <li *ngFor="let font of fontFamilies"
+            [ngStyle]="{'font-family':font}"
+        
+            (click)="handleListItemClick(font)">
+            {{font}}
+        </li>
+    </ul>
 </div>
-<ul class="font-list">
-    <li *ngFor="let font of fontFamilies"
-        [ngStyle]="{'font-family':font}"
-      
-        (click)="handleListItemClick(font)">
-        {{font}}
-    </li>
-</ul>

@@ -24,12 +24,15 @@
     <div class="image-area">image</div>
 
     <div class="text-area"
-    [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily}"
+      [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily}"
       [ngClass]="getClasses()"
-    >{{ contentText }}
-        <div class="text-editor" *ngIf="showTextEditor">
-          <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"></app-text-input>
-        </div>
+      (click)="showTextEditor=!showTextEditor && isEditing">
+      {{ contentText }}
+    </div>
+    <div class="text-editor" *ngIf="showTextEditor">
+      <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
+        [textContent]="contentText"></app-text-input>
     </div>
   </div>
+  
 </section>

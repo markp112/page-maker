@@ -24,6 +24,7 @@ export class FontsService {
     apiService.getFonts().subscribe(res =>{
       this.fontData=res;
       this.fontData.items.forEach(font=> {
+        console.log(font.category);
         this.fontNames.push(font.family.toString())
       });
       WebFont.load({

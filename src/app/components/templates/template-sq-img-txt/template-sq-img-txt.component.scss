@@ -53,16 +53,19 @@ $toolbar-height: 50px;
     color: $seconday-text-hex;
     padding: $content-spacing;
 
-    .text-editor{
+  }
+
+  .text-editor{
       display:flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100%;
       width: 100%;
-
+      position: absolute;
+      top: -70px;
+      left: 250px;
     }
-  }
 
 .text-area-non-edit {
     display: flex;

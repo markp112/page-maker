@@ -1,6 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import {faWindowClose} from "@fortawesome/free-solid-svg-icons";
-
+import { Component, OnInit, Output, EventEmitter, Input } from "@angular/core";
+import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
 
 @Component({
   selector: "app-text-input",
@@ -8,11 +7,12 @@ import {faWindowClose} from "@fortawesome/free-solid-svg-icons";
   styleUrls: ["./text-input.component.scss"]
 })
 export class TextInputComponent implements OnInit {
-  fawindowclose= faWindowClose;
+  fawindowclose = faWindowClose;
   rows: number = 12;
   cols: number = 70;
   placeholder: string = "Enter text to appear on page";
 
+  @Input() textContent: string="";
   @Output() closeEvent: EventEmitter<string> = new EventEmitter();
   @Output() textChangedEvent: EventEmitter<string> = new EventEmitter();
 
@@ -26,5 +26,7 @@ export class TextInputComponent implements OnInit {
 
   constructor() {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    console.log(this.textContent)
+  }
 }

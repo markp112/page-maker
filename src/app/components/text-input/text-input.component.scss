@@ -3,7 +3,6 @@
 .text-input {
     width: 100%;
     height: 100%;
-  
 
     .close{
       width: 100%;
@@ -14,7 +13,7 @@
       @include flex-row(flex-end);
 
       p {
-        
+        font-size: 1em;
         width: 30px;
         height: 100%;
         padding: 7.5px;
@@ -24,8 +23,7 @@
     }
 
     textarea {
-    
-        max-width: 430px;
+        max-width: 500px;
         max-height: 300px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
     
