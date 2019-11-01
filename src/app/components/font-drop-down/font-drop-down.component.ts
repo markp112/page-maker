@@ -19,33 +19,24 @@ export class FontDropDownComponent implements OnInit {
 
   @Output() handleFontSelected: EventEmitter<string> = new EventEmitter();
 
+
+  constructor(private fontService: FontsService) {}
+
+  ngOnInit() {
+    this.fontFamilies = this.fontService.getFontNames();
+  
+  }
+
   handleListItemClick(fontName) {
     this.handleFontSelected.emit(fontName);
   }
 
   handleButtonClick(whichButton:string):void {
-    
+   this.fontFamilies = this.fontService.filterFontTypes(whichButton);
   }
 
   handleSearchInput(searchValue: string) {
     this.fontFamilies = this.fontService.filterFontNames(searchValue);
   }
 
-  constructor(private fontService: FontsService) {}
-
-  ngOnInit() {
-    this.fontFamilies = this.fontService.getFontNames();
-    // // this.apiService.getFonts().subscribe(res=>{
-    // //   this.filteredFonts = res;
-    // //   this.filteredFonts.items.forEach(font =>{
-    // //     this.fontFamilies.push(font.family.toString());
-    //   // })
-
-    // WebFont.load({
-    //   google: {
-    //     families: this.fontFamilies
-    //   }
-    // });
-    // });
-  }
 }

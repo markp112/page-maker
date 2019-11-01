@@ -17,9 +17,29 @@ import * as WebFont from "webfontloader";
   providedIn: 'root'
 })
 export class FontsService {
-  private fontNames:IFontItem[] =[];
+  public fontNames:IFontItem[] = [];
   public fontData:IGooglefont;
   public fontNameList:string [];
+
+  constructor(private apiService: FontApiService) { 
+    this.fontNames = [];
+    this.fontNameList=[];
+    apiService.getFonts().subscribe(res =>{
+      this.fontData = res;
+      this.fontData.items.forEach(font => {
+        let fontDetail = new IFontItem (font.family.toString(), font.category.toString());
+        this.fontNames.push(fontDetail)
+        this.fontNameList.push(fontDetail._fontName);
+      });
+ 
+      WebFont.load({
+        google: {
+          families: this.fontNameList
+        }
+      });
+    });
+  }
+
   private getFontNameArray():string[]{
     let temp:string[]=[];
     this.fontNames.forEach(font => {
@@ -28,39 +48,23 @@ export class FontsService {
     });
     console.log("tmep=",temp);
     return temp;
-  }
+  };
+
   getFontNames():string[]{ 
-    return this.getFontNameArray();
-  }
+    return this.fontNameList;
+  };
 
   filterFontNames(searchTerm:string):string[]{
-    let filtered:string[] = <string>this.fontNames.filter(font => {
-      font._fontName.toLowerCase().includes(searchTerm.toLowerCase().trim())
-      return font._fontName;
-    })
+    let filtered:string[] = this.fontNameList.filter(font => font.toLowerCase().includes(searchTerm.toLowerCase().trim()));
+      
     return filtered;
   }
 
   filterFontTypes(fontType: string):string[]{
-    let filtered: string[] = this.fontName.filter(font => font.category.toLowerCase() === fontType)
+    let filteredTypes:string[] =[];
+    let filtered = this.fontNames.filter(font => font._fontType.toLowerCase() === fontType);
+     filtered.forEach(font => filteredTypes.push(font._fontName));
+    return filteredTypes;
   }
 
-  constructor(private apiService: FontApiService) { 
-    this.fontNames = [];
-    apiService.getFonts().subscribe(res =>{
-      this.fontData = res;
-      this.fontData.items.forEach(font => {
-        let fontDetail = new IFontItem (font.family.toString(), font.category.toString());
-        this.fontNames.push(fontDetail)
-      });
- 
-      this.fontNameList=[];
-      this.fontNames.forEach(font => this.fontNameList.push(font._fontName));
-      WebFont.load({
-        google: {
-          families: this.fontNameList
-        }
-      });
-    });
-  }
 }
