@@ -23,6 +23,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isEditing: boolean = false;
   showTextEditor: boolean = false;
   isShowFontPicker: boolean = false;
+  isShowColourPicker: boolean = false;
   // variable definitions to support applying classes based on user selection
   alignLeft: boolean = true;
   alignRight: boolean = false;
@@ -38,7 +39,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   @Input() contentText: string;
 
   handleClick(event) {
-
+    console.log("event",event)
     switch (event) {
       case "editClicked":
         this.setEdit();
@@ -98,6 +99,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
         break;
+      case "fontColor":
+        console.log("here");
+        this.isShowColourPicker = !this.isShowColourPicker;
+        break;
+
     }
   }
   getClasses() {

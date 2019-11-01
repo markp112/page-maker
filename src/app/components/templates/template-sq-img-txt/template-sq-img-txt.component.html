@@ -15,14 +15,13 @@
         <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp2"
           (clickEvent)="handleClick($event)">
         </app-toolbar-group>
-        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp3"></app-toolbar-group>
+        <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp3" (clickEvent)="handleClick($event)"></app-toolbar-group>
         <div class="font-wrapper">
           <app-font-drop-down *ngIf="isShowFontPicker" (handleFontSelected)="handleSelectFont($event)"></app-font-drop-down>
         </div>
       </div>
     </div>
     <div class="image-area">image</div>
-
     <div class="text-area"
       [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily}"
       [ngClass]="getClasses()"
@@ -32,6 +31,9 @@
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
         [textContent]="contentText"></app-text-input>
+    </div>
+    <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
+      <app-color-picker-wrapper></app-color-picker-wrapper>
     </div>
   </div>
   
