@@ -1,7 +1,7 @@
 <div class="font-wrapper">
     <div class="search-area">
         <input type="text" name="" #content (input)='handleSearchInput(content.value)'>
-        
+        <app-toolbar-group [buttons]="toolbarButtons" (clickEvent)="handleButtonClick($event)"></app-toolbar-group>
     </div>
     <ul class="font-list">
         <li *ngFor="let font of fontFamilies"

@@ -1,3 +1,3 @@
 export const secrets = {
-    googleFontsAPIKey:"AIzaSyDedia1bFV2ashrxlofH97kpLgvgWMJ-gE"
-}
+    googleFontsAPIKey: "AIzaSyBcxhUDKItYxQD9i9u-T9bF7mC2eFCRRQk"
+};

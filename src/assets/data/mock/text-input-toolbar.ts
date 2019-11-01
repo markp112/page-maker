@@ -1,4 +1,6 @@
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
+import { styles } from "src/app/models/enums/icon-buton-styles.enum";
+
 import {
   faAlignLeft,
   faAlignRight,
@@ -14,7 +16,7 @@ import {
   faSortAmountDownAlt,
   
 } from "@fortawesome/free-solid-svg-icons";
-import { styles } from "src/app/models/enums/icon-buton-styles.enum";
+
 
 export const textEditorButtonsGrp1: IIconButton[] = [
     {
@@ -100,3 +102,4 @@ export const textEditorButtonsGrp4: IIconButton[] = [
     eventName: "verticalAlignBottom"
   },
 ];
+
