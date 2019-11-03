@@ -71,7 +71,7 @@ export class ColorPaletteComponent implements AfterViewInit, OnChanges {
 
   @HostListener('window:mouseup', ['$event'])
   onMouseUp(evt: MouseEvent) {
-    this.mousedown = false;
+     this.mousedown = false;
   }
 
   onMouseDown(evt: MouseEvent) {
@@ -79,6 +79,7 @@ export class ColorPaletteComponent implements AfterViewInit, OnChanges {
     this.selectedPosition = { x: evt.offsetX, y: evt.offsetY };
     this.draw();
     this.color.emit(this.getColorAtPosition(evt.offsetX, evt.offsetY));
+
   }
 
   onMouseMove(evt: MouseEvent) {

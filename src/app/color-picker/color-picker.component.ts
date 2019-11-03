@@ -1,4 +1,4 @@
-import { Component } from '@angular/core'
+import { Component, Output, EventEmitter } from '@angular/core'
 
 @Component({
   selector: 'app-color-picker',
@@ -6,6 +6,13 @@ import { Component } from '@angular/core'
   styleUrls: ['./color-picker.component.scss'],
 })
 export class ColorPickerComponent {
-  public hue: string
-  public color: string
+  @Output() handleColorSelectClick = new EventEmitter();
+
+  public hue: string;
+  public color: string;
+
+handleOkClick(){
+  event.stopPropagation();
+  this.handleColorSelectClick.emit(this.color);
+}
 }

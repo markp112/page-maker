@@ -7,6 +7,7 @@ import {
   textEditorButtonsGrp3,
   textEditorButtonsGrp4
 } from "src/assets/data/mock/text-input-toolbar";
+import { imgEditButtons } from "src/assets/data/mock/image-toolbar"
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -15,6 +16,7 @@ import {
 })
 export class TemplateSqImgTxtComponent implements OnInit {
   nonEditButtons: IIconButton[] = templateInitial;
+  imgEditButtons: IIconButton[] = imgEditButtons;
   textEditButtonsGrp1: IIconButton[] = textEditorButtonsGrp1;
   textEditButtonsGrp2: IIconButton[] = textEditorButtonsGrp2;
   textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
@@ -24,6 +26,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   showTextEditor: boolean = false;
   isShowFontPicker: boolean = false;
   isShowColourPicker: boolean = false;
+  isEditingColor: boolean = false;
+  isEditingBackgroundColor:boolean = false;
   // variable definitions to support applying classes based on user selection
   alignLeft: boolean = true;
   alignRight: boolean = false;
@@ -32,6 +36,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   verticalAlignTop: boolean = true;
   verticalAlignBottom: boolean = false;
   verticalAlignCentre: boolean = false;
+  color: string = 'rgba(242,226,213, 1)';
+  backgroundColor: string="";
 
   fontSize: number = 16;
   fontFamily: string = "Acme"
@@ -96,14 +102,21 @@ export class TemplateSqImgTxtComponent implements OnInit {
       case "decreaseFont":
         this.fontSize--;
         break;
+
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
         break;
+
       case "fontColor":
-        console.log("here");
+
         this.isShowColourPicker = !this.isShowColourPicker;
+        this.isEditingColor = !this.isEditingColor;
         break;
 
+      case "backgroundColor":
+        this.isShowColourPicker =!this.isShowColourPicker;
+        this.isEditingBackgroundColor = true;
+        break;
     }
   }
   getClasses() {
@@ -135,10 +148,19 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   setEdit() {
-    this.isEditing = !this.isEditing;
-    this.showTextEditor = this.isEditing;
-  }
+    if(!this.isShowColourPicker){
+      this.isEditing = !this.isEditing;
+    }
+  };
 
+  setColor(color:string) {
+
+    if(this.isEditingColor) this.color = color;
+    if(this.isEditingBackgroundColor) this.backgroundColor = color;
+    this.isShowColourPicker = !this.isShowColourPicker;
+    this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
+    this.isEditingColor = !this.isEditingColor;
+  }
   constructor() { }
 
   ngOnInit() { }

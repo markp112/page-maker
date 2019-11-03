@@ -15,6 +15,9 @@ import { TemplateSqImgTxtComponent } from './components/templates/template-sq-im
 import { ToolbarGroupComponent } from './components/toolbar-group/toolbar-group.component';
 import { FontDropDownComponent } from './components/font-drop-down/font-drop-down.component';
 import { FontApiService }  from './shared/font-api.service';
+import { UrlInputComponent } from './components/url-input/url-input.component';
+import { FileUploadComponent } from './components/file-upload/file-upload.component';
+
 
 
 
@@ -28,7 +31,11 @@ import { FontApiService }  from './shared/font-api.service';
     NavComponent,
     TemplateSqImgTxtComponent,
     ToolbarGroupComponent,
-    FontDropDownComponent
+    FontDropDownComponent,
+    UrlInputComponent,
+    FileUploadComponent,
+
+
   ],
   imports: [
     BrowserModule,

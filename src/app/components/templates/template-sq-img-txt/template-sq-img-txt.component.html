@@ -4,7 +4,11 @@
     <div class="toolbar">
       <div class="image-options">
         <app-toolbar-group [buttons]="nonEditButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
+        <div class="img-buttons" *ngIf="isEditing">
+          <app-toolbar-group [buttons]="imgEditButtons"></app-toolbar-group>
+        </div>
       </div>
+
       <div class="text-options">
         <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp1"
           (clickEvent)="handleClick($event)">
@@ -21,20 +25,23 @@
         </div>
       </div>
     </div>
-    <div class="image-area">image</div>
+    <div class="image-area">image
+      <img src="" alt="">
+      <app-file-upload></app-file-upload>
+    </div>
     <div class="text-area"
-      [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily}"
+      [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily, 'color':color, 'backgroundColor':backgroundColor}"
       [ngClass]="getClasses()"
-      (click)="showTextEditor=!showTextEditor && isEditing">
+      (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
       {{ contentText }}
+        <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
+          <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>
+        </div>
     </div>
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
         [textContent]="contentText"></app-text-input>
     </div>
-    <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
-      <app-color-picker-wrapper></app-color-picker-wrapper>
-    </div>
   </div>
-  
+
 </section>

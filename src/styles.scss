@@ -26,6 +26,23 @@ body {
   justify-content: $justify;
 }
 
+@mixin text-button {
+    display: inline-block;
+    background-color: $primary-1-hex;
+    border: 1px solid $primary-1-hex;
+    color: $primary-text-hex;
+    text-align: center;
+    padding: $content-spacing - 1 $content-spacing + 2; //match font awesome sizing
+
+    -webkit-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+    -moz-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+    box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+
+    &:hover {
+        background-color: rgb(189, 173, 173);
+    }
+
+}
 /* Color Theme Swatches in Hex */
 $primary-1-hex: #730217;
 $secondary-2-hex: #260259;
@@ -37,7 +54,7 @@ $seconday-text-hex: #D9C4B8;
 $Camphora-1-rgba: rgba(114,2,22, 1);
 $Camphora-2-rgba: rgba(38,1,89, 1);
 $Camphora-3-rgba: rgba(242,131,33, 1);
-$Camphora-4-rgba: rgba(242,226,213, 1);
+$primary-text-rgba: rgba(242,226,213, 1);
 $Camphora-5-rgba: rgba(216,196,184, 1);
 
 /* Color Theme Swatches in HSLA */
