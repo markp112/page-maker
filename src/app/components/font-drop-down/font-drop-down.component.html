@@ -1,11 +1,15 @@
-<div class="search-area">
-    <input type="text" name="" #content (input)='handleSearchInput(content.value)'>
-</div>
 
-<ul class="font-list">
-  <li *ngFor="let font of fontsFiltered.items"
-        [ngClass]="font.family.toLowerCase().replace(' ','-')"
-        (click)="handleListItemClick(font.family)">
-        {{font.family}}
-  </li>
-</ul>
+<div class="font-wrapper">
+    <div class="search-area">
+        <input type="text" name="" #content (input)='handleSearchInput(content.value)'>
+        <app-toolbar-group [buttons]="toolbarButtons" (clickEvent)="handleButtonClick($event)"></app-toolbar-group>
+    </div>
+    <ul class="font-list">
+        <li *ngFor="let font of fontFamilies"
+            [ngStyle]="{'font-family':font}"
+        
+            (click)="handleListItemClick(font)">
+            {{font}}
+        </li>
+    </ul>
+</div>

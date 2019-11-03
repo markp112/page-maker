@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import  {IGooglefont, } from 'src/app/models/interfaces/google-font-api'
 import { googleFont } from 'src/assets/data/mock/google-font';
+import { FontsService  } from 'src/app/shared/fonts.service';
+import {fontDropDownButtons } from 'src/assets/data/mock/font-dropdown-toolbar'
 import * as WebFont from "webfontloader";
 
 
@@ -12,38 +14,30 @@ import * as WebFont from "webfontloader";
 export class FontDropDownComponent implements OnInit {
   googleFont: IGooglefont = googleFont;
   fontFamilies: string[] = [];
-  fontsFiltered: IGooglefont;
+
+  filteredFonts: IGooglefont;
+  toolbarButtons = fontDropDownButtons;
 
   @Output() handleFontSelected: EventEmitter<string> = new EventEmitter();
+
+
+  constructor(private fontService: FontsService) {}
+
+  ngOnInit() {
+    this.fontFamilies = this.fontService.getFontNames();
+  
+  }
 
   handleListItemClick(fontName) {
     this.handleFontSelected.emit(fontName);
   }
 
-  handleSearchInput(searchValue: string) {
-    console.log(this.fontsFiltered.items);
-    console.log(this.googleFont.items);
-    const search = searchValue.toLowerCase();
-  
-    this.fontsFiltered.items = this.googleFont.items.filter(font => {
-      return font.family
-        .toLowerCase()
-        .replace(" ", "-")
-        .includes(search);
-    });   
+  handleButtonClick(whichButton:string):void {
+   this.fontFamilies = this.fontService.filterFontTypes(whichButton);
   }
 
-  constructor() {}
+  handleSearchInput(searchValue: string) {
+    this.fontFamilies = this.fontService.filterFontNames(searchValue);
 
-  ngOnInit() {
-    googleFont.items.forEach(font => {
-      this.fontFamilies.push(font.family.toString());
-    });
-    this.fontsFiltered = this.googleFont;
-    WebFont.load({
-      google: {
-        families: this.fontFamilies
-      }
-    });
   }
 }

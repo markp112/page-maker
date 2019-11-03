@@ -1,5 +1,12 @@
-
 <section class="text-input">
-    <div class="close"><p (click)="closeClick()">X</p></div>
-    <textarea [rows] = "rows" [cols]="cols" [placeholder]="placeholder" #content (change)="contentChanged(content.value)"></textarea>
+  <div class="close">
+    <fa-icon [icon]="fawindowclose" (click)="closeClick()"></fa-icon>
+  </div>
+  <textarea
+    [rows]="rows"
+    [cols]="cols"
+    [placeholder]="placeholder"
+    #content
+    (change)="contentChanged(content.value)"
+    >{{ textContent }}</textarea>
 </section>

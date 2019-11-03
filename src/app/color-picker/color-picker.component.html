@@ -4,8 +4,10 @@
 </div>
 <div class="input-wrapper">
   <span class="text">{{color}}</span>
+
   <div
     class="color-div"
     [ngStyle]="{'background-color': color || 'white'}"
   ></div>
+  <p class="text-style" (click)="handleOkClick()">Ok</p>
 </div>

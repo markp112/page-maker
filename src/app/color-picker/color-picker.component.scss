@@ -1,6 +1,6 @@
 :host {
   display: block;
-  width: 316px;
+  width: auto;
   padding: 16px;
 }
 .color-wrapper {
@@ -8,25 +8,44 @@
   height: 250px;
 }
 
+@import '../../styles.scss';
+
 .input-wrapper {
   margin-top: 16px;
   display: flex;
   border-radius: 1px;
   border: 1px solid rgb(220, 220, 220);
-  padding: 8px;
+  padding: 2px;
   height: 32px;
   justify-content: center;
 }
 
 .color-div {
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
   border: 1px solid rgb(220, 220, 220);
 }
 
 .text {
   flex: 1;
-  font-family: 'Helvetica';
-  line-height: 32px;
+  font-family: Montserrat;
+  line-height: 24px;
+}
+
+.text-style {
+  display: inline-block;
+  background-color: $primary-1-hex;
+  border: 1px solid $primary-1-hex;
+  color: $primary-text-hex;
+  text-align: center;
+  padding: $content-spacing - 4 $content-spacing + 2; //match font awesome sizing
+  margin-left: 20px;
+  -webkit-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+  -moz-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+  box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+  cursor: pointer;
+  &:hover {
+      background-color: rgb(189, 173, 173);
+  }
 }

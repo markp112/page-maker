@@ -1,6 +1,10 @@
 @import '../../../styles.scss';
 @import '../../../styles-fonts.scss';
 
+.font-wrapper {
+  z-index: 5;
+  @include box-shadow;
+
 .search-area{
     border-bottom: 1px solid $accent-3-hex;
     padding: $content-spacing;
@@ -18,13 +22,15 @@ ul {
   padding: $content-spacing;
   background-color: $primary-text-hex;
 
-  overflow-y: scroll;
 
-  li {
-    padding: $content-spacing / 5;
-    cursor: pointer;
-    &:hover{
-      background-color: $seconday-text-hex;
+    overflow-y: scroll;
+
+    li {
+      padding: $content-spacing / 5;
+      cursor: pointer;
+      &:hover{
+        background-color: $seconday-text-hex;
+      }
     }
   }
 }

@@ -6,4 +6,5 @@ export interface IIconButton {
     text:string;
     eventName:string;
     style: styles;
+    enabled?: boolean;
 }

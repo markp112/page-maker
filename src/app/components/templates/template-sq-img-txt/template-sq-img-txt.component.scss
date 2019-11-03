@@ -23,6 +23,13 @@ $toolbar-height: 50px;
   align-items: center;
   background-color: darken($accent-3-hex, 10%);
 
+  .image-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 48%;
+  }
+
   .text-options {
     width: 50%;
     display: flex;
@@ -52,16 +59,27 @@ $toolbar-height: 50px;
     background-color: $secondary-2-hex;
     color: $seconday-text-hex;
     padding: $content-spacing;
+    position: relative;
 
-    .text-editor{
+  }
+
+  .text-editor{
       display:flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100%;
       width: 100%;
-
+      position: absolute;
+      top: -70px;
+      left: 250px;
     }
+
+  .color-picker-wrapper{
+    position: absolute;
+    top: 0px;
+    left: 160px;
+    z-index: 5;
   }
 
 .text-area-non-edit {
@@ -85,7 +103,7 @@ $toolbar-height: 50px;
   text-align: justify;
 }
 
-.vertical-align-center {
+.vertical-align-centre {
   justify-content: center;
 }
 
