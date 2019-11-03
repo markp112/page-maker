@@ -14,6 +14,7 @@ import * as WebFont from "webfontloader";
 export class FontDropDownComponent implements OnInit {
   googleFont: IGooglefont = googleFont;
   fontFamilies: string[] = [];
+
   filteredFonts: IGooglefont;
   toolbarButtons = fontDropDownButtons;
 
@@ -37,6 +38,6 @@ export class FontDropDownComponent implements OnInit {
 
   handleSearchInput(searchValue: string) {
     this.fontFamilies = this.fontService.filterFontNames(searchValue);
-  }
 
+  }
 }
