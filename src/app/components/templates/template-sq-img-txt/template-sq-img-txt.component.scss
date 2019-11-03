@@ -1,5 +1,5 @@
 @import '../../../../styles.scss';
-@import '../../../../styles-fonts.scss';
+
 $toolbar-height: 50px;
 
 .template-sq-img-txt  {
@@ -41,6 +41,7 @@ $toolbar-height: 50px;
       position: absolute;
       top: $toolbar-height;
       left: 288px;
+      z-index: 2;
     }
   }
 }

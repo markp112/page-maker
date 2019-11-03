@@ -37,7 +37,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   verticalAlignBottom: boolean = false;
   verticalAlignCentre: boolean = false;
   color: string = 'rgba(242,226,213, 1)';
-  backgroundColor: string="";
+  backgroundColor: string = 'rgba(38,1,89, 1)';
 
   fontSize: number = 16;
   fontFamily: string = "Acme"
@@ -114,8 +114,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
 
       case "backgroundColor":
-        this.isShowColourPicker =!this.isShowColourPicker;
-        this.isEditingBackgroundColor = true;
+        this.isShowColourPicker = !this.isShowColourPicker;
+        this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
     }
   }
@@ -155,11 +155,15 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   setColor(color:string) {
 
-    if(this.isEditingColor) this.color = color;
-    if(this.isEditingBackgroundColor) this.backgroundColor = color;
+    if(this.isEditingColor) {
+      this.color = color;
+      this.isEditingColor = !this.isEditingColor;
+    }
+    if(this.isEditingBackgroundColor) {
+      this.backgroundColor = color;
+      this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
+    }
     this.isShowColourPicker = !this.isShowColourPicker;
-    this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
-    this.isEditingColor = !this.isEditingColor;
   }
   constructor() { }
 
