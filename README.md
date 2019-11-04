@@ -36,6 +36,13 @@ The primary learning objective of this application is to learn how to build an a
 
 The project also reinforces learning undertaken around using API's and will make use of NOSQL databases and cloud storage.
 
+# Installation
+
+1 From the command line run git clone https://github.com/markp112/allMyFilms.git
+2 once the package has cloned type npm install
+3 to run the application type ng serve
+
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
