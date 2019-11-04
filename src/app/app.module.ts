@@ -17,7 +17,9 @@ import { FontDropDownComponent } from './components/font-drop-down/font-drop-dow
 import { FontApiService }  from './shared/font-api.service';
 import { UrlInputComponent } from './components/url-input/url-input.component';
 import { FileUploadComponent } from './components/file-upload/file-upload.component';
-
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { secrets } from 'secrets';
 
 
 
@@ -42,7 +44,14 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
     AppRoutingModule,
     FontAwesomeModule,
     ColorPickerModule,
-    HttpClientModule
+    HttpClientModule,
+    AngularFireModule.initializeApp({
+      apiKey: secrets.google.webAPIKey,
+      authDomain: secrets.google.authDomain,
+      storageBucket: secrets.google.storageBucket,
+      projectId: secrets.google.projectId,
+    }),
+    AngularFireStorageModule
   ],
   providers: [FontApiService],
   bootstrap: [AppComponent]

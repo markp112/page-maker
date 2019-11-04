@@ -9,7 +9,7 @@ import { secrets } from 'secrets';
 })
 export class FontApiService {
   apiUrl: string = "https://www.googleapis.com/webfonts/v1/webfonts";
-  key: string = `?key=${secrets.googleFontsAPIKey}`;
+  key: string = `?key=${secrets.google.fontsAPIKey}`;
 
   public currentPage: number;
   public pageSize: number;
