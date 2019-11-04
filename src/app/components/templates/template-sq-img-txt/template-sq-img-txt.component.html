@@ -26,8 +26,8 @@
       </div>
     </div>
     <div class="image-area">image
-      <img src="" alt="">
-      <app-file-upload></app-file-upload>
+      <img [src]="imageUrl" alt="">
+      <app-file-upload [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)"></app-file-upload>
     </div>
     <div class="text-area"
       [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily, 'color':color, 'backgroundColor':backgroundColor}"

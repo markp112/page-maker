@@ -7,7 +7,7 @@ import {
   textEditorButtonsGrp3,
   textEditorButtonsGrp4
 } from "src/assets/data/mock/text-input-toolbar";
-import { imgEditButtons } from "src/assets/data/mock/image-toolbar"
+import { imgEditButtons } from "src/assets/data/mock/image-toolbar";
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -15,13 +15,14 @@ import { imgEditButtons } from "src/assets/data/mock/image-toolbar"
   styleUrls: ["./template-sq-img-txt.component.scss"]
 })
 export class TemplateSqImgTxtComponent implements OnInit {
+  //buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
   textEditButtonsGrp1: IIconButton[] = textEditorButtonsGrp1;
   textEditButtonsGrp2: IIconButton[] = textEditorButtonsGrp2;
   textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
   textEditButtonsGrp4: IIconButton[] = textEditorButtonsGrp4;
-
+  //boolean flags for managing state
   isEditing: boolean = false;
   showTextEditor: boolean = false;
   isShowFontPicker: boolean = false;
@@ -39,10 +40,19 @@ export class TemplateSqImgTxtComponent implements OnInit {
   color: string = 'rgba(242,226,213, 1)';
   backgroundColor: string = 'rgba(38,1,89, 1)';
 
+  //variables linked to the image
+  path: string = "images/";
+  imageUrl: string;
+
   fontSize: number = 16;
   fontFamily: string = "Acme"
 
+
   @Input() contentText: string;
+
+  constructor() { }
+
+  ngOnInit() { }
 
   handleClick(event) {
     console.log("event",event)
@@ -165,7 +175,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
     this.isShowColourPicker = !this.isShowColourPicker;
   }
-  constructor() { }
 
-  ngOnInit() { }
+  handleFileUploaded(URL) {
+    console.log("url=",URL);
+    this.imageUrl = URL;
+  }
+
 }
