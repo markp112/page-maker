@@ -38,9 +38,9 @@ The project also reinforces learning undertaken around using API's and will make
 
 # Installation
 
-1 From the command line run git clone https://github.com/markp112/allMyFilms.git
-2 once the package has cloned type npm install
-3 to run the application type ng serve
+1. From the command line run git clone https://github.com/markp112/page-maker.git
+2. once the package has cloned type npm install
+3. to run the application type ng serve
 
 
 ## Development server
