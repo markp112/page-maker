@@ -5,51 +5,81 @@ import { Observable } from 'rxjs';
 
 
 @Component({
-  selector: 'app-file-upload',
-  templateUrl: './file-upload.component.html',
-  styleUrls: ['./file-upload.component.scss']
+  selector: "app-file-upload",
+  templateUrl: "./file-upload.component.html",
+  styleUrls: ["./file-upload.component.scss"]
 })
-
 export class FileUploadComponent implements OnInit {
-@Input() path:string;
-@Output() handleFileUploadComplete = new EventEmitter;
+  @Input() path: string;
+  @Output() handleFileUploadComplete = new EventEmitter();
 
-ref: AngularFireStorageReference;
-task: AngularFireUploadTask;
-store: AngularFireStorage;
+  //
+  // task: AngularFireUploadTask;
+  // store: AngularFireStorage;
 
-uploadProgress: Observable<number>;
-downloadUrl: Observable<string>;
+  uploadProgress: Observable<number>;
+  downloadUrl: Observable<string>;
 
-  constructor(private afStorage : AngularFireStorage) { }
+  constructor(private afStorage: AngularFireStorage) {}
 
-  ngOnInit() {
+  ngOnInit() {}
+
+  // Main task
+  task: AngularFireUploadTask;
+  ref: AngularFireStorageReference;
+
+  // Progress monitoring
+  percentage: Observable<number>;
+
+  snapshot: Observable<any>;
+
+  // Download URL
+  downloadURL: Observable<string>;
+
+  // State for dropzone CSS toggling
+  isHovering: boolean;
+
+  toggleHover(event: boolean) {
+    this.isHovering = event;
   }
 
-  handleInputChange(event){
+  startUpload(event: FileList) {
+    // The File object
+    const file = event.item(0);
 
-    let file = event.target.files[0];
-    if (file === undefined){
-      return
+    // Client-side validation example
+    if (file.type.split("/")[0] !== "image") {
+      console.error("unsupported file type :( ");
+      return;
     }
-    console.log(file);
-    const filename = `${this.path}${file.name}`
 
-    this.ref = this.afStorage.ref(filename);
-    this.task = this.ref.put(file);
-    this.uploadProgress = this.task.percentageChanges();
+    // The storage path
+    const path = `images/${new Date().getTime()}_${file.name}`;
 
-    this.task.then(result => {
-      this.downloadUrl = this.ref.child(filename).getDownloadURL();
-      console.log(this.downloadUrl)
+    // Totally optional metadata
+    const customMetadata = { app: "My AngularFire-powered PWA!" };
+
+    this.ref =this.afStorage.ref(path);
+    // The main task
+    this.task = this.afStorage.upload(path, file, { customMetadata });
+
+    // Progress monitoring
+    this.percentage = this.task.percentageChanges();
+    this.snapshot = this.task.snapshotChanges();
+    this.downloadUrl = this.ref.getDownloadURL();
+
+    // The file's download URL
+    this.downloadUrl.subscribe(url => {
+      this.handleFileUploadComplete.emit(url);
     })
+    
+  }
 
-
-
-    //this.ref.child(filename).refFromURL().then(url => console.log(url));
-      //this.handleFileUploadComplete(filename)
-
-
-
+  // Determines if the upload task is active
+  isActive(snapshot) {
+    return (
+      snapshot.state === "running" &&
+      snapshot.bytesTransferred < snapshot.totalBytes
+    );
   }
 }

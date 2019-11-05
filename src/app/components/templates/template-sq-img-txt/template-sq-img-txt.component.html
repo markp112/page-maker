@@ -1,11 +1,10 @@
 <section >
   <div class="template-sq-img-txt">
-
     <div class="toolbar">
       <div class="image-options">
         <app-toolbar-group [buttons]="nonEditButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
         <div class="img-buttons" *ngIf="isEditing">
-          <app-toolbar-group [buttons]="imgEditButtons"></app-toolbar-group>
+          <app-toolbar-group [buttons]="imgEditButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
         </div>
       </div>
 
@@ -25,9 +24,15 @@
         </div>
       </div>
     </div>
-    <div class="image-area">image
-      <img [src]="imageUrl" alt="">
-      <app-file-upload [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)"></app-file-upload>
+    <div class="image-area">
+      <div class="img-wrapper">
+        <img [src]="imageUrl" alt="">
+
+      </div>
+      <div class="img-upload-buttons-wrapper" *ngIf="ShowUploadImage">
+        <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)"></app-file-upload>
+      </div>
+      
     </div>
     <div class="text-area"
       [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily, 'color':color, 'backgroundColor':backgroundColor}"

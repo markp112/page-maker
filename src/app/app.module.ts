@@ -20,6 +20,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { secrets } from 'secrets';
+import { DropzoneDirective } from './directives/dropzone.directive';
 
 
 
@@ -36,6 +37,7 @@ import { secrets } from 'secrets';
     FontDropDownComponent,
     UrlInputComponent,
     FileUploadComponent,
+    DropzoneDirective,
 
 
   ],

@@ -28,7 +28,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isShowFontPicker: boolean = false;
   isShowColourPicker: boolean = false;
   isEditingColor: boolean = false;
-  isEditingBackgroundColor:boolean = false;
+  isEditingBackgroundColor: boolean = false;
+  ShowUploadImage:boolean = false;
   // variable definitions to support applying classes based on user selection
   alignLeft: boolean = true;
   alignRight: boolean = false;
@@ -37,32 +38,30 @@ export class TemplateSqImgTxtComponent implements OnInit {
   verticalAlignTop: boolean = true;
   verticalAlignBottom: boolean = false;
   verticalAlignCentre: boolean = false;
-  color: string = 'rgba(242,226,213, 1)';
-  backgroundColor: string = 'rgba(38,1,89, 1)';
+  color: string = "rgba(242,226,213, 1)";
+  backgroundColor: string = "rgba(38,1,89, 1)";
 
   //variables linked to the image
   path: string = "images/";
   imageUrl: string;
 
   fontSize: number = 16;
-  fontFamily: string = "Acme"
-
+  fontFamily: string = "Acme";
 
   @Input() contentText: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   handleClick(event) {
-    console.log("event",event)
+    console.log("event", event);
     switch (event) {
       case "editClicked":
         this.setEdit();
         break;
 
       case "alignRight":
-
         this.alignRight = true;
         this.alignLeft = false;
         this.alignCenter = false;
@@ -70,7 +69,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
 
       case "alignLeft":
-
         this.alignRight = false;
         this.alignLeft = true;
         this.alignCenter = false;
@@ -118,7 +116,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
 
       case "fontColor":
-
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingColor = !this.isEditingColor;
         break;
@@ -127,19 +124,22 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
+      
+        case "uploadClicked":
+          this.ShowUploadImage = !this.ShowUploadImage;
     }
   }
   getClasses() {
     let classes = [];
     classes.push(this.fontFamily);
-    if (!this.showTextEditor) classes.push('text-area-non-edit');
-    if (this.alignLeft) classes.push('align-content-left');
-    if (this.alignRight) classes.push('align-content-right');
-    if (this.alignCenter) classes.push('align-content-center');
-    if (this.alignTextJustify) classes.push('text-align-justify');
-    if (this.verticalAlignBottom) classes.push('vertical-align-bottom');
-    if (this.verticalAlignTop) classes.push('vertical-align-top');
-    if (this.verticalAlignCentre) classes.push('vertical-align-centre');
+    if (!this.showTextEditor) classes.push("text-area-non-edit");
+    if (this.alignLeft) classes.push("align-content-left");
+    if (this.alignRight) classes.push("align-content-right");
+    if (this.alignCenter) classes.push("align-content-center");
+    if (this.alignTextJustify) classes.push("text-align-justify");
+    if (this.verticalAlignBottom) classes.push("vertical-align-bottom");
+    if (this.verticalAlignTop) classes.push("vertical-align-top");
+    if (this.verticalAlignCentre) classes.push("vertical-align-centre");
 
     return classes;
   }
@@ -158,27 +158,25 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   setEdit() {
-    if(!this.isShowColourPicker){
+    if (!this.isShowColourPicker) {
       this.isEditing = !this.isEditing;
     }
-  };
+  }
 
-  setColor(color:string) {
-
-    if(this.isEditingColor) {
+  setColor(color: string) {
+    if (this.isEditingColor) {
       this.color = color;
       this.isEditingColor = !this.isEditingColor;
     }
-    if(this.isEditingBackgroundColor) {
+    if (this.isEditingBackgroundColor) {
       this.backgroundColor = color;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
   }
 
-  handleFileUploaded(URL) {
-    console.log("url=",URL);
+  handleFileUploaded(URL: string) {
+    this.ShowUploadImage = !this.ShowUploadImage;
     this.imageUrl = URL;
   }
-
 }
