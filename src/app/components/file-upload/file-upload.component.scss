@@ -20,11 +20,11 @@
   @include text-button;
 }
 
-.dropzone { 
+.dropzone {
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: column; 
+    flex-direction: column;
     height: 300px;
     border: 2px dashed #f16624;
     border-radius: 5px;
@@ -35,4 +35,10 @@
         border: 2px solid #f16624;
         color: #dadada !important;
     }
+}
+progress::-webkit-progress-value {
+  transition: width 0.1s ease;
+}
+.bytes {
+  font-size: 0.9em;
 }

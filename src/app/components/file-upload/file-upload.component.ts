@@ -1,8 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
-
-
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: "app-file-upload",
@@ -12,10 +11,6 @@ import { Observable } from 'rxjs';
 export class FileUploadComponent implements OnInit {
   @Input() path: string;
   @Output() handleFileUploadComplete = new EventEmitter();
-
-  //
-  // task: AngularFireUploadTask;
-  // store: AngularFireStorage;
 
   uploadProgress: Observable<number>;
   downloadUrl: Observable<string>;
@@ -54,25 +49,27 @@ export class FileUploadComponent implements OnInit {
     }
 
     // The storage path
-    const path = `images/${new Date().getTime()}_${file.name}`;
+    const path = `${this.path}/${file.name}`;
 
     // Totally optional metadata
     const customMetadata = { app: "My AngularFire-powered PWA!" };
 
-    this.ref =this.afStorage.ref(path);
+    this.ref = this.afStorage.ref(path);
     // The main task
     this.task = this.afStorage.upload(path, file, { customMetadata });
 
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
-    this.snapshot = this.task.snapshotChanges();
-    this.downloadUrl = this.ref.getDownloadURL();
-
-    // The file's download URL
-    this.downloadUrl.subscribe(url => {
-      this.handleFileUploadComplete.emit(url);
-    })
-    
+    this.snapshot = this.task.snapshotChanges().pipe(
+      tap(snap =>{
+        if (snap.bytesTransferred === snap.totalBytes) {
+          this.downloadUrl = this.ref.getDownloadURL();
+          this.downloadUrl.subscribe(url => {
+              this.handleFileUploadComplete.emit(url);
+            })
+        }
+      })
+    );
   }
 
   // Determines if the upload task is active

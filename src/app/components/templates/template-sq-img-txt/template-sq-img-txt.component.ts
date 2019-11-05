@@ -7,7 +7,7 @@ import {
   textEditorButtonsGrp3,
   textEditorButtonsGrp4
 } from "src/assets/data/mock/text-input-toolbar";
-import { imgEditButtons } from "src/assets/data/mock/image-toolbar";
+import { imgEditButtons, imgPositionButtons } from "src/assets/data/mock/image-toolbar";
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -18,6 +18,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   //buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
+  imgPositionButtons: IIconButton[] = imgPositionButtons;
+
   textEditButtonsGrp1: IIconButton[] = textEditorButtonsGrp1;
   textEditButtonsGrp2: IIconButton[] = textEditorButtonsGrp2;
   textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
@@ -29,7 +31,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isShowColourPicker: boolean = false;
   isEditingColor: boolean = false;
   isEditingBackgroundColor: boolean = false;
-  ShowUploadImage:boolean = false;
+  ShowUploadImage: boolean = false;
+  isEditingImageBackgroundColor: boolean = false;
   // variable definitions to support applying classes based on user selection
   alignLeft: boolean = true;
   alignRight: boolean = false;
@@ -43,16 +46,18 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   //variables linked to the image
   path: string = "images/";
-  imageUrl: string;
-
+  imageUrl: string = "../../../../assets/images/placeholder-image.png"
+  imageBackgroundColor: string = "rgba(241,242,244,1)";
+  top: number = 400;
+  left: number = 500;
   fontSize: number = 16;
   fontFamily: string = "Acme";
 
   @Input() contentText: string;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   handleClick(event) {
     console.log("event", event);
@@ -124,9 +129,27 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
-      
-        case "uploadClicked":
-          this.ShowUploadImage = !this.ShowUploadImage;
+
+      case "uploadClicked":
+        this.imageUrl = "";
+        this.ShowUploadImage = !this.ShowUploadImage;
+        break;
+      case "imageBackgroundColor":
+        this.isShowColourPicker = !this.isShowColourPicker;
+        this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
+        break;
+      case "imgLeft":
+        this.left--;
+        break;
+      case "imgRight":
+        this.left++;
+        break;
+      case "imgUp":
+        this.top--;
+        break;
+      case "imgDown":
+        this.top++
+        break;
     }
   }
   getClasses() {
@@ -171,6 +194,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
     if (this.isEditingBackgroundColor) {
       this.backgroundColor = color;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
+    }
+    if (this.isEditingImageBackgroundColor) {
+      this.imageBackgroundColor = color;
+      this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
   }
