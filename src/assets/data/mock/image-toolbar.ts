@@ -7,7 +7,9 @@ import {
         faArrowAltCircleLeft,
         faArrowAltCircleRight,
         faArrowAltCircleUp,
-        faArrowAltCircleDown } from '@fortawesome/free-solid-svg-icons';
+        faArrowAltCircleDown, 
+        faPlusCircle,
+        faMinusCircle} from '@fortawesome/free-solid-svg-icons';
 
 export const imgEditButtons: IIconButton[] = [
     {
@@ -65,3 +67,19 @@ export const imgPositionButtons: IIconButton[] = [
   },
 
 ]
+export const imgSizeButtons: IIconButton[] = [
+  {
+    text: "Image Size Increase",
+    icon: faPlusCircle,
+    style: styles.Icon,
+    eventName: "imgIncreaseSize",
+    enabled: true
+  },
+  {
+    text: "Image Size Decrease",
+    icon: faMinusCircle,
+    style: styles.Icon,
+    eventName: "imgDecreaseSize",
+    enabled: true
+  }
+];

@@ -7,7 +7,9 @@ import {
   textEditorButtonsGrp3,
   textEditorButtonsGrp4
 } from "src/assets/data/mock/text-input-toolbar";
-import { imgEditButtons, imgPositionButtons } from "src/assets/data/mock/image-toolbar";
+import { imgEditButtons, imgPositionButtons, imgSizeButtons } from "src/assets/data/mock/image-toolbar";
+import { IImage } from 'src/app/models/interfaces/image';
+import { IText } from 'src/app/models/interfaces/text';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -15,16 +17,17 @@ import { imgEditButtons, imgPositionButtons } from "src/assets/data/mock/image-t
   styleUrls: ["./template-sq-img-txt.component.scss"]
 })
 export class TemplateSqImgTxtComponent implements OnInit {
-  //buttons for toolbar
+  // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
   imgPositionButtons: IIconButton[] = imgPositionButtons;
-
+  imgSizeButtons: IIconButton[] = imgSizeButtons;
+  // buttons for text toolbar 
   textEditButtonsGrp1: IIconButton[] = textEditorButtonsGrp1;
   textEditButtonsGrp2: IIconButton[] = textEditorButtonsGrp2;
   textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
   textEditButtonsGrp4: IIconButton[] = textEditorButtonsGrp4;
-  //boolean flags for managing state
+  // boolean flags for managing state
   isEditing: boolean = false;
   showTextEditor: boolean = false;
   isShowFontPicker: boolean = false;
@@ -45,19 +48,29 @@ export class TemplateSqImgTxtComponent implements OnInit {
   backgroundColor: string = "rgba(38,1,89, 1)";
 
   //variables linked to the image
+  imageRef: IImage;
+  textRef: IText;
   path: string = "images/";
-  imageUrl: string = "../../../../assets/images/placeholder-image.png"
-  imageBackgroundColor: string = "rgba(241,242,244,1)";
-  top: number = 400;
-  left: number = 500;
+  
   fontSize: number = 16;
   fontFamily: string = "Acme";
 
   @Input() contentText: string;
 
-  constructor() { }
+  constructor() {
+    this.imageRef = {
+      url: "../../../../assets/images/placeholder-image.png",
+      position: {
+        top: 0,
+        left: 0
+      },
+      height: 400,
+      width: 500,
+      backgroundColor: "rgba(241,242,244,1)"
+    };
+  }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   handleClick(event) {
     console.log("event", event);
@@ -131,24 +144,33 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
 
       case "uploadClicked":
-        this.imageUrl = "";
+        this.imageRef.url = "";
         this.ShowUploadImage = !this.ShowUploadImage;
         break;
       case "imageBackgroundColor":
         this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
+        this.isEditingImageBackgroundColor = !this
+          .isEditingImageBackgroundColor;
+        break;
+      case "imgDecreaseSize":
+        this.imageRef.height--;
+        this.imageRef.width--;
+        break;
+      case "imgIncreaseSize":
+        this.imageRef.height++;
+        this.imageRef.width--;
         break;
       case "imgLeft":
-        this.left--;
+        this.imageRef.position.left--;
         break;
       case "imgRight":
-        this.left++;
+        this.imageRef.position.left++;
         break;
       case "imgUp":
-        this.top--;
+        this.imageRef.position.top--;
         break;
       case "imgDown":
-        this.top++
+        this.imageRef.position.top++;
         break;
     }
   }
@@ -196,7 +218,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
-      this.imageBackgroundColor = color;
+      this.imageRef.backgroundColor = color;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
@@ -204,6 +226,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleFileUploaded(URL: string) {
     this.ShowUploadImage = !this.ShowUploadImage;
-    this.imageUrl = URL;
+    this.imageRef.url = URL;
   }
 }

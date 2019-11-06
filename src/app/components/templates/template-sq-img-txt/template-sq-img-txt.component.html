@@ -6,6 +6,7 @@
         <div class="img-buttons" *ngIf="isEditing">
           <app-toolbar-group [buttons]="imgEditButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
           <app-toolbar-group [buttons]="imgPositionButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
+          <app-toolbar-group [buttons]="imgSizeButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
         </div>
       </div>
 
@@ -25,9 +26,9 @@
         </div>
       </div>
     </div>
-    <div class="image-area" [ngStyle]="{'backgroundColor':imageBackgroundColor}">
+    <div class="image-area" [ngStyle]="{'backgroundColor':imageRef.backgroundColor}">
       <div class="img-wrapper">
-        <img [src]="imageUrl" alt="" [ngStyle]="{'height':top + 'px', 'width': left + 'px'}">
+        <img [src]="imageRef.url" alt="" [ngStyle]="{'height':imageRef.height + 'px', 'width': imageRef.width + 'px', 'left': imageRef.position.left + 'px', 'top': imageRef.position.top + 'px'}">
 
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="ShowUploadImage">

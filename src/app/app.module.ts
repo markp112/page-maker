@@ -21,6 +21,8 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { secrets } from 'secrets';
 import { DropzoneDirective } from './directives/dropzone.directive';
+import { TextFormatterDirective } from './directives/text-formatter.directive';
+
 
 
 
@@ -38,8 +40,8 @@ import { DropzoneDirective } from './directives/dropzone.directive';
     UrlInputComponent,
     FileUploadComponent,
     DropzoneDirective,
-
-
+    TextFormatterDirective,
+  
   ],
   imports: [
     BrowserModule,
