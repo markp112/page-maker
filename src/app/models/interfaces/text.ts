@@ -1,13 +1,10 @@
+import { textHorizontalAlignment, textVerticalAlignment } from '../enums/text-component.enum'
+
 export interface IText {
   font: string;
   size: number;
-  alignLeft: boolean, 
-  alignRight: boolean,
-  alignCenter: boolean,
-  alignTextJustify: boolean,
-  verticalAlignTop: boolean,
-  verticalAlignBottom: boolean,
-  verticalAlignCentre: boolean,
+  horizontalAlignment: textHorizontalAlignment,
+  verticalAlignment: textVerticalAlignment,
   color: string,
   backgroundColor: string
 }

@@ -10,7 +10,7 @@ import {
 import { imgEditButtons, imgPositionButtons, imgSizeButtons } from "src/assets/data/mock/image-toolbar";
 import { IImage } from 'src/app/models/interfaces/image';
 import { IText } from 'src/app/models/interfaces/text';
-
+import { textInitial } from '../../../../assets/data/mock/textInitial';
 @Component({
   selector: "app-template-sq-img-txt",
   templateUrl: "./template-sq-img-txt.component.html",
@@ -22,7 +22,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imgEditButtons: IIconButton[] = imgEditButtons;
   imgPositionButtons: IIconButton[] = imgPositionButtons;
   imgSizeButtons: IIconButton[] = imgSizeButtons;
-  // buttons for text toolbar 
+  // buttons for text toolbar
   textEditButtonsGrp1: IIconButton[] = textEditorButtonsGrp1;
   textEditButtonsGrp2: IIconButton[] = textEditorButtonsGrp2;
   textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
@@ -49,11 +49,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   //variables linked to the image
   imageRef: IImage;
-  textRef: IText;
+  textRef: IText = textInitial;
   path: string = "images/";
-  
+
   fontSize: number = 16;
   fontFamily: string = "Acme";
+
+clickevent:string;
 
   @Input() contentText: string;
 
@@ -80,28 +82,21 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
 
       case "alignRight":
-        this.alignRight = true;
-        this.alignLeft = false;
-        this.alignCenter = false;
-        this.alignTextJustify = false;
+
+        this.clickevent = event;
         break;
 
       case "alignLeft":
-        this.alignRight = false;
-        this.alignLeft = true;
-        this.alignCenter = false;
-        this.alignTextJustify = false;
+
+        this.clickevent = event;
         break;
 
       case "alignCenter":
-        this.alignRight = false;
-        this.alignLeft = false;
-        this.alignCenter = true;
-        this.alignTextJustify = false;
+          this.clickevent = event;
         break;
 
       case "textAlignJustify":
-        this.alignTextJustify = true;
+          this.clickevent = event;
         break;
 
       case "verticalAlignTop":
