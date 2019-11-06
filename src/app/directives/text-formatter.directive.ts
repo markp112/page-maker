@@ -1,10 +1,18 @@
-import { Directive } from '@angular/core';
+import { Directive, ElementRef, Input, SimpleChange, OnChanges} from '@angular/core';
+import { IText } from '../models/interfaces/text';
 
 @Directive({
-  selector: '[appTextFormatter]'
+  selector: "[appTextFormatter]"
 })
-export class TextFormatterDirective {
+export class TextFormatterDirective implements OnChanges {
+  @Input() textRef: IText;
 
-  constructor() { }
+  constructor(private el: ElementRef) {}
 
-}
+  ngOnChange(changes: SimpleChange) {
+    
+
+    }
+  }
+
+
