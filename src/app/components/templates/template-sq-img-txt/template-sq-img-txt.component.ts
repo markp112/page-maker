@@ -36,14 +36,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isEditingBackgroundColor: boolean = false;
   ShowUploadImage: boolean = false;
   isEditingImageBackgroundColor: boolean = false;
-  // variable definitions to support applying classes based on user selection
-  alignLeft: boolean = true;
-  alignRight: boolean = false;
-  alignCenter: boolean = false;
-  alignTextJustify: boolean = false;
-  verticalAlignTop: boolean = true;
-  verticalAlignBottom: boolean = false;
-  verticalAlignCentre: boolean = false;
+
   color: string = "rgba(242,226,213, 1)";
   backgroundColor: string = "rgba(38,1,89, 1)";
 
@@ -52,6 +45,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   textRef: IText = textInitial;
   path: string = "images/";
 
+  fontSizeString: string ='16px';
   fontSize: number = 16;
   fontFamily: string = "Acme";
 
@@ -81,47 +75,15 @@ clickevent:string;
         this.setEdit();
         break;
 
-      case "alignRight":
 
-        this.clickevent = event;
-        break;
-
-      case "alignLeft":
-
-        this.clickevent = event;
-        break;
-
-      case "alignCenter":
-          this.clickevent = event;
-        break;
-
-      case "textAlignJustify":
-          this.clickevent = event;
-        break;
-
-      case "verticalAlignTop":
-        this.verticalAlignTop = true;
-        this.verticalAlignBottom = false;
-        this.verticalAlignCentre = false;
-        break;
-
-      case "verticalAlignBottom":
-        this.verticalAlignTop = false;
-        this.verticalAlignBottom = true;
-        this.verticalAlignCentre = false;
-        break;
-
-      case "verticalAlignCentre":
-        this.verticalAlignTop = false;
-        this.verticalAlignBottom = false;
-        this.verticalAlignCentre = true;
-        break;
 
       case "increaseFont":
         this.fontSize++;
+        this.fontSizeString = `${this.fontSize}px`;
         break;
       case "decreaseFont":
         this.fontSize--;
+        this.fontSizeString = `${this.fontSize}px`;
         break;
 
       case "font":
@@ -167,22 +129,13 @@ clickevent:string;
       case "imgDown":
         this.imageRef.position.top++;
         break;
+      default:
+        this.clickevent = event;
+
     }
   }
-  getClasses() {
-    let classes = [];
-    classes.push(this.fontFamily);
-    if (!this.showTextEditor) classes.push("text-area-non-edit");
-    if (this.alignLeft) classes.push("align-content-left");
-    if (this.alignRight) classes.push("align-content-right");
-    if (this.alignCenter) classes.push("align-content-center");
-    if (this.alignTextJustify) classes.push("text-align-justify");
-    if (this.verticalAlignBottom) classes.push("vertical-align-bottom");
-    if (this.verticalAlignTop) classes.push("vertical-align-top");
-    if (this.verticalAlignCentre) classes.push("vertical-align-centre");
 
-    return classes;
-  }
+
 
   //event handlers
   closeTextInput() {

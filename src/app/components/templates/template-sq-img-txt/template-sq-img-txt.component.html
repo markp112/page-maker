@@ -36,9 +36,8 @@
       </div>
 
     </div>
-    <div class="text-area" appTextFormatter [textEvent]="clickevent"
-      [ngStyle]="{'font-size': fontSize + 'px', 'font-family': fontFamily, 'color':color, 'backgroundColor':backgroundColor}"
-
+    <div class="text-area" appTextFormatter [textEvent]="clickevent" [isEditingText]="showTextEditor" [fontSize]="fontSizeString"
+      [fontFamily]="fontFamily" [foreColor]="color" [backColor]="backgroundColor"
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
       {{ contentText }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
