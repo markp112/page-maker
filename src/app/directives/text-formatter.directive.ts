@@ -2,13 +2,14 @@ import { Directive, ElementRef, Input, SimpleChanges, OnChanges, Renderer2} from
 import { IText } from '../models/interfaces/text';
 import { textInitial } from '../../assets/data/mock/textInitial';
 import { textHorizontalAlignment, textVerticalAlignment } from '../models/enums/text-component.enum'
+import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
 @Directive({
   selector: "[appTextFormatter]"
 })
 export class TextFormatterDirective implements OnChanges{
   @Input() textEvent: string;
   @Input() isEditingText: boolean;
-  @Input() fontSize: string;
+  @Input() fontSize: number;
   @Input() fontFamily: string;
   @Input() foreColor: string;
   @Input() backColor: string;
@@ -17,7 +18,7 @@ export class TextFormatterDirective implements OnChanges{
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngOnChanges(changes: SimpleChanges ) {
     console.log(changes,this.textEvent);
 
     if(changes.textEvent){
@@ -27,7 +28,7 @@ export class TextFormatterDirective implements OnChanges{
 
       } else this.applyClasses();
     }
-    if(changes.fontSize) this.el.nativeElement.style.fontSize = this.fontSize;
+    if(changes.fontSize) this.el.nativeElement.style.fontSize = `${this.fontSize}px`;
     if(changes.fontFamily) this.el.nativeElement.style.fontFamily = this.fontFamily;
     if(changes.foreColor) this.el.nativeElement.style.color = this.foreColor;
     if(changes.backColor) this.el.nativeElement.style.background = this.backColor;

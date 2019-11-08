@@ -28,7 +28,7 @@
     </div>
     <div class="image-area" [ngStyle]="{'backgroundColor':imageRef.backgroundColor}">
       <div class="img-wrapper">
-        <img [src]="imageRef.url" alt="" [ngStyle]="{'height':imageRef.height + 'px', 'width': imageRef.width + 'px', 'left': imageRef.position.left + 'px', 'top': imageRef.position.top + 'px'}">
+        <img [src]="imageRef.url" alt=""  appImageFormatter  [height]="imageRef.height" [width]="imageRef.width" [left]="imageRef.position.left" [top]="imageRef.position.top">
 
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="ShowUploadImage">
@@ -36,7 +36,7 @@
       </div>
 
     </div>
-    <div class="text-area" appTextFormatter [textEvent]="clickevent" [isEditingText]="showTextEditor" [fontSize]="fontSizeString"
+    <div class="text-area" appTextFormatter [textEvent]="clickevent" [isEditingText]="showTextEditor" [fontSize]="fontSize"
       [fontFamily]="fontFamily" [foreColor]="color" [backColor]="backgroundColor"
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
       {{ contentText }}

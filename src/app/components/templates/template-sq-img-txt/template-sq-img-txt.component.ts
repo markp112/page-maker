@@ -7,10 +7,14 @@ import {
   textEditorButtonsGrp3,
   textEditorButtonsGrp4
 } from "src/assets/data/mock/text-input-toolbar";
-import { imgEditButtons, imgPositionButtons, imgSizeButtons } from "src/assets/data/mock/image-toolbar";
-import { IImage } from 'src/app/models/interfaces/image';
-import { IText } from 'src/app/models/interfaces/text';
-import { textInitial } from '../../../../assets/data/mock/textInitial';
+import {
+  imgEditButtons,
+  imgPositionButtons,
+  imgSizeButtons
+} from "src/assets/data/mock/image-toolbar";
+import { IImage } from "src/app/models/interfaces/image";
+import { IText } from "src/app/models/interfaces/text";
+import { textInitial } from "../../../../assets/data/mock/textInitial";
 @Component({
   selector: "app-template-sq-img-txt",
   templateUrl: "./template-sq-img-txt.component.html",
@@ -45,11 +49,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
   textRef: IText = textInitial;
   path: string = "images/";
 
-  fontSizeString: string ='16px';
   fontSize: number = 16;
   fontFamily: string = "Acme";
 
-clickevent:string;
+  clickevent: string;
 
   @Input() contentText: string;
 
@@ -74,32 +77,23 @@ clickevent:string;
       case "editClicked":
         this.setEdit();
         break;
-
-
-
       case "increaseFont":
         this.fontSize++;
-        this.fontSizeString = `${this.fontSize}px`;
         break;
       case "decreaseFont":
         this.fontSize--;
-        this.fontSizeString = `${this.fontSize}px`;
         break;
-
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
         break;
-
       case "fontColor":
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingColor = !this.isEditingColor;
         break;
-
       case "backgroundColor":
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
-
       case "uploadClicked":
         this.imageRef.url = "";
         this.ShowUploadImage = !this.ShowUploadImage;
@@ -131,11 +125,8 @@ clickevent:string;
         break;
       default:
         this.clickevent = event;
-
     }
   }
-
-
 
   //event handlers
   closeTextInput() {
