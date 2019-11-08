@@ -39,6 +39,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isEditingColor: boolean = false;
   isEditingBackgroundColor: boolean = false;
   ShowUploadImage: boolean = false;
+  showURLLink: boolean = false;
   isEditingImageBackgroundColor: boolean = false;
 
   color: string = "rgba(242,226,213, 1)";
@@ -123,6 +124,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
       case "imgDown":
         this.imageRef.position.top++;
         break;
+      case "urlClicked":
+        this.showURLLink =  true;
       default:
         this.clickevent = event;
     }
