@@ -128,7 +128,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.showTextEditor = false;
   }
 
-  textChanged(content) {
+  textChanged(content: string) {
     this.textRef.content = content;
   }
   handleSelectFont(font: string) {
