@@ -6,8 +6,8 @@
   <div class="nav-rhs">
     <ul>
       <li>Templates</li>
-      <li></li>
-      <li></li>
+      <li [routerLink]="'/signUp'" *ngIf="!isLoggedIn">Sign-Up</li>
+      <li [routerLink]="'/login'" *ngIf="!isLoggedIn">Login</li>
     </ul>
     <fa-icon [icon]="faBars"></fa-icon>
   </div>

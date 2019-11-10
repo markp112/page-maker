@@ -6,5 +6,6 @@ export interface IText {
   horizontalAlignment: textHorizontalAlignment,
   verticalAlignment: textVerticalAlignment,
   color: string,
-  backgroundColor: string
+  backgroundColor: string,
+  content: string
 }

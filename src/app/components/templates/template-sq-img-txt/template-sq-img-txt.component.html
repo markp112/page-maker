@@ -29,27 +29,26 @@
     <div class="image-area" [ngStyle]="{'backgroundColor':imageRef.backgroundColor}">
       <div class="img-wrapper">
         <img [src]="imageRef.url" alt=""  appImageFormatter  [height]="imageRef.height" [width]="imageRef.width" [left]="imageRef.position.left" [top]="imageRef.position.top">
-
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="ShowUploadImage">
         <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)"></app-file-upload>
       </div>
-      <div class="img-url-wrapper" *ngIf="showURLLink">
-        <app-url-input></app-url-input>
+      <div class="img-url-wrapper" *ngIf="showURLLink" >
+        <app-url-input (url)="handleUrl($event)"></app-url-input>
       </div>
 
     </div>
-    <div class="text-area" appTextFormatter [textEvent]="clickevent" [isEditingText]="showTextEditor" [fontSize]="fontSize"
-      [fontFamily]="fontFamily" [foreColor]="color" [backColor]="backgroundColor"
+    <div class="text-area" appTextFormatter [textEvent]="clickevent" [isEditingText]="showTextEditor" [fontSize]="textRef.size"
+      [fontFamily]="textRef.font" [foreColor]="textRef.color" [backColor]="textRef.backgroundColor"
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
-      {{ contentText }}
+      {{ textRef.content }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>
         </div>
     </div>
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
-        [textContent]="contentText"></app-text-input>
+        [textContent]="this.textRef.content"></app-text-input>
     </div>
   </div>
 

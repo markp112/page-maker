@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-url-input',
@@ -6,10 +6,17 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./url-input.component.scss']
 })
 export class UrlInputComponent implements OnInit {
+  @Output() url = new EventEmitter();
 
   constructor() { }
 
   ngOnInit() {
   }
 
+  handleOkClick(url){
+    if (url){
+      this.url.emit(url);
+    }
+
+  }
 }

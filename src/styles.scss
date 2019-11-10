@@ -24,6 +24,23 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: $justify;
+  flex-wrap: nowrap;
+}
+@mixin flex-column($justify) {
+  display: flex;
+  flex-direction: column;
+  justify-content: $justify;
+  flex-wrap: nowrap;
+}
+
+@mixin input-field {
+    width: 100%;
+    padding: 3px;
+    border: 1px solid $secondary-2-hex;
+    z-index: 5;
+    height: 40px;
+    font-szie: 1em;
+
 }
 
 @mixin text-button {

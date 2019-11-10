@@ -87,12 +87,13 @@ $toolbar-height: 50px;
       display: block;
       max-width: 500px;
       max-height: 400px;
-      width: 100%;
-      height: 100%;
-      object-fit: fill;
+      width: width;
+      height: auto;
+      object-fit: contain;
       position: absolute;
       top: 0;
       left: 0;
+
 
     }
   }

@@ -1,0 +1,25 @@
+@import '../../../styles.scss';
+
+section {
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  font-family: inherit;
+  color: $secondary-2-hex;
+  h1 {
+    font-size: 2em;
+    text-align: center;
+    margin: $content-spacing * 2;
+    color: $secondary-2-hex;
+  }
+
+  p {
+    padding: $content-spacing;
+    font-size: inherit;
+    width: 75%;
+    margin-top: $content-spacing * 4;
+  }
+}

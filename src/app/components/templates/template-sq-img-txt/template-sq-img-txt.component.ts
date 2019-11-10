@@ -14,7 +14,10 @@ import {
 } from "src/assets/data/mock/image-toolbar";
 import { IImage } from "src/app/models/interfaces/image";
 import { IText } from "src/app/models/interfaces/text";
+import { IPage, pageTemplates } from "../../../models/interfaces/page"
 import { textInitial } from "../../../../assets/data/mock/textInitial";
+import { imageInitial } from "../../../../assets/data/mock/imageInitial";
+import { SavePageService } from "../../../shared/save-page.service";
 @Component({
   selector: "app-template-sq-img-txt",
   templateUrl: "./template-sq-img-txt.component.html",
@@ -42,47 +45,33 @@ export class TemplateSqImgTxtComponent implements OnInit {
   showURLLink: boolean = false;
   isEditingImageBackgroundColor: boolean = false;
 
-  color: string = "rgba(242,226,213, 1)";
-  backgroundColor: string = "rgba(38,1,89, 1)";
-
-  //variables linked to the image
-  imageRef: IImage;
+    //variables linked to the image
+  imageRef: IImage = imageInitial;
   textRef: IText = textInitial;
+  page: IPage;
   path: string = "images/";
-
-  fontSize: number = 16;
-  fontFamily: string = "Acme";
-
   clickevent: string;
+  isDirty: boolean = false;
 
   @Input() contentText: string;
 
-  constructor() {
-    this.imageRef = {
-      url: "../../../../assets/images/placeholder-image.png",
-      position: {
-        top: 0,
-        left: 0
-      },
-      height: 400,
-      width: 500,
-      backgroundColor: "rgba(241,242,244,1)"
-    };
+  constructor(private pageService: SavePageService) {
+
   }
 
   ngOnInit() {}
 
   handleClick(event) {
-    console.log("event", event);
+    this.isDirty = true;
     switch (event) {
       case "editClicked":
         this.setEdit();
         break;
       case "increaseFont":
-        this.fontSize++;
+        this.textRef.size++;
         break;
       case "decreaseFont":
-        this.fontSize--;
+        this.textRef.size--;
         break;
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
@@ -126,6 +115,9 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       case "urlClicked":
         this.showURLLink =  true;
+      case "saveClicked":
+        this.savePage();
+        break;
       default:
         this.clickevent = event;
     }
@@ -137,11 +129,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   textChanged(content) {
-    this.contentText = content;
+    this.textRef.content = content;
   }
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.fontFamily = font;
+    this.textRef.font = font;
   }
 
   setEdit() {
@@ -152,11 +144,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   setColor(color: string) {
     if (this.isEditingColor) {
-      this.color = color;
+      this.textRef.color = color;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
-      this.backgroundColor = color;
+      this.textRef.backgroundColor = color;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
@@ -169,5 +161,39 @@ export class TemplateSqImgTxtComponent implements OnInit {
   handleFileUploaded(URL: string) {
     this.ShowUploadImage = !this.ShowUploadImage;
     this.imageRef.url = URL;
+  }
+  handleUrl(url: string){
+    this.showURLLink =! this.showURLLink;
+    this.imageRef.url = url;
+  }
+
+  savePage(){
+    console.log("Save Page called")
+    let textAreas: IText[] = [];
+    let imageAreas: IImage[] = [];
+    textAreas.push(this.textRef);
+    imageAreas.push(this.imageRef);
+
+    this.page = {
+      uid:"",
+      pageRef: "12",
+      pageName: "page 1",
+      template: pageTemplates.sqImgText,
+      textAreas:textAreas,
+      imageAreas:imageAreas
+    }
+    this.pageService.addRecord(this.page)
+    .then(result => {
+      if (result.result){
+        this.isDirty = false;
+        this.page.id = result.msg;
+      } else {
+        console.log(result.msg);
+        //TO DO Build error handler....
+      }
+    })
+
+
+
   }
 }
