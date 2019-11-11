@@ -1,5 +1,5 @@
 <section>
-  <form #formCtrl="ngForm" name="userForm" method="POST"></form>
+  <form #formCtrl="ngForm" name="userForm" method="POST">
   <h3>Login</h3>
     <div class="wrapper">
       <div class="form-group">
@@ -14,4 +14,6 @@
         <button (click)="handleSignIn()" [disabled]="formCtrl.form.invalid">Login</button>
       </div>
   </div>
+  </form>
+  <app-status-message [message]="statusMessage" *ngIf="isShowStatus"></app-status-message>
 </section>

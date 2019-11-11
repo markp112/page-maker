@@ -1,0 +1,36 @@
+@import '../../../styles.scss';
+
+.status-message {
+    width: 100%;
+    height: $nav-height;
+    border: 1px solid $secondary-2-hex;
+    background-color: $secondary-2-hex;
+    @include flex-row(space-between);
+    
+    .status-icon{
+        padding: $content-spacing / 2;
+        width: 10%;
+        font-size: 2em;
+        align-self: center;
+        text-align: center;
+    }
+    
+    p {
+        padding: $content-spacing / 2;
+        background-color: white;
+        font-size: 1em;
+        width: 90%;
+    }
+}
+
+.warning {
+    color: $accent-3-hex;
+}
+
+.error {
+    color: rgb(243, 8, 20);
+}
+
+.info {
+    color: $seconday-text-hex;
+}

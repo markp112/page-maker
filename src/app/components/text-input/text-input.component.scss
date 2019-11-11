@@ -12,7 +12,7 @@
       border: 1px solid darken($seconday-text-hex, $amount: 10);
       @include flex-row(flex-end);
 
-      p {
+    .text-area {
         font-size: 1em;
         width: 30px;
         height: 100%;

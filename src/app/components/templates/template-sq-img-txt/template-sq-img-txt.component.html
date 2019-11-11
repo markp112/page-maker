@@ -51,5 +51,5 @@
         [textContent]="this.textRef.content"></app-text-input>
     </div>
   </div>
-
+  <app-status-message [message]='statusMessage' *ngIf="isShowStatus"></app-status-message>
 </section>

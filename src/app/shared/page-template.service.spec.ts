@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { SavePageService } from './save-page.service';
+import { PageTemplateService } from './page-template.service';
 
 describe('SavePageService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: SavePageService = TestBed.get(SavePageService);
+    const service: PageTemplateService = TestBed.get(PageTemplateService);
     expect(service).toBeTruthy();
   });
 });

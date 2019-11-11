@@ -1,0 +1,7 @@
+
+<div class="status-message">
+    <div class="status-icon">
+        <fa-icon [icon]="faInfoCircle" [ngClass]="{warning: message.messageType === 2, error: message.messageType === 1, info:message.messageType === 0 }"></fa-icon>
+    </div>
+    <p>{{ message.message }}</p>
+</div>

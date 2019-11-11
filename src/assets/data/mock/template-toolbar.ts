@@ -1,6 +1,6 @@
 import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
 import { styles } from 'src/app/models/enums/icon-buton-styles.enum';
-import { faSave, faEdit } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faEdit, faGripHorizontal } from '@fortawesome/free-solid-svg-icons';
 
 export const templateInitial: IIconButton[] = [
     {
@@ -16,5 +16,13 @@ export const templateInitial: IIconButton[] = [
       style: styles.Icon,
       eventName: "saveClicked",
       enabled: false
+    },
+    {
+      text : "Get",
+      icon : faGripHorizontal,
+      style: styles.Icon,
+      eventName: "getClicked",
+      enabled: true
     }
+
 ]

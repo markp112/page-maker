@@ -24,7 +24,7 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 // Services
 import { FontApiService }  from './shared/font-api.service';
 import { AuthService } from './shared/auth.service';
-import { SavePageService } from './shared/save-page.service';
+import { PageTemplateService } from "./shared/page-template.service";
 
 // Vendor
 import { AngularFireModule } from 'angularfire2';
@@ -39,6 +39,7 @@ import { ImageFormatterDirective } from './directives/image-formatter.directive'
 
 import { secrets } from 'secrets';
 import { messaging } from 'firebase';
+import { StatusMessageComponent } from './components/status-message/status-message.component';
 
 
 
@@ -62,8 +63,7 @@ import { messaging } from 'firebase';
     LoginComponent,
     WelcomeComponent,
     SignUpComponent,
-
-
+    StatusMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -79,14 +79,14 @@ import { messaging } from 'firebase';
       projectId: secrets.google.projectId,
       databaseURL: secrets.google.databaseURL,
       appId: secrets.google.appId,
-      messagingSenderId:secrets.google.messagingSenderId
+      messagingSenderId: secrets.google.messagingSenderId
     }),
     AngularFireStorageModule,
     AngularFireDatabaseModule,
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence()
   ],
-  providers: [FontApiService, AuthService, SavePageService],
+  providers: [FontApiService, AuthService, PageTemplateService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

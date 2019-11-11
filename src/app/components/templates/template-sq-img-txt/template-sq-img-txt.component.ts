@@ -17,7 +17,9 @@ import { IText } from "src/app/models/interfaces/text";
 import { IPage, pageTemplates } from "../../../models/interfaces/page"
 import { textInitial } from "../../../../assets/data/mock/textInitial";
 import { imageInitial } from "../../../../assets/data/mock/imageInitial";
-import { SavePageService } from "../../../shared/save-page.service";
+import { PageTemplateService } from "../../../shared/page-template.service";
+import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
+
 @Component({
   selector: "app-template-sq-img-txt",
   templateUrl: "./template-sq-img-txt.component.html",
@@ -41,11 +43,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isShowColourPicker: boolean = false;
   isEditingColor: boolean = false;
   isEditingBackgroundColor: boolean = false;
+  isShowStatus: boolean = false;
   ShowUploadImage: boolean = false;
   showURLLink: boolean = false;
   isEditingImageBackgroundColor: boolean = false;
+  statusMessage: IStatusMessage = {
+    message: "",
+    messageType: messageTypes.warning
+  };
 
-    //variables linked to the image
+  //variables linked to the image
   imageRef: IImage = imageInitial;
   textRef: IText = textInitial;
   page: IPage;
@@ -55,9 +62,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   @Input() contentText: string;
 
-  constructor(private pageService: SavePageService) {
-
-  }
+  constructor(private pageService: PageTemplateService) {}
 
   ngOnInit() {}
 
@@ -114,10 +119,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.imageRef.position.top++;
         break;
       case "urlClicked":
-        this.showURLLink =  true;
+        this.showURLLink = true;
       case "saveClicked":
         this.savePage();
         break;
+      case "getClicked":
+        this.getTemplate();
       default:
         this.clickevent = event;
     }
@@ -162,37 +169,49 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.ShowUploadImage = !this.ShowUploadImage;
     this.imageRef.url = URL;
   }
-  handleUrl(url: string){
-    this.showURLLink =! this.showURLLink;
+  handleUrl(url: string) {
+    this.showURLLink = !this.showURLLink;
     this.imageRef.url = url;
   }
 
-  savePage(){
-    console.log("Save Page called")
+  savePage() {
     let textAreas: IText[] = [];
     let imageAreas: IImage[] = [];
     textAreas.push(this.textRef);
     imageAreas.push(this.imageRef);
 
     this.page = {
-      uid:"",
+      uid: "",
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
-      textAreas:textAreas,
-      imageAreas:imageAreas
-    }
-    this.pageService.addRecord(this.page)
-    .then(result => {
-      if (result.result){
-        this.isDirty = false;
-        this.page.id = result.msg;
-      } else {
-        console.log(result.msg);
-        //TO DO Build error handler....
-      }
-    })
+      textAreas: textAreas,
+      imageAreas: imageAreas
+    };
+    this.pageService
+      .addRecord(this.page)
+      .then(result => {
+        if (result.result) {
+          this.isDirty = false;
+          this.page.id = result.msg;
+          this.statusMessage.message = "Content saved";
+          this.statusMessage.messageType = messageTypes.information;
+          this.isShowStatus = true;
+        } else {
+          this.statusMessage.message = `Error: ${result.message}`;
+          this.statusMessage.messageType = messageTypes.warning;
+        }
+      })
+      .catch(err => {
+        this.statusMessage.message = `Error: ${err}`;
+        this.statusMessage.messageType = messageTypes.error;
+      });
+  }
 
+  getTemplate(){
+    let page = this.pageService.getRecord(pageTemplates.sqImgText)
+    this.imageRef = page.imageAreas[0];
+    this.textRef = page.textAreas[0];
 
 
   }

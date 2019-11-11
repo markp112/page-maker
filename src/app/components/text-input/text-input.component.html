@@ -2,11 +2,12 @@
   <div class="close">
     <fa-icon [icon]="fawindowclose" (click)="closeClick()"></fa-icon>
   </div>
-  <textarea
+  <textarea class="text-area"
     [rows]="rows"
     [cols]="cols"
     [placeholder]="placeholder"
     #content
     (change)="contentChanged(content.value)"
-    >{{ textContent }}</textarea>
+    >{{ textContent }}
+  </textarea>
 </section>
