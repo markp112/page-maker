@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, } from 'angularfire2/fire
 import { IPage, pageTemplates } from '../models/interfaces/page'
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
+import { flatMap } from 'rxjs/operators';
 @Injectable({
   providedIn: "root"
 })
@@ -51,20 +52,8 @@ export class PageTemplateService {
     });
   }
 
-  getRecord(template: pageTemplates){
+  getRecord(template: pageTemplates):Observable<any>{
     const uid = this.getUid();
-
-
-    let data =this.afs.collection('pages').ref.where("uid","==",uid).get().then(xx=>
-      console.log('xx=',xx));
-    console.log(data)
-    //return data
-  // this.itemCollection = this.afs
-  // .collection<IPage>("pages", ref =>
-  //   ref.where("uid", "==", uid).where("template", "==", template)
-  // );
- 
- return this.itemCollection.get();
-    
+    return this.afs.collection<IPage>('pages', (ref => ref.where("uid","==",uid).limit(1))).valueChanges();
   }
 }

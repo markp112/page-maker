@@ -14,7 +14,7 @@ import {
   faGripLines,
   faSortAmountUpAlt,
   faSortAmountDownAlt,
-  
+
 } from "@fortawesome/free-solid-svg-icons";
 
 
@@ -23,25 +23,25 @@ export const textEditorButtonsGrp1: IIconButton[] = [
       icon: faAlignLeft,
       style: styles.Icon,
       text: "",
-      eventName: "alignLeft"
+      eventName: "H-0"  //see enum textHorizontalAlignment
     },
     {
       icon: faAlignCenter,
       style: styles.Icon,
       text: "",
-      eventName: "alignCenter"
+      eventName: "H-2"
     },
     {
       icon: faAlignJustify,
       style: styles.Icon,
       text: "",
-      eventName: "textAlignJustify"
+      eventName: "H-3"
     },
     {
       icon: faAlignRight,
       style: styles.Icon,
       text: "",
-      eventName: "alignRight"
+      eventName: "H-1"
     }
   ];
 
@@ -87,19 +87,19 @@ export const textEditorButtonsGrp4: IIconButton[] = [
     icon: faSortAmountUpAlt,
     style: styles.Icon,
     text: "",
-    eventName: "verticalAlignTop"
+    eventName: "V-0"
   },
   {
     icon: faGripLines,
     style: styles.Icon,
     text: "",
-    eventName: "verticalAlignCentre"
+    eventName: "V-2"
   },
    {
     icon: faSortAmountDownAlt,
     style: styles.Icon,
     text: "",
-    eventName: "verticalAlignBottom"
+    eventName: "V-1"
   },
 ];
 

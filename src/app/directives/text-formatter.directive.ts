@@ -2,7 +2,8 @@ import { Directive, ElementRef, Input, SimpleChanges, OnChanges, Renderer2} from
 import { IText } from '../models/interfaces/text';
 import { textInitial } from '../../assets/data/mock/textInitial';
 import { textHorizontalAlignment, textVerticalAlignment } from '../models/enums/text-component.enum'
-import { ChangeDetectionStrategy } from '@angular/compiler/src/core';
+
+
 @Directive({
   selector: "[appTextFormatter]"
 })
@@ -13,13 +14,15 @@ export class TextFormatterDirective implements OnChanges{
   @Input() fontFamily: string;
   @Input() foreColor: string;
   @Input() backColor: string;
+  @Input() horizontalAlignment: textHorizontalAlignment;
+  @Input() verticalAlignment: textVerticalAlignment;
 
   textRef:IText = textInitial;
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges ) {
-    console.log(changes,this.textEvent);
+  console.log('changes :', changes);
 
     if(changes.textEvent){
       this.handleEvent();
@@ -32,48 +35,24 @@ export class TextFormatterDirective implements OnChanges{
     if(changes.fontFamily) this.el.nativeElement.style.fontFamily = this.fontFamily;
     if(changes.foreColor) this.el.nativeElement.style.color = this.foreColor;
     if(changes.backColor) this.el.nativeElement.style.background = this.backColor;
+    if(changes.horizontalAlignment){
+      this.textRef.horizontalAlignment = changes.horizontalAlignment.currentValue;
+      this.applyClasses()
+    };
+    if(changes.verticalAlignment) {
+      this.textRef.verticalAlignment = changes.verticalAlignment.currentValue;
+      this.applyClasses();
+    }
   }
 
-  setHorizAlignment(alignment: textHorizontalAlignment){
-    this.textRef.horizontalAlignment = alignment;
-  }
-
-  setVertAlignment(alignment: textVerticalAlignment){
-    this.textRef.verticalAlignment = alignment;
-  }
   handleEvent(){
-
-  switch (this.textEvent) {
-
-    case "alignRight":
-      this.setHorizAlignment(textHorizontalAlignment.alignRight);
-      break;
-
-    case "alignLeft":
-        this.setHorizAlignment(textHorizontalAlignment.alignLeft);
-      break;
-
-    case "alignCenter":
-        this.setHorizAlignment(textHorizontalAlignment.alignCenter);
-      break;
-
-    case "textAlignJustify":
-        this.setHorizAlignment(textHorizontalAlignment.alignJustify);
-      break;
-
-    case "verticalAlignTop":
-      this.setVertAlignment(textVerticalAlignment.alignTop);
-      break;
-
-    case "verticalAlignBottom":
-        this.setVertAlignment(textVerticalAlignment.alignBottom);
-      break;
-
-    case "verticalAlignCentre":
-        this.setVertAlignment(textVerticalAlignment.alignCenter);
-      break;
-
-
+    if(this.textEvent != undefined){
+      if(this.textEvent.charAt(0) === "H"){
+        this.textRef.horizontalAlignment = Number(this.textEvent.charAt(2));
+      }
+      if(this.textEvent.charAt(0) === "V"){
+        this.textRef.verticalAlignment = Number(this.textEvent.charAt(2));
+      }
   }
 }
   applyClasses() {

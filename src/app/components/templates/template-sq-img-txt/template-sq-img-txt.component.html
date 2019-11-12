@@ -38,8 +38,16 @@
       </div>
 
     </div>
-    <div class="text-area" appTextFormatter [textEvent]="clickevent" [isEditingText]="showTextEditor" [fontSize]="textRef.size"
-      [fontFamily]="textRef.font" [foreColor]="textRef.color" [backColor]="textRef.backgroundColor"
+    <div class="text-area"
+      appTextFormatter
+      [textEvent]="clickevent"
+      [isEditingText]="showTextEditor"
+      [fontSize]="textRef.size"
+      [fontFamily]="textRef.font"
+      [foreColor]="textRef.color"
+      [backColor]="textRef.backgroundColor"
+      [horizontalAlignment]="textRef.horizontalAlignment"
+      [verticalAlignment]="textRef.verticalAlignment"
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
       {{ textRef.content }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">

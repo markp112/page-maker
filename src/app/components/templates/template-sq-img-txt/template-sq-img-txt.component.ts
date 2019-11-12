@@ -209,16 +209,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getTemplate(){
-    let page = this.pageService.getRecord(pageTemplates.sqImgText).subscribe(res =>
-    res.docChanges())
-    
+    this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
+      let page = result[0];
+      this.imageRef = page.imageAreas[0];
+      this.textRef = page.textAreas[0];
+      this.page = page;
+      console.log('page==>',this.page)
 
-  
-    
-    console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page", page)
-    
-    // this.imageRef = page.imageAreas[0];
-    // this.textRef = page.textAreas[0];
+    })
 
 
   }

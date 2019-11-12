@@ -42,8 +42,6 @@ import { messaging } from 'firebase';
 import { StatusMessageComponent } from './components/status-message/status-message.component';
 
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
