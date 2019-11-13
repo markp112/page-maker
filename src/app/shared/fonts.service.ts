@@ -23,15 +23,15 @@ export class FontsService {
 
   constructor(private apiService: FontApiService) { 
     this.fontNames = [];
-    this.fontNameList=[];
-    apiService.getFonts().subscribe(res =>{
+    this.fontNameList = [];
+    apiService.getFonts().subscribe(res => {
       this.fontData = res;
       this.fontData.items.forEach(font => {
         let fontDetail = new IFontItem (font.family.toString(), font.category.toString());
         this.fontNames.push(fontDetail)
         this.fontNameList.push(fontDetail._fontName);
       });
- 
+
       WebFont.load({
         google: {
           families: this.fontNameList
@@ -40,30 +40,27 @@ export class FontsService {
     });
   }
 
-  private getFontNameArray():string[]{
-    let temp:string[]=[];
-    this.fontNames.forEach(font => {
-      console.log(font._fontName);
-        temp.push(font._fontName)
-    });
-    console.log("tmep=",temp);
-    return temp;
-  };
+  // private getFontNameArray():string[]{
+  //   let temp:string[]=[];
+  //   this.fontNames.forEach(font => {
+  //       temp.push(font._fontName)
+  //   });
+  //   return temp;
+  // };
 
-  getFontNames():string[]{ 
+  getFontNames(): string[]{ 
     return this.fontNameList;
   };
 
   filterFontNames(searchTerm:string):string[]{
     let filtered:string[] = this.fontNameList.filter(font => font.toLowerCase().includes(searchTerm.toLowerCase().trim()));
-      
     return filtered;
   }
 
   filterFontTypes(fontType: string):string[]{
     let filteredTypes:string[] =[];
     let filtered = this.fontNames.filter(font => font._fontType.toLowerCase() === fontType);
-     filtered.forEach(font => filteredTypes.push(font._fontName));
+    filtered.forEach(font => filteredTypes.push(font._fontName));
     return filteredTypes;
   }
 

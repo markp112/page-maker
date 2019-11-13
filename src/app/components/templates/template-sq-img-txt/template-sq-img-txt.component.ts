@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ɵConsole } from "@angular/core";
-import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
 import { templateInitial } from "src/assets/data/mock/template-toolbar";
+// data
 import {
   textEditorButtonsGrp1,
   textEditorButtonsGrp2,
@@ -12,13 +12,18 @@ import {
   imgPositionButtons,
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
-import { IImage } from "src/app/models/interfaces/image";
-import { IText } from "src/app/models/interfaces/text";
-import { IPage, pageTemplates } from "../../../models/interfaces/page"
 import { textInitial } from "../../../../assets/data/mock/textInitial";
 import { imageInitial } from "../../../../assets/data/mock/imageInitial";
-import { PageTemplateService } from "../../../shared/page-template.service";
+// interfaces
+import { IImage } from "src/app/models/interfaces/image";
+import { IText } from "src/app/models/interfaces/text";
 import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
+import { IPage, pageTemplates } from "../../../models/interfaces/page"
+import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
+// services
+import { PageTemplateService } from "../../../shared/page-template.service";
+import { FontsService } from "../../../shared/fonts.service";
+
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -26,6 +31,12 @@ import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-
   styleUrls: ["./template-sq-img-txt.component.scss"]
 })
 export class TemplateSqImgTxtComponent implements OnInit {
+  @Input() contentText: string;
+
+  constructor(private pageService: PageTemplateService, private fontService: FontsService) {}
+
+  ngOnInit() {}
+
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
@@ -59,12 +70,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
   path: string = "images/";
   clickevent: string;
   isDirty: boolean = false;
-
-  @Input() contentText: string;
-
-  constructor(private pageService: PageTemplateService) {}
-
-  ngOnInit() {}
 
   handleClick(event) {
     this.isDirty = true;
@@ -175,11 +180,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   savePage() {
+    if(this.page.uid!="") {
+      this.updateRecord()
+    }else this.createRecord()
+  }
+
+  createRecord(){
     let textAreas: IText[] = [];
     let imageAreas: IImage[] = [];
     textAreas.push(this.textRef);
     imageAreas.push(this.imageRef);
-
     this.page = {
       uid: "",
       pageRef: "12",
@@ -207,17 +217,29 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.statusMessage.messageType = messageTypes.error;
       });
   }
+  // update the record in fireBase
+  updateRecord(){
+    let textAreas: IText[] = [];
+    let imageAreas: IImage[] = [];
+    textAreas.push(this.textRef);
+    imageAreas.push(this.imageRef);
 
-  getTemplate(){
+    this.page.imageAreas = imageAreas;
+    this.page.textAreas = textAreas;
+
+    this.pageService.updateRecord(this.page)
+    .then(res=> console.log(res))
+    .catch( err => console.log(err))
+    
+    }
+
+  getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
       let page = result[0];
+      this.fontService.getFontNames();
       this.imageRef = page.imageAreas[0];
       this.textRef = page.textAreas[0];
       this.page = page;
-      console.log('page==>',this.page)
-
-    })
-
-
+    });
   }
 }

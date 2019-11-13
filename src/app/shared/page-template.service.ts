@@ -54,6 +54,30 @@ export class PageTemplateService {
 
   getRecord(template: pageTemplates):Observable<any>{
     const uid = this.getUid();
-    return this.afs.collection<IPage>('pages', (ref => ref.where("uid","==",uid).limit(1))).valueChanges();
+    return this.afs.collection<IPage>('pages', (ref => ref.where("uid","==",uid)
+        .where("template","==",template)
+        .limit(1))).valueChanges();
+  }
+
+  updateRecord(pageRecord: IPage):Promise<any> {
+
+    return new Promise((resolve,reject) =>{
+
+      const coll = this.afs.collection ('pages' + pageRecord.uid);
+      coll.doc(`pages`).set(pageRecord)
+      .then(res =>{
+        this.result.result=true;
+        this.result.msg="Record updated";
+        resolve(this.result);
+      })
+      .catch (err =>{
+        this.result.result = false;
+        this.result.msg = err;
+        reject(this.result);
+
+      })
+      
+
+    })
   }
 }

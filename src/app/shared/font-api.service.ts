@@ -14,9 +14,14 @@ export class FontApiService {
   public currentPage: number;
   public pageSize: number;
 
+  constructor(private httpClient: HttpClient) {}
+
   public getFonts(): Observable<any> {
     return this.httpClient.get<IGooglefont>(`${this.apiUrl}${this.key}`);
   }
-  public getFontNames;
-  constructor(private httpClient: HttpClient) {}
+  
+  // retrieve a single font and make this available
+  public getFont(fontFamily: string):Observable<any>{
+    return this.httpClient.get<IGooglefont>(`${this.apiUrl}${this.key}&family=${fontFamily}`);
+  }
 }

@@ -3,7 +3,7 @@ import  {IGooglefont, } from 'src/app/models/interfaces/google-font-api'
 import { googleFont } from 'src/assets/data/mock/google-font';
 import { FontsService  } from 'src/app/shared/fonts.service';
 import {fontDropDownButtons } from 'src/assets/data/mock/font-dropdown-toolbar'
-import * as WebFont from "webfontloader";
+// import * as WebFont from "webfontloader";
 
 
 @Component({
@@ -25,7 +25,6 @@ export class FontDropDownComponent implements OnInit {
 
   ngOnInit() {
     this.fontFamilies = this.fontService.getFontNames();
-  
   }
 
   handleListItemClick(fontName) {
@@ -33,11 +32,10 @@ export class FontDropDownComponent implements OnInit {
   }
 
   handleButtonClick(whichButton:string):void {
-   this.fontFamilies = this.fontService.filterFontTypes(whichButton);
+    this.fontFamilies = this.fontService.filterFontTypes(whichButton);
   }
 
   handleSearchInput(searchValue: string) {
     this.fontFamilies = this.fontService.filterFontNames(searchValue);
-
   }
 }

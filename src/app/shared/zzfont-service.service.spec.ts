@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { FontServiceService } from './font-service.service';
+import { FontServiceService } from './zzfont-service.service';
 
 describe('FontServiceService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

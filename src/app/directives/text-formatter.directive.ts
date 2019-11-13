@@ -22,9 +22,7 @@ export class TextFormatterDirective implements OnChanges{
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges ) {
-  console.log('changes :', changes);
-
-    if(changes.textEvent){
+     if(changes.textEvent){
       this.handleEvent();
       let currentValue = changes.textEvent.currentValue;
       if(currentValue === "increaseFont" || currentValue  === "decreaseFont"){
