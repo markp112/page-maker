@@ -63,8 +63,9 @@ export class PageTemplateService {
 
     return new Promise((resolve,reject) =>{
 
-      const coll = this.afs.collection ('pages' + pageRecord.uid);
-      coll.doc(`pages`).set(pageRecord)
+      console.log("uid=", pageRecord.uid);
+      const coll = this.afs.collection ('pages').doc(pageRecord.uid);
+      coll.set(pageRecord)
       .then(res =>{
         this.result.result=true;
         this.result.msg="Record updated";

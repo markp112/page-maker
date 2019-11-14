@@ -17,13 +17,15 @@ import { imageInitial } from "../../../../assets/data/mock/imageInitial";
 // interfaces
 import { IImage } from "src/app/models/interfaces/image";
 import { IText } from "src/app/models/interfaces/text";
-import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
-import { IPage, pageTemplates } from "../../../models/interfaces/page"
+import {
+  IStatusMessage,
+  messageTypes
+} from "../../../models/interfaces/status-message";
+import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
 // services
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
-
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -33,7 +35,10 @@ import { FontsService } from "../../../shared/fonts.service";
 export class TemplateSqImgTxtComponent implements OnInit {
   @Input() contentText: string;
 
-  constructor(private pageService: PageTemplateService, private fontService: FontsService) {}
+  constructor(
+    private pageService: PageTemplateService,
+    private fontService: FontsService
+  ) {}
 
   ngOnInit() {}
 
@@ -179,13 +184,20 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.imageRef.url = url;
   }
 
-  savePage() {
-    if(this.page.uid!="") {
-      this.updateRecord()
-    }else this.createRecord()
+  displayStatusMessage(message: string, messageType: messageTypes) {
+    this.statusMessage.message = message;
+    this.statusMessage.messageType = messageType;
+    this.isShowStatus = true;
+    setTimeout(()=>{this.isShowStatus=false}, 3000);
   }
 
-  createRecord(){
+  savePage() {
+    if (this.page.uid != "") {
+      this.updateRecord();
+    } else this.createRecord();
+  }
+
+  createRecord() {
     let textAreas: IText[] = [];
     let imageAreas: IImage[] = [];
     textAreas.push(this.textRef);
@@ -204,21 +216,19 @@ export class TemplateSqImgTxtComponent implements OnInit {
         if (result.result) {
           this.isDirty = false;
           this.page.id = result.msg;
-          this.statusMessage.message = "Content saved";
-          this.statusMessage.messageType = messageTypes.information;
-          this.isShowStatus = true;
+          this.displayStatusMessage("Content saved", messageTypes.information);
+
         } else {
-          this.statusMessage.message = `Error: ${result.message}`;
-          this.statusMessage.messageType = messageTypes.warning;
+          this.displayStatusMessage(`Error: ${result.message}`, messageTypes.warning);
+
         }
       })
       .catch(err => {
-        this.statusMessage.message = `Error: ${err}`;
-        this.statusMessage.messageType = messageTypes.error;
+        this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
       });
   }
   // update the record in fireBase
-  updateRecord(){
+  updateRecord() {
     let textAreas: IText[] = [];
     let imageAreas: IImage[] = [];
     textAreas.push(this.textRef);
@@ -227,11 +237,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.page.imageAreas = imageAreas;
     this.page.textAreas = textAreas;
 
-    this.pageService.updateRecord(this.page)
-    .then(res=> console.log(res))
-    .catch( err => console.log(err))
-    
-    }
+    this.pageService
+      .updateRecord(this.page)
+      .then(res => {
+        this.displayStatusMessage("Record Updated", messageTypes.information);
+        
+      })
+      .catch(err => {console.log(err)
+        this.displayStatusMessage(err.message, messageTypes.error)
+      });
+  }
 
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
