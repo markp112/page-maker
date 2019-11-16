@@ -17,8 +17,7 @@ export class PageBuilderService {
    let textCss:string= null;
     pageLayout.AreaNames.forEach(area =>{
       switch (area.areaType){
-        case PageAreaTypes.textArea:
-          let textCss = buildTextCss(pageData.textArea, area.areaName)
+        case PageAreaTypes.textArea:A)
           break;
         case  PageAreaTypes.imageArea:
           break;
