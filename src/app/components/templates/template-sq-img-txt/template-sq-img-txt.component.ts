@@ -17,12 +17,11 @@ import { imageInitial } from "../../../../assets/data/mock/imageInitial";
 // interfaces
 import { IImage } from "src/app/models/interfaces/image";
 import { IText } from "src/app/models/interfaces/text";
-import {
-  IStatusMessage,
-  messageTypes
-} from "../../../models/interfaces/status-message";
+import { IStatusMessage,  messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
+import { IPageMaster } from '../../../models/interfaces/pageMaster'
+
 // services
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
@@ -241,7 +240,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
       .updateRecord(this.page)
       .then(res => {
         this.displayStatusMessage("Record Updated", messageTypes.information);
-        
+
       })
       .catch(err => {console.log(err)
         this.displayStatusMessage(err.message, messageTypes.error)
