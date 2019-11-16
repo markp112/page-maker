@@ -20,11 +20,14 @@ import { IText } from "src/app/models/interfaces/text";
 import { IStatusMessage,  messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
-import { IPageMaster } from '../../../models/interfaces/pageMaster'
+import { IPageMaster } from '../../../models/interfaces/pageMaster';
+import { areaTypes} from '../../../models/interfaces/pageAreas-interface';
 
 // services
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
+import { pageLayoutTypes } from 'src/app/models/enums/pageLayouts.enum';
+import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -39,8 +42,26 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private fontService: FontsService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.pageTemplate.pageLayoutCss = `.template-sq-img-txt  {
+        display: grid;
+        grid-template-columns: 6fr 6fr;
+        grid-template-rows: 1.5fr 0.25fr 5fr;
+        grid-template-areas:  ". ."
+                              "toolbar toolbar"
+                              "image-area text-area";
+      }`;
+      this.pageTemplate.layoutType = pageLayoutTypes.grid;
 
+      // let areaOne: IPageAreas = { areaName: "text-Area", areaType: areaTypes.textAreas };
+      // this.pageTemplate.pageAreas.push(areaOne);
+      let areaTwo: IPageAreas = { areaName: "image-Area", areaType: areaTypes.imageAreas};
+      this.pageTemplste.pageAreas.push(areaTwo);
+
+
+  }
+
+  pageTemplate: IPageMaster;
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
