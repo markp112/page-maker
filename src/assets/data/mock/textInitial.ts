@@ -2,7 +2,8 @@ import {textHorizontalAlignment, textVerticalAlignment } from '../../../app/mode
 
 import { IText } from '../../../app/models/interfaces/text';
 export const textInitial: IText = {
-  font: "monterra",
+  container:'display: flex; flex-direction: column;',
+  font: "Monterra",
   size: 16,
   horizontalAlignment: textHorizontalAlignment.alignLeft,
   verticalAlignment: textVerticalAlignment.alignTop,

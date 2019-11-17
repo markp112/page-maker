@@ -12,8 +12,10 @@ import {
   imgPositionButtons,
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
+// interface intialisers
 import { textInitial } from "../../../../assets/data/mock/textInitial";
 import { imageInitial } from "../../../../assets/data/mock/imageInitial";
+import { pageMasterInitial } from '../../../../assets/data/mock/pageMasterInitial';
 // interfaces
 import { IImage } from "src/app/models/interfaces/image";
 import { IText } from "src/app/models/interfaces/text";
@@ -21,13 +23,13 @@ import { IStatusMessage,  messageTypes } from "../../../models/interfaces/status
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
 import { IPageMaster } from '../../../models/interfaces/pageMaster';
-import { areaTypes} from '../../../models/interfaces/pageAreas-interface';
-
+import { PageAreaTypes } from '../../../models/enums/pageAreaTypes.enum';
+import { pageLayoutTypes } from 'src/app/models/enums/pageLayouts.enum';
+import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
 // services
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
-import { pageLayoutTypes } from 'src/app/models/enums/pageLayouts.enum';
-import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
+import { PageBuilderService } from "../../../shared/page-builder.service";
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -39,7 +41,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   constructor(
     private pageService: PageTemplateService,
-    private fontService: FontsService
+    private fontService: FontsService,
+    private pageBuilder: PageBuilderService
   ) {}
 
   ngOnInit() {
@@ -52,16 +55,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
                               "image-area text-area";
       }`;
       this.pageTemplate.layoutType = pageLayoutTypes.grid;
-
-      // let areaOne: IPageAreas = { areaName: "text-Area", areaType: areaTypes.textAreas };
-      // this.pageTemplate.pageAreas.push(areaOne);
-      let areaTwo: IPageAreas = { areaName: "image-Area", areaType: areaTypes.imageAreas};
-      this.pageTemplste.pageAreas.push(areaTwo);
-
-
+      this.pageTemplate.AreaNames = [];
+      let areaOne: IPageAreas = { areaName: "text-Area", areaType: PageAreaTypes.textArea };
+      this.pageTemplate.AreaNames.push(areaOne);
+      let areaTwo: IPageAreas = { areaName: "image-Area", areaType: PageAreaTypes.imageArea };
+      this.pageTemplate.AreaNames.push(areaTwo);
   }
 
-  pageTemplate: IPageMaster;
+  pageTemplate: IPageMaster = pageMasterInitial;
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
@@ -155,6 +156,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       case "getClicked":
         this.getTemplate();
+        break;
+      case "publishClicked":
+        this.publish();
+        break;
       default:
         this.clickevent = event;
     }
@@ -271,10 +276,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
       let page = result[0];
+      console.log('page  :', page );
       this.fontService.getFontNames();
       this.imageRef = page.imageAreas[0];
       this.textRef = page.textAreas[0];
       this.page = page;
     });
+  }
+
+  publish() {
+    console.log("Ipage=", this.page, "pageTemplate=", this.pageTemplate);
+    this.pageBuilder.createPage(this.page, this.pageTemplate);
   }
 }

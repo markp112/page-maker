@@ -9,7 +9,6 @@
           <app-toolbar-group [buttons]="imgSizeButtons" (clickEvent)="handleClick($event)"></app-toolbar-group>
         </div>
       </div>
-
       <div class="text-options">
         <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp1"
           (clickEvent)="handleClick($event)">
@@ -27,7 +26,7 @@
       </div>
     </div>
     <div class="image-area" [ngStyle]="{'backgroundColor':imageRef.backgroundColor}">
-      <div class="img-wrapper">
+      <div>
         <img [src]="imageRef.url" alt=""  appImageFormatter  [height]="imageRef.height" [width]="imageRef.width" [left]="imageRef.position.left" [top]="imageRef.position.top">
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="ShowUploadImage">
@@ -36,7 +35,6 @@
       <div class="img-url-wrapper" *ngIf="showURLLink" >
         <app-url-input (url)="handleUrl($event)"></app-url-input>
       </div>
-
     </div>
     <div class="text-area"
       appTextFormatter

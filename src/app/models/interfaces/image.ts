@@ -1,4 +1,5 @@
-export interface IImage{
+export interface IImage {
+    container: string; // defines the css container for this element on the page
     url: string;
     height: number;
     width: number;
@@ -7,4 +8,4 @@ export interface IImage{
         top: number;
         left: number;
     }
-}
+}``

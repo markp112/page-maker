@@ -3,7 +3,10 @@ import { AngularFirestore, AngularFirestoreCollection, } from 'angularfire2/fire
 import { IPage, pageTemplates } from '../models/interfaces/page'
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { flatMap } from 'rxjs/operators';
+
+
+// Service to support reading and writing of data to Firebase
+
 @Injectable({
   providedIn: "root"
 })
@@ -77,7 +80,7 @@ export class PageTemplateService {
         reject(this.result);
 
       })
-      
+
 
     })
   }
