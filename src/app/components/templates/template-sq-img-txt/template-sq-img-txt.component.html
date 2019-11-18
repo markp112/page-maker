@@ -40,21 +40,21 @@
       appTextFormatter
       [textEvent]="clickevent"
       [isEditingText]="showTextEditor"
-      [fontSize]="textRef.size"
-      [fontFamily]="textRef.font"
-      [foreColor]="textRef.color"
-      [backColor]="textRef.backgroundColor"
-      [horizontalAlignment]="textRef.horizontalAlignment"
-      [verticalAlignment]="textRef.verticalAlignment"
+      [fontSize]="layoutText.textStyles.size"
+      [fontFamily]="layoutText.textStyles.font"
+      [foreColor]="layoutText.textStyles.color"
+      [backColor]="layoutText.textStyles.backgroundColor"
+      [horizontalAlignment]="layoutText.textStyles.horizontalAlignment"
+      [verticalAlignment]="layoutText.textStyles.verticalAlignment"
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
-      {{ textRef.content }}
+      {{ layoutText.textStyles.content }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>
         </div>
     </div>
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
-        [textContent]="this.textRef.content"></app-text-input>
+        [textContent]="this.layoutText.textStyles.content"></app-text-input>
     </div>
   </div>
   <app-status-message [message]='statusMessage' *ngIf="isShowStatus"></app-status-message>

@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IPage } from '../models/interfaces/page';
-import { IPageMaster } from '../models/interfaces/pageMaster';
-import { pageLayoutTypes } from '../models/enums/pageLayouts.enum';
-import { PageAreaTypes } from '../models/enums/pageAreaTypes.enum';
+// import { IPageMaster } from '../models/interfaces/pageMaster';
+// import { pageLayoutTypes } from '../models/enums/pageLayouts.enum';
+// import { PageAreaTypes } from '../models/enums/pageAreaTypes.enum';
+import { ILayout, ITextLayout, IImageLayout } from '../models/interfaces/layout'
 import { IText } from '../models/interfaces/text';
 import { textHorizontalAlignment, textVerticalAlignment } from '../models/enums/text-component.enum';
 import { text } from '@fortawesome/fontawesome-svg-core';
 import { IImage } from '../models/interfaces/image';
+import { ICssStyles } from '../models/interfaces/cssStyle';
 
 @Injectable({
   providedIn: 'root'
@@ -15,25 +17,46 @@ export class PageBuilderService {
 
   constructor() { }
 
-  createPage(pageData: IPage, pageLayout: IPageMaster) {
 
-    let css: string = pageLayout.pageLayoutCss;
-    console.log('pageLayout.AreaNames :', pageLayout.AreaNames);
-    pageLayout.AreaNames.forEach(area => {
-
-      switch (area.areaType) {
-        case PageAreaTypes.textArea:
-          css += this.buildTextCss(pageData.textAreas, area.areaName);
-          console.log("Text Css = ", css)
-          break;
-        case PageAreaTypes.imageArea:
-
-          break;
-      }
-    })
-
+  isTextStyle(styleLayout: ITextLayout | IImageLayout): styleLayout is ITextLayout {
+    return (styleLayout as ITextLayout).textStyles !== undefined;
   }
 
+
+  createPage(pageData: IPage, pageLayout: ILayout) {
+    console.log("pageLayout = ", pageLayout)
+
+    let css: string = pageLayout.cssClass;
+    // styles apply to the current element
+    if (pageLayout.styles.length > 0) css += this.processTextStyles();
+    css += this.processChildren(pageLayout.children);
+    console.log('css=', css);
+  }
+
+
+
+  processTextStyles(styles: ITextLayout): string {
+    styles.forEach(style => {
+
+    })
+    return ""
+  }
+
+  processImageStyles(styles: IImageLayout) {
+
+  };
+
+  processChildren(children: ILayout[]) {
+    //check for style
+    let css = "";
+    children.forEach(child => {
+      if (this.isTextStyle(child)) {
+        this.processTextStyles(child);
+      } else {
+        this.processImageStyles(child);
+      }
+    })
+  }
   private buildTextCss(textAreas: IText[], className: string): string {
 
     let textCss: string = `.${className}\{`;
@@ -46,10 +69,10 @@ export class PageBuilderService {
       textCss += `color:${area.color};`;
       textCss += `background-color:${area.backgroundColor};`;
     })
-    textCss +="}";
+    textCss += "}";
     return textCss;
   }
-  private buildImageCss(imageAreas: IImage[], className:string): string {
+  private buildImageCss(imageAreas: IImage[], className: string): string {
     return "";
   }
 
@@ -75,7 +98,7 @@ export class PageBuilderService {
       case textVerticalAlignment.alignCenter:
         return 'justify-content:centre';
     }
-  } 
+  }
   private writeHTML(pageData: IPage, pageHtml: string, ) {
 
 

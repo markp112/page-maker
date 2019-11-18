@@ -1,6 +1,7 @@
 import {textHorizontalAlignment, textVerticalAlignment } from '../../../app/models/enums/text-component.enum'
 
 import { IText } from '../../../app/models/interfaces/text';
+
 export const textInitial: IText = {
   container:'display: flex; flex-direction: column;',
   font: "Monterra",

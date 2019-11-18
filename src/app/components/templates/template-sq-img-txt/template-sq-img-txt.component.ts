@@ -15,14 +15,14 @@ import {
 // interface intialisers
 import { textInitial } from "../../../../assets/data/interface-initialisers/textInitial";
 import { imageInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
-import { pageMasterInitial } from '../../../../assets/data/interface-initialisers/pageMasterInitial';
+// import { pageMasterInitial } from '../../../../assets/data/interface-initialisers/pageMasterInitial';
 // interfaces
 import { IImage } from "src/app/models/interfaces/image";
 import { IText } from "src/app/models/interfaces/text";
 import { IStatusMessage,  messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
-import { IPageMaster } from '../../../models/interfaces/pageMaster';
+// import { IPageMaster } from '../../../models/interfaces/pageMaster';
 import { PageAreaTypes } from '../../../models/enums/pageAreaTypes.enum';
 import { pageLayoutTypes } from 'src/app/models/enums/pageLayouts.enum';
 import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
@@ -30,8 +30,9 @@ import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
-import { ILayout } from 'src/app/models/interfaces/layout';
+import { ILayout, ITextLayout, IImageLayout } from 'src/app/models/interfaces/layout';
 import { HtmlTags } from 'src/app/models/enums/htmlTags';
+import { initLayoutSqImgText, initLayoutSqImgImage,layoutInitial } from 'src/assets/data/interface-initialisers/layout-Initial';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -48,33 +49,26 @@ export class TemplateSqImgTxtComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pageTemplate.pageLayoutCss = `.template-sq-img-txt  {
+    this.pageTemplate.cssClass = `.template-sq-img-txt  {
         display: grid;
         grid-template-columns: 6fr 6fr;
         grid-template-rows: 1.5fr 0.25fr 5fr;
         grid-template-areas:  ". ."
                               "toolbar toolbar"
                               "image-area text-area";
-      }`;
-      this.pageTemplate.layoutType = pageLayoutTypes.grid;
-      let layoutText: ILayout = {
-        cssClass: `.text-area {
-                      grid-area: text-area;
-                      width: 500px;
-                      height: 400px;
-                      padding: $content-spacing;}`,
-        htmlTag: HtmlTags.div,
-        
-      };
+      }`
+      this.pageTemplate.htmlTag = HtmlTags.div;
+      // this.pageTemplate.layoutType = pageLayoutTypes.grid;
 
-      this.pageTemplate.AreaNames = [];
-      let areaOne: IPageAreas = { areaName: "text-Area", areaType: PageAreaTypes.textArea };
-      this.pageTemplate.AreaNames.push(areaOne);
-      let areaTwo: IPageAreas = { areaName: "image-Area", areaType: PageAreaTypes.imageArea };
-      this.pageTemplate.AreaNames.push(areaTwo);
+
+      // this.pageTemplate.AreaNames = [];
+      // let areaOne: IPageAreas = { areaName: "text-Area", areaType: PageAreaTypes.textArea };
+      // this.pageTemplate.AreaNames.push(areaOne);
+      // let areaTwo: IPageAreas = { areaName: "image-Area", areaType: PageAreaTypes.imageArea };
+      // this.pageTemplate.AreaNames.push(areaTwo);
   }
 
-  pageTemplate: IPageMaster = pageMasterInitial;
+  pageTemplate: ILayout = layoutInitial;
 
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
@@ -102,6 +96,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
     messageType: messageTypes.warning
   };
 
+  layoutText: ITextLayout = initLayoutSqImgText();
+  layoutImage: ILayout = initLayoutSqImgImage();
   //variables linked to the image
   imageRef: IImage = imageInitial;
   textRef: IText = textInitial;
@@ -118,9 +114,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       case "increaseFont":
         this.textRef.size++;
+        this.layoutText.textStyles.size++;
         break;
       case "decreaseFont":
         this.textRef.size--;
+        this.layoutText.textStyles.size--;
         break;
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
@@ -139,10 +137,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       case "imageBackgroundColor":
         this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingImageBackgroundColor = !this
-          .isEditingImageBackgroundColor;
+        this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
         break;
       case "imgDecreaseSize":
+
         this.imageRef.height--;
         this.imageRef.width--;
         break;
@@ -185,10 +183,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   textChanged(content: string) {
     this.textRef.content = content;
+    this.layoutText.textStyles.content = content;
   }
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
     this.textRef.font = font;
+    this.layoutText.textStyles.font = font;
   }
 
   setEdit() {
@@ -200,10 +200,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
   setColor(color: string) {
     if (this.isEditingColor) {
       this.textRef.color = color;
+      this.layoutText.textStyles.color = color;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
       this.textRef.backgroundColor = color;
+      this.layoutText.textStyles.backgroundColor = color;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
@@ -269,7 +271,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   updateRecord() {
     let textAreas: IText[] = [];
     let imageAreas: IImage[] = [];
-    textAreas.push(this.textRef);
+    textAreas.push(this.layoutText.textStyles);
     imageAreas.push(this.imageRef);
 
     this.page.imageAreas = imageAreas;
@@ -289,16 +291,18 @@ export class TemplateSqImgTxtComponent implements OnInit {
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
       let page = result[0];
-      console.log('page  :', page );
       this.fontService.getFontNames();
       this.imageRef = page.imageAreas[0];
-      this.textRef = page.textAreas[0];
+      this.layoutText.textStyles = page.textAreas[0];
       this.page = page;
     });
   }
 
   publish() {
     console.log("Ipage=", this.page, "pageTemplate=", this.pageTemplate);
+    this.pageTemplate.children = [];
+    this.pageTemplate.children.push(this.layoutText);
+    this.pageTemplate.children.push(this.layoutImage);
     this.pageBuilder.createPage(this.page, this.pageTemplate);
   }
 }

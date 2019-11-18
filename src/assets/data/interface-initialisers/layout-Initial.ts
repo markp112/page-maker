@@ -1,42 +1,100 @@
-import { ILayout } from "src/app/models/interfaces/layout";
+import { ILayout, ITextLayout, IImageLayout } from "src/app/models/interfaces/layout";
 import { HtmlTags } from "src/app/models/enums/htmlTags";
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
+import { imageInitial } from 'src/assets/data/interface-initialisers/imageInitial';
+import { textInitial } from 'src/assets/data/interface-initialisers/textInitial';
 
 export const layoutInitial: ILayout = {
-    htmlTag: HtmlTags.empty,
-    cssClass: "",
-    styles: [],
-    children: []
+  htmlTag: HtmlTags.empty,
+  cssClass: "",
+  styles: [],
+  children: []
 };
 
 
-export const initLayoutSqImgText(): ILayout => {
+const initLayoutSqImgText = (): ITextLayout => {
 
-    const layoutSqImgText: ILayout = {
-        cssClass: `.text-area {
+  const layoutSqImgText: ITextLayout = {
+    cssClass: `.text-area {
                     grid-area: text-area;
                     width: 500px;
                     height: 400px;
                     padding: 10px;
-                    display: flex; 
+                    display: flex;
                     flex-direction: column;}`,
-        htmlTag: HtmlTags.div,
-        styles: [],
-        children: []
-    };
-let color :ICssStyles = { styleTag: "color", pmStyleProperty: "color" };
-let fontSize:ICssStyles = { styleTag:"font-size", pmStyleProperty:"size" }
-let fontFamily:ICssStyles = { styleTag: "font-family", pmStyleProperty: "font" };
-let backgroundColor:ICssStyles = { styleTag: "background-color", pmStyleProperty:"backgroundColor" };
-let horizontalAlign:ICssStyles = { styleTag: "text-align", pmStyleProperty:"horizontalAlignment" };
-let vertcalAlign:ICssStyles = { styleTag: "justify-content", pmStyleProperty:"verticalAlignment" };
+    htmlTag: HtmlTags.div,
+    styles: [],
+    children: [],
+    textStyles: textInitial
+  };
+  let color: ICssStyles = { styleTag: "color", pmStyleProperty: "color" };
+  let fontSize: ICssStyles = { styleTag: "font-size", pmStyleProperty: "size" }
+  let fontFamily: ICssStyles = { styleTag: "font-family", pmStyleProperty: "font" };
+  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor" };
+  let horizontalAlign: ICssStyles = { styleTag: "text-align", pmStyleProperty: "horizontalAlignment" };
+  let vertcalAlign: ICssStyles = { styleTag: "justify-content", pmStyleProperty: "verticalAlignment" };
 
-layoutSqImgText.styles.push(color);
-layoutSqImgText.styles.push(fontSize);
-layoutSqImgText.styles.push(fontFamily);
-layoutSqImgText.styles.push(backgroundColor);
-layoutSqImgText.styles.push(horizontalAlign);
-layoutSqImgText.styles.push(vertcalAlign);
+  layoutSqImgText.styles.push(color);
+  layoutSqImgText.styles.push(fontSize);
+  layoutSqImgText.styles.push(fontFamily);
+  layoutSqImgText.styles.push(backgroundColor);
+  layoutSqImgText.styles.push(horizontalAlign);
+  layoutSqImgText.styles.push(vertcalAlign);
 
-return layoutSqImgText;
+  return layoutSqImgText;
+}
+
+const initLayoutSqImgImage = (): ILayout => {
+  const layoutSqImgImage: ILayout = {
+    cssClass: `.image-area { grid-area: image-area;
+                width: 100%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: center;
+                position: relative;
+                overflow: hidden;}`,
+    htmlTag: HtmlTags.div,
+    styles: [],
+    children: []
+  };
+  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor" };
+  layoutSqImgImage.styles.push(backgroundColor);
+
+  let imageLayout: IImageLayout = {
+    cssClass: `img {
+        display: block;
+        max-width: 500px;
+        max-height: 400px;
+        width: width;
+        height: auto;
+        object-fit: contain;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }`,
+    htmlTag: HtmlTags.img,
+    styles: [],
+    children: [],
+    imageStyles: imageInitial
+
+  }
+
+  let height: ICssStyles = { styleTag: "height", pmStyleProperty: "height" };
+  let width: ICssStyles = { styleTag: "width", pmStyleProperty: "width" }
+  let top: ICssStyles = { styleTag: "top", pmStyleProperty: "top" };
+  let left: ICssStyles = { styleTag: "left", pmStyleProperty: "left" };
+  imageLayout.styles.push(height);
+  imageLayout.styles.push(width);
+  imageLayout.styles.push(top);
+  imageLayout.styles.push(left);
+  layoutSqImgImage.children.push(imageLayout);
+  return layoutSqImgImage;
+}
+
+
+export {
+  initLayoutSqImgText,
+  initLayoutSqImgImage
 }
