@@ -13,9 +13,9 @@ import {
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
 // interface intialisers
-import { textInitial } from "../../../../assets/data/mock/textInitial";
-import { imageInitial } from "../../../../assets/data/mock/imageInitial";
-import { pageMasterInitial } from '../../../../assets/data/mock/pageMasterInitial';
+import { textInitial } from "../../../../assets/data/interface-initialisers/textInitial";
+import { imageInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
+import { pageMasterInitial } from '../../../../assets/data/interface-initialisers/pageMasterInitial';
 // interfaces
 import { IImage } from "src/app/models/interfaces/image";
 import { IText } from "src/app/models/interfaces/text";
@@ -30,6 +30,8 @@ import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
+import { ILayout } from 'src/app/models/interfaces/layout';
+import { HtmlTags } from 'src/app/models/enums/htmlTags';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -55,6 +57,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
                               "image-area text-area";
       }`;
       this.pageTemplate.layoutType = pageLayoutTypes.grid;
+      let layoutText: ILayout = {
+        cssClass: `.text-area {
+                      grid-area: text-area;
+                      width: 500px;
+                      height: 400px;
+                      padding: $content-spacing;}`,
+        htmlTag: HtmlTags.div,
+        
+      };
+
       this.pageTemplate.AreaNames = [];
       let areaOne: IPageAreas = { areaName: "text-Area", areaType: PageAreaTypes.textArea };
       this.pageTemplate.AreaNames.push(areaOne);
@@ -63,6 +75,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   pageTemplate: IPageMaster = pageMasterInitial;
+
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;

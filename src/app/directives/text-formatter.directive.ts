@@ -1,6 +1,6 @@
 import { Directive, ElementRef, Input, SimpleChanges, OnChanges, Renderer2} from '@angular/core';
 import { IText } from '../models/interfaces/text';
-import { textInitial } from '../../assets/data/mock/textInitial';
+import { textInitial } from '../../assets/data/interface-initialisers/textInitial';
 import { textHorizontalAlignment, textVerticalAlignment } from '../models/enums/text-component.enum'
 
 
@@ -22,7 +22,7 @@ export class TextFormatterDirective implements OnChanges{
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngOnChanges(changes: SimpleChanges ) {
-     if(changes.textEvent){
+    if(changes.textEvent){
       this.handleEvent();
       let currentValue = changes.textEvent.currentValue;
       if(currentValue === "increaseFont" || currentValue  === "decreaseFont"){
