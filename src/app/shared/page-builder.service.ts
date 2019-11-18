@@ -75,7 +75,7 @@ export class PageBuilderService {
       case textVerticalAlignment.alignCenter:
         return 'justify-content:centre';
     }
-  }
+  } 
   private writeHTML(pageData: IPage, pageHtml: string, ) {
 
 

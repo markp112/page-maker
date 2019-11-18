@@ -14,7 +14,7 @@ export class ImageFormatterDirective {
   constructor(private el: ElementRef) {}
 
   ngOnChanges(change: SimpleChanges){
-  console.log("TCL: ImageFormatterDirective -> ngOnChanges -> change", change)
+
     if(change.height || change.width) {
       this.el.nativeElement.style.height = `${this.height}px`;
       this.el.nativeElement.style.width = `${this.width}px`;
