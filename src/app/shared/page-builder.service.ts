@@ -28,18 +28,20 @@ export class PageBuilderService {
 
     let css: string = pageLayout.cssClass;
     // styles apply to the current element
-    if (pageLayout.styles.length > 0) css += this.processTextStyles();
+    // if (pageLayout.styles.length > 0) css += this.processTextStyles();
     css += this.processChildren(pageLayout.children);
     console.log('css=', css);
   }
 
 
 
-  processTextStyles(styles: ITextLayout): string {
-    styles.forEach(style => {
-
+  processTextStyles(layout: ITextLayout): string {
+    let css = layout.cssClass;
+    layout.styles.forEach(style => {
+      css +=`${style.styleTag}:layout.textStyles[style.pmStyleProperty]`
     })
-    return ""
+    console.log("child styles =", css)
+    return css;
   }
 
   processImageStyles(styles: IImageLayout) {
@@ -56,25 +58,25 @@ export class PageBuilderService {
         this.processImageStyles(child);
       }
     })
-  }
-  private buildTextCss(textAreas: IText[], className: string): string {
+  // }
+  // private buildTextCss(textAreas: IText[], className: string): string {
 
-    let textCss: string = `.${className}\{`;
-    textAreas.forEach(area => {
-      textCss += `${area.container};`;
-      textCss += `font-family:${area.font};`;
-      textCss += `font-size:${area.size}px;`;
-      textCss += `${this.getHorizontalAlignment(area.horizontalAlignment)};`;
-      textCss += `${this.getVerticalAlignment(area.verticalAlignment)};`;
-      textCss += `color:${area.color};`;
-      textCss += `background-color:${area.backgroundColor};`;
-    })
-    textCss += "}";
-    return textCss;
-  }
-  private buildImageCss(imageAreas: IImage[], className: string): string {
-    return "";
-  }
+  //   let textCss: string = `.${className}\{`;
+  //   textAreas.forEach(area => {
+  //     textCss += `${area.container};`;
+  //     textCss += `font-family:${area.font};`;
+  //     textCss += `font-size:${area.size}px;`;
+  //     textCss += `${this.getHorizontalAlignment(area.horizontalAlignment)};`;
+  //     textCss += `${this.getVerticalAlignment(area.verticalAlignment)};`;
+  //     textCss += `color:${area.color};`;
+  //     textCss += `background-color:${area.backgroundColor};`;
+  //   })
+  //   textCss += "}";
+  //   return textCss;
+  // }
+  // private buildImageCss(imageAreas: IImage[], className: string): string {
+  //   return "";
+  // }
 
   private getHorizontalAlignment(horizontalAlignment: textHorizontalAlignment) {
     switch (horizontalAlignment) {
