@@ -43,13 +43,11 @@ export class PageBuilderService {
 
     return new Promise((resolve, reject) => {
       css += this.processChildren(pageLayout.children);
-      this.fireStorage.writeNewFile("main.css", "publishedFiles", css)
-        .then(result => {
-          resolve(result);
-        })
-        .catch(err => reject(err));
-    })
-  }
+      this.writeCSS(css)
+      .then(result => resolve(result))
+      .catch(err => reject(err));
+  })
+}
 
   processTextStyles(layout: ITextLayout): string {
     let css: string = "";
@@ -72,7 +70,6 @@ export class PageBuilderService {
   }
 
   processImageStyles(layout: IImageLayout): string {
-
     let css: string = "";
     if (layout.className !== "") {
       css = `.${layout.className} \{${layout.cssClass}`
@@ -89,9 +86,7 @@ export class PageBuilderService {
   }
 
   processChildren(children: ILayout[]): string {
-    //check for style
     let css = "";
-
     children.forEach(child => {
       console.log("image child", child);
       if (this.isTextStyle(child)) {
@@ -101,7 +96,6 @@ export class PageBuilderService {
       }
       if (child.children.length > 0) css += this.processChildren(child.children);
     });
-
     return css;
   }
 
@@ -130,7 +124,13 @@ export class PageBuilderService {
   }
   private writeHTML(pageData: IPage, pageHtml: string) { }
 
-  private writeCSS(pageData: IPage, pageStyling: string[]) {
-
+  private writeCSS(css):Promise<IStatusMessage> {
+    return new Promise((resolve,reject) => {
+      this.fireStorage.writeNewFile("main.css", "publishedFiles", css)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(err => reject(err));
+    });
   }
 }
