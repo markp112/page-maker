@@ -1,113 +1,117 @@
-import { Injectable } from '@angular/core';
-import { IPage } from '../models/interfaces/page';
+import { Injectable } from "@angular/core";
+import { IPage } from "../models/interfaces/page";
 // import { IPageMaster } from '../models/interfaces/pageMaster';
 // import { pageLayoutTypes } from '../models/enums/pageLayouts.enum';
 // import { PageAreaTypes } from '../models/enums/pageAreaTypes.enum';
-import { ILayout, ITextLayout, IImageLayout } from '../models/interfaces/layout'
-import { IText } from '../models/interfaces/text';
-import { textHorizontalAlignment, textVerticalAlignment } from '../models/enums/text-component.enum';
-import { text } from '@fortawesome/fontawesome-svg-core';
-import { IImage } from '../models/interfaces/image';
-import { ICssStyles } from '../models/interfaces/cssStyle';
+import {
+  ILayout,
+  ITextLayout,
+  IImageLayout
+} from "../models/interfaces/layout";
+import { IText } from "../models/interfaces/text";
+import {
+  textHorizontalAlignment,
+  textVerticalAlignment
+} from "../models/enums/text-component.enum";
+import { IImage } from "../models/interfaces/image";
+import { ICssStyles } from "../models/interfaces/cssStyle";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class PageBuilderService {
+  constructor() {}
 
-  constructor() { }
-
-
-  isTextStyle(styleLayout: ITextLayout | IImageLayout): styleLayout is ITextLayout {
+  isTextStyle(
+    styleLayout: ILayout | IImageLayout | ITextLayout
+  ): styleLayout is ITextLayout {
     return (styleLayout as ITextLayout).textStyles !== undefined;
   }
 
-
   createPage(pageData: IPage, pageLayout: ILayout) {
-    console.log("pageLayout = ", pageLayout)
+    console.log("pageLayout = ", pageLayout);
+    let css: string = "";
+    if (pageLayout.className !== "") {
+      css = `.${pageLayout.className} \{${pageLayout.cssClass}`;
+    } else css = pageLayout.cssClass;
 
-    let css: string = pageLayout.cssClass;
-    // styles apply to the current element
-    // if (pageLayout.styles.length > 0) css += this.processTextStyles();
     css += this.processChildren(pageLayout.children);
-    console.log('css=', css);
+    console.log("css=", css);
   }
 
-
-
   processTextStyles(layout: ITextLayout): string {
-    let css = layout.cssClass;
+    let css: string = "";
+    if (layout.className !== "")
+      css = `.${layout.className} \{${layout.cssClass}`;
+    else css = layout.cssClass;
+
     layout.styles.forEach(style => {
-      css +=`${style.styleTag}:layout.textStyles[style.pmStyleProperty]`
-    })
-    console.log("child styles =", css)
+      if (
+        style.styleTag === "text-align" ||
+        style.styleTag === "justify-content"
+      ) {
+        if (style.styleTag === "text-align") {
+          css += `${this.getHorizontalAlignment(
+            layout.textStyles[style.pmStyleProperty]
+          )};`;
+        }
+        if (style.styleTag === "justify-content") {
+          css += `${this.getVerticalAlignment(
+            layout.textStyles[style.pmStyleProperty]
+          )};`;
+        }
+      } else {
+        css += `${style.styleTag}:${layout.textStyles[style.pmStyleProperty]};`;
+      }
+    });
+    css += "}";
     return css;
   }
 
-  processImageStyles(styles: IImageLayout) {
+  processImageStyles(styles: ILayout) {
 
-  };
+  }
 
-  processChildren(children: ILayout[]) {
+  processChildren(children: ILayout[]):string {
     //check for style
     let css = "";
     children.forEach(child => {
+       console.log("image child", child);
       if (this.isTextStyle(child)) {
-        this.processTextStyles(child);
+        css += this.processTextStyles(child);
       } else {
-        this.processImageStyles(child);
+       
+        css+= this.processImageStyles(child);
       }
-    })
-  // }
-  // private buildTextCss(textAreas: IText[], className: string): string {
-
-  //   let textCss: string = `.${className}\{`;
-  //   textAreas.forEach(area => {
-  //     textCss += `${area.container};`;
-  //     textCss += `font-family:${area.font};`;
-  //     textCss += `font-size:${area.size}px;`;
-  //     textCss += `${this.getHorizontalAlignment(area.horizontalAlignment)};`;
-  //     textCss += `${this.getVerticalAlignment(area.verticalAlignment)};`;
-  //     textCss += `color:${area.color};`;
-  //     textCss += `background-color:${area.backgroundColor};`;
-  //   })
-  //   textCss += "}";
-  //   return textCss;
-  // }
-  // private buildImageCss(imageAreas: IImage[], className: string): string {
-  //   return "";
-  // }
+    });
+    
+    return css;
+  }
 
   private getHorizontalAlignment(horizontalAlignment: textHorizontalAlignment) {
     switch (horizontalAlignment) {
       case textHorizontalAlignment.alignLeft:
-        return 'text-align:left';
+        return "text-align:left";
       case textHorizontalAlignment.alignRight:
-        return 'text-align:right';
+        return "text-align:right";
       case textHorizontalAlignment.alignCenter:
-        return 'text-align:center';
+        return "text-align:center";
       case textHorizontalAlignment.alignJustify:
-        return 'text-align:justify';
+        return "text-align:justify";
     }
   }
 
   private getVerticalAlignment(verticalAlignment: textVerticalAlignment) {
     switch (verticalAlignment) {
       case textVerticalAlignment.alignBottom:
-        return 'justify-content:flex-end';
+        return "justify-content:flex-end";
       case textVerticalAlignment.alignTop:
-        return 'justify-content:flex-start';
+        return "justify-content:flex-start";
       case textVerticalAlignment.alignCenter:
-        return 'justify-content:centre';
+        return "justify-content:centre";
     }
   }
-  private writeHTML(pageData: IPage, pageHtml: string, ) {
+  private writeHTML(pageData: IPage, pageHtml: string) {}
 
-
-  }
-
-  private writeCSS(pageData: IPage, pageStyling: string[]) {
-
-  }
-
+  private writeCSS(pageData: IPage, pageStyling: string[]) {}
 }

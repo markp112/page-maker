@@ -7,6 +7,7 @@ import { textInitial } from 'src/assets/data/interface-initialisers/textInitial'
 export const layoutInitial: ILayout = {
   htmlTag: HtmlTags.empty,
   cssClass: "",
+  className:"",
   styles: [],
   children: []
 };
@@ -15,14 +16,14 @@ export const layoutInitial: ILayout = {
 const initLayoutSqImgText = (): ITextLayout => {
 
   const layoutSqImgText: ITextLayout = {
-    cssClass: `.text-area {
-                    grid-area: text-area;
-                    width: 500px;
-                    height: 400px;
-                    padding: 10px;
-                    display: flex;
-                    flex-direction: column;}`,
+    cssClass: `grid-area: text-area;
+              width: 500px;
+              height: 400px;
+              padding: 10px;
+              display: flex;
+              flex-direction: column;`,
     htmlTag: HtmlTags.div,
+    className: `text-area`,
     styles: [],
     children: [],
     textStyles: textInitial
@@ -43,10 +44,10 @@ const initLayoutSqImgText = (): ITextLayout => {
 
   return layoutSqImgText;
 }
-
+// parent wrapper for image
 const initLayoutSqImgImage = (): ILayout => {
   const layoutSqImgImage: ILayout = {
-    cssClass: `.image-area { grid-area: image-area;
+    cssClass: ` grid-area: image-area;
                 width: 100%;
                 height: 100%;
                 display: flex;
@@ -54,14 +55,16 @@ const initLayoutSqImgImage = (): ILayout => {
                 justify-content: flex-start;
                 align-items: center;
                 position: relative;
-                overflow: hidden;}`,
+                overflow: hidden;`,
     htmlTag: HtmlTags.div,
+    className:`image-area`,
     styles: [],
     children: []
   };
   let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor" };
   layoutSqImgImage.styles.push(backgroundColor);
 
+  // initial data for the image element
   let imageLayout: IImageLayout = {
     cssClass: `img {
         display: block;
@@ -73,12 +76,12 @@ const initLayoutSqImgImage = (): ILayout => {
         position: absolute;
         top: 0;
         left: 0;
-      }`,
+      `,
     htmlTag: HtmlTags.img,
+    className:'',
     styles: [],
     children: [],
     imageStyles: imageInitial
-
   }
 
   let height: ICssStyles = { styleTag: "height", pmStyleProperty: "height" };
