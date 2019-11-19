@@ -12,7 +12,7 @@ export const layoutInitial: ILayout = {
   children: []
 };
 
-
+///layout elements for text
 const initLayoutSqImgText = (): ITextLayout => {
 
   const layoutSqImgText: ITextLayout = {
@@ -45,8 +45,8 @@ const initLayoutSqImgText = (): ITextLayout => {
   return layoutSqImgText;
 }
 // parent wrapper for image
-const initLayoutSqImgImage = (): ILayout => {
-  const layoutSqImgImage: ILayout = {
+const initLayoutSqImgImage = (): IImageLayout => {
+  const layoutSqImgImage: IImageLayout = {
     cssClass: ` grid-area: image-area;
                 width: 100%;
                 height: 100%;
@@ -58,6 +58,7 @@ const initLayoutSqImgImage = (): ILayout => {
                 overflow: hidden;`,
     htmlTag: HtmlTags.div,
     className:`image-area`,
+    imageStyles:imageInitial,
     styles: [],
     children: []
   };

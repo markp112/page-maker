@@ -28,8 +28,13 @@ export class PageBuilderService {
     return (styleLayout as ITextLayout).textStyles !== undefined;
   }
 
+  isImageStyle(
+    styleLayout: ILayout | IImageLayout | ITextLayout
+  ): styleLayout is IImageLayout {
+    return (styleLayout as IImageLayout).imageStyles !== undefined;
+  }
+
   createPage(pageData: IPage, pageLayout: ILayout) {
-    console.log("pageLayout = ", pageLayout);
     let css: string = "";
     if (pageLayout.className !== "") {
       css = `.${pageLayout.className} \{${pageLayout.cssClass}`;
@@ -68,23 +73,37 @@ export class PageBuilderService {
     return css;
   }
 
-  processImageStyles(styles: ILayout) {
+  processImageStyles(layout: IImageLayout):string {
 
+    let css: string = "";
+    if(layout.className !== ""){
+      css = `.${layout.className} \{${layout.cssClass}`
+    } else  css = layout.cssClass;
+    layout.styles.forEach(style => {
+      if(style.styleTag === "top" || style.styleTag === "left"){
+        css += `${style.styleTag}:${layout.imageStyles["position"][style.pmStyleProperty]};`;
+      }else {
+        css += `${style.styleTag}:${layout.imageStyles[style.pmStyleProperty]};`;
+      }
+    })
+    css += "}";
+    return css;
   }
 
   processChildren(children: ILayout[]):string {
     //check for style
     let css = "";
+
     children.forEach(child => {
-       console.log("image child", child);
+    console.log("image child", child);
       if (this.isTextStyle(child)) {
         css += this.processTextStyles(child);
-      } else {
-       
-        css+= this.processImageStyles(child);
+      } else if(this.isImageStyle(child)) {
+          css+= this.processImageStyles(child);
       }
+      if(child.children.length > 0) css += this.processChildren(child.children);
     });
-    
+
     return css;
   }
 
@@ -113,5 +132,7 @@ export class PageBuilderService {
   }
   private writeHTML(pageData: IPage, pageHtml: string) {}
 
-  private writeCSS(pageData: IPage, pageStyling: string[]) {}
+  private writeCSS(pageData: IPage, pageStyling: string[]) {
+
+  }
 }

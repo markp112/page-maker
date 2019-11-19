@@ -25,6 +25,7 @@ import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 import { FontApiService }  from './shared/font-api.service';
 import { AuthService } from './shared/auth.service';
 import { PageTemplateService } from "./shared/page-template.service";
+import { FireStorageService } from './shared/fire-storage.service';
 
 // Vendor
 import { AngularFireModule } from 'angularfire2';
@@ -38,7 +39,7 @@ import { TextFormatterDirective } from './directives/text-formatter.directive';
 import { ImageFormatterDirective } from './directives/image-formatter.directive';
 
 import { secrets } from 'secrets';
-import { messaging } from 'firebase';
+// import { messaging } from 'firebase';
 import { StatusMessageComponent } from './components/status-message/status-message.component';
 
 
@@ -84,7 +85,7 @@ import { StatusMessageComponent } from './components/status-message/status-messa
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence()
   ],
-  providers: [FontApiService, AuthService, PageTemplateService],
+  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
