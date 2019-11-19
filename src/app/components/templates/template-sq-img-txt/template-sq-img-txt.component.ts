@@ -219,6 +219,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.ShowUploadImage = !this.ShowUploadImage;
     this.imageRef.url = URL;
   }
+
   handleUrl(url: string) {
     this.showURLLink = !this.showURLLink;
     this.imageRef.url = url;
@@ -228,7 +229,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.statusMessage.message = message;
     this.statusMessage.messageType = messageType;
     this.isShowStatus = true;
-    setTimeout(()=>{this.isShowStatus=false}, 3000);
+    setTimeout(() => { this.isShowStatus = false }, 3000);
   }
 
   savePage() {
@@ -303,6 +304,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.pageTemplate.children = [];
     this.pageTemplate.children.push(this.layoutText);
     this.pageTemplate.children.push(this.layoutImage);
-    this.pageBuilder.createPage(this.page, this.pageTemplate);
+    this.pageBuilder.createPage(this.page, this.pageTemplate)
+    .then(result => {
+      this.statusMessage = result;
+      this.isShowStatus = true;
+
+    })
   }
 }

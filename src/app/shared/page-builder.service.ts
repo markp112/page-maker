@@ -8,19 +8,19 @@ import {
   ITextLayout,
   IImageLayout
 } from "../models/interfaces/layout";
-import { IText } from "../models/interfaces/text";
 import {
   textHorizontalAlignment,
   textVerticalAlignment
 } from "../models/enums/text-component.enum";
-import { IImage } from "../models/interfaces/image";
-import { ICssStyles } from "../models/interfaces/cssStyle";
+
+import { FireStorageService } from '../shared/fire-storage.service'
+import { IStatusMessage } from '../models/interfaces/status-message';
 
 @Injectable({
   providedIn: "root"
 })
 export class PageBuilderService {
-  constructor() {}
+  constructor(private fireStorage: FireStorageService) { }
 
   isTextStyle(
     styleLayout: ILayout | IImageLayout | ITextLayout
@@ -34,55 +34,53 @@ export class PageBuilderService {
     return (styleLayout as IImageLayout).imageStyles !== undefined;
   }
 
-  createPage(pageData: IPage, pageLayout: ILayout) {
+  //todo - Add a property for the filename and path
+  createPage(pageData: IPage, pageLayout: ILayout): Promise<IStatusMessage> {
     let css: string = "";
     if (pageLayout.className !== "") {
       css = `.${pageLayout.className} \{${pageLayout.cssClass}`;
     } else css = pageLayout.cssClass;
 
-    css += this.processChildren(pageLayout.children);
-    console.log("css=", css);
+    return new Promise((resolve, reject) => {
+      css += this.processChildren(pageLayout.children);
+      this.fireStorage.writeNewFile("main.css", "publishedFiles", css)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(err => reject(err));
+    })
   }
 
   processTextStyles(layout: ITextLayout): string {
     let css: string = "";
-    if (layout.className !== "")
-      css = `.${layout.className} \{${layout.cssClass}`;
+    if (layout.className !== "") css = `.${layout.className} \{${layout.cssClass}`;
     else css = layout.cssClass;
-
     layout.styles.forEach(style => {
-      if (
-        style.styleTag === "text-align" ||
-        style.styleTag === "justify-content"
-      ) {
-        if (style.styleTag === "text-align") {
-          css += `${this.getHorizontalAlignment(
-            layout.textStyles[style.pmStyleProperty]
-          )};`;
-        }
-        if (style.styleTag === "justify-content") {
-          css += `${this.getVerticalAlignment(
-            layout.textStyles[style.pmStyleProperty]
-          )};`;
-        }
-      } else {
-        css += `${style.styleTag}:${layout.textStyles[style.pmStyleProperty]};`;
+      switch (style.styleTag) {
+        case "text-align":
+          css += `${this.getHorizontalAlignment(layout.textStyles[style.pmStyleProperty])};`;
+          break;
+        case "justify-content":
+          css += `${this.getVerticalAlignment(layout.textStyles[style.pmStyleProperty])};`;
+          break;
+        default:
+          css += `${style.styleTag}:${layout.textStyles[style.pmStyleProperty]};`;
       }
-    });
+    })
     css += "}";
     return css;
   }
 
-  processImageStyles(layout: IImageLayout):string {
+  processImageStyles(layout: IImageLayout): string {
 
     let css: string = "";
-    if(layout.className !== ""){
+    if (layout.className !== "") {
       css = `.${layout.className} \{${layout.cssClass}`
-    } else  css = layout.cssClass;
+    } else css = layout.cssClass;
     layout.styles.forEach(style => {
-      if(style.styleTag === "top" || style.styleTag === "left"){
+      if (style.styleTag === "top" || style.styleTag === "left") {
         css += `${style.styleTag}:${layout.imageStyles["position"][style.pmStyleProperty]};`;
-      }else {
+      } else {
         css += `${style.styleTag}:${layout.imageStyles[style.pmStyleProperty]};`;
       }
     })
@@ -90,18 +88,18 @@ export class PageBuilderService {
     return css;
   }
 
-  processChildren(children: ILayout[]):string {
+  processChildren(children: ILayout[]): string {
     //check for style
     let css = "";
 
     children.forEach(child => {
-    console.log("image child", child);
+      console.log("image child", child);
       if (this.isTextStyle(child)) {
         css += this.processTextStyles(child);
-      } else if(this.isImageStyle(child)) {
-          css+= this.processImageStyles(child);
+      } else if (this.isImageStyle(child)) {
+        css += this.processImageStyles(child);
       }
-      if(child.children.length > 0) css += this.processChildren(child.children);
+      if (child.children.length > 0) css += this.processChildren(child.children);
     });
 
     return css;
@@ -130,7 +128,7 @@ export class PageBuilderService {
         return "justify-content:centre";
     }
   }
-  private writeHTML(pageData: IPage, pageHtml: string) {}
+  private writeHTML(pageData: IPage, pageHtml: string) { }
 
   private writeCSS(pageData: IPage, pageStyling: string[]) {
 

@@ -45,10 +45,10 @@ export class FileUploadComponent implements OnInit {
     // The storage path
     const path = `${this.path}/${file.name}`;
     // Totally optional metadata
-    const customMetadata = { app: "My AngularFire-powered PWA!" };
+    
     this.ref = this.afStorage.ref(path);
     // The main task
-    this.task = this.afStorage.upload(path, file, { customMetadata });
+    this.task = this.afStorage.upload(path, file);
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
     this.snapshot = this.task.snapshotChanges().pipe(
