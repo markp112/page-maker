@@ -5,9 +5,9 @@ import { imageInitial } from 'src/assets/data/interface-initialisers/imageInitia
 import { textInitial } from 'src/assets/data/interface-initialisers/textInitial';
 
 export const layoutInitial: ILayout = {
-  htmlTag: HtmlTags.empty,
+  htmlTag: HtmlTags.section,
   cssClass: "",
-  className:"",
+  className: "",
   styles: [],
   children: []
 };

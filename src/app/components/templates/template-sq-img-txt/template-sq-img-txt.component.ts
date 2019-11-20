@@ -57,7 +57,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
                               "toolbar toolbar"
                               "image-area text-area";
       }`
-      this.pageTemplate.htmlTag = HtmlTags.div;
+      this.pageTemplate.htmlTag = HtmlTags.section;
       // this.pageTemplate.layoutType = pageLayoutTypes.grid;
 
 

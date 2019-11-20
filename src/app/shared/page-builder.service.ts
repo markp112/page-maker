@@ -47,19 +47,27 @@ export class PageBuilderService {
       css += this.processChildren(pageLayout.children);
       this.writeCSS(css)
       .then(result => {
-          this.buildHtml(pageLayout,"main.css");
-          resolve(result)
+          this.buildHtml(pageLayout, "main.css")
+          .then(Htmlpage =>{
+            //write Html Page to file
+            this.writeHTML(Htmlpage)
+            .then (result =>resolve(result) )
+
+          })
+
         })
       .catch(err => reject(err));
   })
 }
 
-  buildHtml(layouts: ILayout, cssFileName: string): Promise<IStatusMessage> {
+  buildHtml(layouts: ILayout, cssFileName: string):Promise<string> {
     let htmlBuilder: HtmlBuilder = new HtmlBuilder('Test Page');
     let htmlContent: string;
 
     return new Promise((resolve, reject) => {
-      htmlContent = htmlBuilder.buildHtml(layouts);
+      htmlBuilder.buildHtml(layouts,cssFileName)
+      .then(htmlContent => resolve(htmlContent));
+      
     })
 
   }
@@ -103,7 +111,6 @@ export class PageBuilderService {
   processChildren(children: ILayout[]): string {
     let css = "";
     children.forEach(child => {
-      console.log("image child", child);
       if (this.isTextStyle(child)) {
         css += this.processTextStyles(child);
       } else if (this.isImageStyle(child)) {
@@ -137,7 +144,15 @@ export class PageBuilderService {
         return "justify-content:centre";
     }
   }
-  private writeHTML(pageData: IPage, pageHtml: string) { }
+  private writeHTML(htmlPage: string):Promise<IStatusMessage> {
+     return new Promise((resolve,reject) => {
+      this.fireStorage.writeNewFile("index.html", "publishedFiles", htmlPage)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(err => reject(err));
+    });
+  }
 
   private writeCSS(css):Promise<IStatusMessage> {
     return new Promise((resolve,reject) => {

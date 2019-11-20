@@ -4,33 +4,43 @@ import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 export class HtmlBuilder {
     _pageTitle: string; // title for the top of the page
-    _javaScript: string[]; //links for js files
-    _cssLinks: string[]; //links to css files
-    _bodyContent: string;
+
 
     constructor(pageTitle: string){
         this._pageTitle = pageTitle;
     }
 
     private docHead: string = `<!DOCTYPE html><html lang="en">`;
-    private pageHead: string = `<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge"><title>${this._pageTitle}</title></head>`;
+    private pageHead: string = `<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="X-UA-Compatible" content="ie=edge">`;
     private bodyStart: string  = `<body>`;
     private bodyEnd: string = `</body>`;
     private closingTag: string = `</html>`;
 
     //extract the html tags from the page layout along with the content and construct the html
     //for the page
-    buildHtml(pageLayout: ILayout): string {
+    buildHtml(pageLayout: ILayout, cssFileName: string): Promise<any> {
         let tag: string;
         let page: string;
-        // At present only expecting div for the page master layout
-        tag = this.getTagAsHtml(pageLayout.htmlTag, pageLayout.className, false);
-        tag += '>'  // close out the tag as not expecting this to be a tag needing additional attributes
-        let content: string = this.processChildElements(pageLayout.children)
-        tag += content + this.getTagAsHtml(pageLayout.htmlTag, '', true);
-        page = `${this.docHead}${this.pageHead}${this.bodyStart}$`
-
-        return page
+        return new Promise ((resolve, reject)=>{
+          try {
+            let cssLink: string = this.createStyleSheetLinks(cssFileName);
+            let pageTitle: string = `<title>${this._pageTitle}</title>`;
+            let fontLinks: string = this.getFontLinks(pageLayout);
+            
+            // At present only expecting div for the page master layout
+            tag = this.getTagAsHtml(pageLayout.htmlTag, pageLayout.className, false);
+            tag += '>'  // close out the tag as not expecting this to be a tag needing additional attributes
+            let content: string = this.processChildElements(pageLayout.children)
+            tag += content + this.getTagAsHtml(pageLayout.htmlTag, '', true);
+            tag += '>'
+            page = `${this.docHead}${this.pageHead}${pageTitle}${cssLink}${fontLinks}</head>`;
+            page += `${this.bodyStart}${tag}${this.bodyEnd}${this.closingTag}`;
+            resolve(page);
+          } catch (error) {
+            reject(error);
+          }
+        })
+      
     }
     // insert links to CSS file
     createStyleSheetLinks(cssFileName: string): string {
@@ -52,9 +62,9 @@ export class HtmlBuilder {
       return (styleLayout as IImageLayout).imageStyles !== undefined;
     }
 
-    // based on the enum for the Html tag convert this into actual 
+    // based on the enum for the Html tag convert this into actual
     // html tag with the tag left open so other attributes can be added if needed
-    private getTagAsHtml(tag: HtmlTags, className: string, isClosingTag:boolean): string {
+    private getTagAsHtml(tag: HtmlTags, className: string, isClosingTag: boolean): string {
       let htmlElement: string;
       if(isClosingTag) htmlElement = "</"; else htmlElement = "<";
       switch (tag) {
@@ -73,9 +83,34 @@ export class HtmlBuilder {
         if(className) htmlElement +=` class="${className}"`;
         return htmlElement;
     }
+    private getFontLinks(layout: ILayout): string {
+      let fontName: string;
+      let fontLink: string = '';
+      if(layout.styles["font"] !== '') {
+          fontName = layout.styles["font"];
+          fontLink =`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
+      }
+      fontLink += this.processChildFonts(layout.children);
+      return fontLink;
+    }
+
+    private processChildFonts(layout: ILayout[]): string {
+      let fontName: string = '';
+      let fontLink: string = '';
+      layout.forEach(element =>{
+        if(this.isTextStyle(element)){
+          if(element.textStyles["font"] !== ''){ 
+            fontName = element.textStyles["font"];
+            fontLink +=`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
+          }
+        }
+        if(element.children.length > 0) fontLink += this.processChildFonts(element.children);
+      })
+      return fontLink;
+    }
 
     private processChildElements(childElements: ILayout[]): string {
-        let content: string;
+        let content: string='';
         childElements.forEach(element => {
             if(this.isTextStyle(element)){
               content += this.processTextElement(element)
@@ -92,19 +127,21 @@ export class HtmlBuilder {
       let content: string;
       content = this.getTagAsHtml(element.htmlTag, element.className, false);
       content += '>'
-      content += element.textStyles[content];
-      content += this.getTagAsHtml(element.htmlTag, element.className, true);
+      content += element.textStyles["content"];
+      content += this.getTagAsHtml(element.htmlTag, '', true);
+      content += '>'
       return content;
     }
 
     private processImageElement(element: IImageLayout): string {
-      let content: string;
-      content = this.getTagAsHtml(element.htmlTag, element.className, false);
+      let content: string = '';
+      content += this.getTagAsHtml(element.htmlTag, element.className, false);
       if(element.htmlTag === HtmlTags.img) {
         content += element.imageStyles.url;
       }
       content += '>'
-      content = this.getTagAsHtml(element.htmlTag, element.className, true);
+      content += this.getTagAsHtml(element.htmlTag, '', true);
+      content += '>'
       return content;
     }
 }
