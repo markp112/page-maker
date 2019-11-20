@@ -15,6 +15,8 @@ import {
 
 import { FireStorageService } from '../shared/fire-storage.service'
 import { IStatusMessage } from '../models/interfaces/status-message';
+import { HtmlBuilder } from '../models/classes/templateHtml';
+import { resolve } from 'q';
 
 @Injectable({
   providedIn: "root"
@@ -44,10 +46,23 @@ export class PageBuilderService {
     return new Promise((resolve, reject) => {
       css += this.processChildren(pageLayout.children);
       this.writeCSS(css)
-      .then(result => resolve(result))
+      .then(result => {
+          this.buildHtml(pageLayout,"main.css");
+          resolve(result)
+        })
       .catch(err => reject(err));
   })
 }
+
+  buildHtml(layouts: ILayout, cssFileName: string): Promise<IStatusMessage> {
+    let htmlBuilder: HtmlBuilder = new HtmlBuilder('Test Page');
+    let htmlContent: string;
+
+    return new Promise((resolve, reject) => {
+      htmlContent = htmlBuilder.buildHtml(layouts);
+    })
+
+  }
 
   processTextStyles(layout: ITextLayout): string {
     let css: string = "";
