@@ -48,22 +48,9 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private pageBuilder: PageBuilderService
   ) {}
 
-  ngOnInit() {
-    this.pageTemplate.cssClass = `
-        display: grid;
-        grid-template-columns: 6fr 6fr;
-        grid-template-rows: 1.5fr 0.25fr 5fr;
-        grid-template-areas:  ". ."
-                              "toolbar toolbar"
-                              "image-area text-area";
-      `;
-      this.pageTemplate.className = `template-sq-img-txt`;
-      this.pageTemplate.htmlTag = HtmlTags.section;
+  ngOnInit() { }
   
-  }
-
   pageTemplate: ILayout = layoutInitial;
-
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
@@ -134,7 +121,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
         break;
       case "imgDecreaseSize":
-
         this.imageRef.height--;
         this.imageRef.width--;
         break;
@@ -179,6 +165,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.textRef.content = content;
     this.layoutText.textStyles.content = content;
   }
+
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
     this.textRef.font = font;
@@ -223,7 +210,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.statusMessage.message = message;
     this.statusMessage.messageType = messageType;
     this.isShowStatus = true;
-    setTimeout(() => { this.isShowStatus = false }, 3000);
+    setTimeout(() => { this.isShowStatus = false; alert('timeout expired'); }, 3000);
   }
 
   savePage() {

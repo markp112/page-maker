@@ -145,7 +145,7 @@ export class PageBuilderService {
     }
   }
   private writeHTML(htmlPage: string):Promise<IStatusMessage> {
-     return new Promise((resolve,reject) => {
+    return new Promise((resolve,reject) => {
       this.fireStorage.writeNewFile("index.html", "publishedFiles", htmlPage)
         .then(result => {
           resolve(result);

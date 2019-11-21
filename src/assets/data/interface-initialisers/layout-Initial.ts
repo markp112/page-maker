@@ -6,8 +6,14 @@ import { textInitial } from 'src/assets/data/interface-initialisers/textInitial'
 
 export const layoutInitial: ILayout = {
   htmlTag: HtmlTags.section,
-  cssClass: "",
-  className: "",
+  cssClass: `display: grid;
+        grid-template-columns: 6fr 6fr;
+        grid-template-rows: 1.5fr 0.25fr 5fr;
+        grid-template-areas:  ". ."
+                              "toolbar toolbar"
+                              "image-area text-area";
+      `,
+  className: `template-sq-img-txt`,
   styles: [],
   children: []
 };
@@ -28,12 +34,12 @@ const initLayoutSqImgText = (): ITextLayout => {
     children: [],
     textStyles: textInitial
   };
-  let color: ICssStyles = { styleTag: "color", pmStyleProperty: "color" };
-  let fontSize: ICssStyles = { styleTag: "font-size", pmStyleProperty: "size" }
-  let fontFamily: ICssStyles = { styleTag: "font-family", pmStyleProperty: "font" };
-  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor" };
-  let horizontalAlign: ICssStyles = { styleTag: "text-align", pmStyleProperty: "horizontalAlignment" };
-  let vertcalAlign: ICssStyles = { styleTag: "justify-content", pmStyleProperty: "verticalAlignment" };
+  let color: ICssStyles = { styleTag: "color", pmStyleProperty: "color", value:"" };
+  let fontSize: ICssStyles = { styleTag: "font-size", pmStyleProperty: "size", value:"" }
+  let fontFamily: ICssStyles = { styleTag: "font-family", pmStyleProperty: "font", value:"" };
+  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor", value:"" };
+  let horizontalAlign: ICssStyles = { styleTag: "text-align", pmStyleProperty: "horizontalAlignment", value:"" };
+  let vertcalAlign: ICssStyles = { styleTag: "justify-content", pmStyleProperty: "verticalAlignment", value:"" };
 
   layoutSqImgText.styles.push(color);
   layoutSqImgText.styles.push(fontSize);
@@ -62,7 +68,7 @@ const initLayoutSqImgImage = (): IImageLayout => {
     styles: [],
     children: []
   };
-  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor" };
+  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor", value:"" };
   layoutSqImgImage.styles.push(backgroundColor);
 
   // initial data for the image element
@@ -76,19 +82,18 @@ const initLayoutSqImgImage = (): IImageLayout => {
         object-fit: contain;
         position: absolute;
         top: 0;
-        left: 0;
-      `,
+        left: 0;`,
     htmlTag: HtmlTags.img,
-    className:'',
+    className: '',
     styles: [],
     children: [],
     imageStyles: imageInitial
   }
 
-  let height: ICssStyles = { styleTag: "height", pmStyleProperty: "height" };
-  let width: ICssStyles = { styleTag: "width", pmStyleProperty: "width" }
-  let top: ICssStyles = { styleTag: "top", pmStyleProperty: "top" };
-  let left: ICssStyles = { styleTag: "left", pmStyleProperty: "left" };
+  let height: ICssStyles = { styleTag: "height", pmStyleProperty: "height", value:"" };
+  let width: ICssStyles = { styleTag: "width", pmStyleProperty: "width", value:"" }
+  let top: ICssStyles = { styleTag: "top", pmStyleProperty: "top", value: "" };
+  let left: ICssStyles = { styleTag: "left", pmStyleProperty: "left", value:"" };
   imageLayout.styles.push(height);
   imageLayout.styles.push(width);
   imageLayout.styles.push(top);
@@ -96,7 +101,6 @@ const initLayoutSqImgImage = (): IImageLayout => {
   layoutSqImgImage.children.push(imageLayout);
   return layoutSqImgImage;
 }
-
 
 export {
   initLayoutSqImgText,
