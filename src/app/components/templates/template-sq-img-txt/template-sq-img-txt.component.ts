@@ -49,23 +49,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.pageTemplate.cssClass = `.template-sq-img-txt  {
+    this.pageTemplate.cssClass = `
         display: grid;
         grid-template-columns: 6fr 6fr;
         grid-template-rows: 1.5fr 0.25fr 5fr;
         grid-template-areas:  ". ."
                               "toolbar toolbar"
                               "image-area text-area";
-      }`
+      `;
+      this.pageTemplate.className = `template-sq-img-txt`;
       this.pageTemplate.htmlTag = HtmlTags.section;
-      // this.pageTemplate.layoutType = pageLayoutTypes.grid;
-
-
-      // this.pageTemplate.AreaNames = [];
-      // let areaOne: IPageAreas = { areaName: "text-Area", areaType: PageAreaTypes.textArea };
-      // this.pageTemplate.AreaNames.push(areaOne);
-      // let areaTwo: IPageAreas = { areaName: "image-Area", areaType: PageAreaTypes.imageArea };
-      // this.pageTemplate.AreaNames.push(areaTwo);
+  
   }
 
   pageTemplate: ILayout = layoutInitial;
@@ -292,8 +286,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
       let page = result[0];
+      console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page", page)
       this.fontService.getFontNames();
       this.imageRef = page.imageAreas[0];
+      console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> layoutImage", this.layoutImage)
+      console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page.imageAreas[0]", page.imageAreas[0])
       this.layoutText.textStyles = page.textAreas[0];
       this.page = page;
     });

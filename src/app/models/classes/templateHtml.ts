@@ -134,6 +134,7 @@ export class HtmlBuilder {
     }
 
     private processImageElement(element: IImageLayout): string {
+    console.log("TCL: HtmlBuilder -> element", element)
       let content: string = '';
       content += this.getTagAsHtml(element.htmlTag, element.className, false);
       if(element.htmlTag === HtmlTags.img) {
