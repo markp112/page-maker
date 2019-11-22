@@ -1,8 +1,8 @@
 import { ILayout, ITextLayout, IImageLayout } from "src/app/models/interfaces/layout";
 import { HtmlTags } from "src/app/models/enums/htmlTags";
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { imageInitial } from 'src/assets/data/interface-initialisers/imageInitial';
-import { textInitial } from 'src/assets/data/interface-initialisers/textInitial';
+import { initImageStylesInitial } from 'src/assets/data/interface-initialisers/imageInitial';
+import { initTextStyles } from 'src/assets/data/interface-initialisers/textInitial';
 
 export const layoutInitial: ILayout = {
   htmlTag: HtmlTags.section,
@@ -19,9 +19,9 @@ export const layoutInitial: ILayout = {
 };
 
 ///layout elements for text
-const initLayoutSqImgText = (): ITextLayout => {
+const initLayoutSqImgText = (): ILayout => {
 
-  const layoutSqImgText: ITextLayout = {
+  const layoutSqImgText: ILayout = {
     cssClass: `grid-area: text-area;
               width: 500px;
               height: 400px;
@@ -30,29 +30,15 @@ const initLayoutSqImgText = (): ITextLayout => {
               flex-direction: column;`,
     htmlTag: HtmlTags.div,
     className: `text-area`,
-    styles: [],
+    styles: [] = initTextStyles(),
     children: [],
-    textStyles: textInitial
   };
-  let color: ICssStyles = { styleTag: "color", pmStyleProperty: "color", value:"" };
-  let fontSize: ICssStyles = { styleTag: "font-size", pmStyleProperty: "size", value:"" }
-  let fontFamily: ICssStyles = { styleTag: "font-family", pmStyleProperty: "font", value:"" };
-  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor", value:"" };
-  let horizontalAlign: ICssStyles = { styleTag: "text-align", pmStyleProperty: "horizontalAlignment", value:"" };
-  let vertcalAlign: ICssStyles = { styleTag: "justify-content", pmStyleProperty: "verticalAlignment", value:"" };
-
-  layoutSqImgText.styles.push(color);
-  layoutSqImgText.styles.push(fontSize);
-  layoutSqImgText.styles.push(fontFamily);
-  layoutSqImgText.styles.push(backgroundColor);
-  layoutSqImgText.styles.push(horizontalAlign);
-  layoutSqImgText.styles.push(vertcalAlign);
-
   return layoutSqImgText;
 }
+
 // parent wrapper for image
-const initLayoutSqImgImage = (): IImageLayout => {
-  const layoutSqImgImage: IImageLayout = {
+const initLayoutSqImgImage = (): ILayout => {
+  const layoutSqImgImage: ILayout = {
     cssClass: ` grid-area: image-area;
                 width: 100%;
                 height: 100%;
@@ -63,16 +49,16 @@ const initLayoutSqImgImage = (): IImageLayout => {
                 position: relative;
                 overflow: hidden;`,
     htmlTag: HtmlTags.div,
+    content: "",
     className:`image-area`,
-    imageStyles:imageInitial,
     styles: [],
-    children: []
+    children:[]
   };
-  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor", value:"" };
+  let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor", value:"rgba(241,242,244,1)" };
   layoutSqImgImage.styles.push(backgroundColor);
 
   // initial data for the image element
-  let imageLayout: IImageLayout = {
+  let imageLayout: ILayout = {
     cssClass: `img {
         display: block;
         max-width: 500px;
@@ -85,19 +71,11 @@ const initLayoutSqImgImage = (): IImageLayout => {
         left: 0;`,
     htmlTag: HtmlTags.img,
     className: '',
-    styles: [],
+    styles: [] = initImageStylesInitial(),
+    content:"",
     children: [],
-    imageStyles: imageInitial
+    
   }
-
-  let height: ICssStyles = { styleTag: "height", pmStyleProperty: "height", value:"" };
-  let width: ICssStyles = { styleTag: "width", pmStyleProperty: "width", value:"" }
-  let top: ICssStyles = { styleTag: "top", pmStyleProperty: "top", value: "" };
-  let left: ICssStyles = { styleTag: "left", pmStyleProperty: "left", value:"" };
-  imageLayout.styles.push(height);
-  imageLayout.styles.push(width);
-  imageLayout.styles.push(top);
-  imageLayout.styles.push(left);
   layoutSqImgImage.children.push(imageLayout);
   return layoutSqImgImage;
 }

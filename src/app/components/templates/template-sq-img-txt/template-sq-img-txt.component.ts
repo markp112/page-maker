@@ -30,9 +30,10 @@ import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
-import { ILayout, ITextLayout, IImageLayout } from 'src/app/models/interfaces/layout';
+import { ILayout } from 'src/app/models/interfaces/layout';
 import { HtmlTags } from 'src/app/models/enums/htmlTags';
-import { initLayoutSqImgText, initLayoutSqImgImage,layoutInitial } from 'src/assets/data/interface-initialisers/layout-Initial';
+import { initLayoutSqImgText, initLayoutSqImgImage, layoutInitial } from 'src/assets/data/interface-initialisers/layout-Initial';
+import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -49,7 +50,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   ) {}
 
   ngOnInit() { }
-  
+
   pageTemplate: ILayout = layoutInitial;
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
@@ -77,11 +78,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
     messageType: messageTypes.warning
   };
 
-  layoutText: ITextLayout = initLayoutSqImgText();
+  layoutText: ILayout = initLayoutSqImgText();
   layoutImage: ILayout = initLayoutSqImgImage();
   //variables linked to the image
-  imageRef: IImage = imageInitial;
-  textRef: IText = textInitial;
+  imageRef:ICssStyles[] = imageInitial;
+  textRef:ICssStyles[]  = textInitial;
   page: IPage;
   path: string = "images/";
   clickevent: string;
@@ -162,14 +163,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   textChanged(content: string) {
-    this.textRef.content = content;
-    this.layoutText.textStyles.content = content;
+    this.layoutText.content = content;
   }
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.textRef.font = font;
-    this.layoutText.textStyles.font = font;
+    this.layoutText.styles["font"].value = font;
   }
 
   setEdit() {
@@ -180,17 +179,15 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   setColor(color: string) {
     if (this.isEditingColor) {
-      this.textRef.color = color;
-      this.layoutText.textStyles.color = color;
+      this.layoutText.styles[color].value = color;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
-      this.textRef.backgroundColor = color;
-      this.layoutText.textStyles.backgroundColor = color;
+      this.layoutText.styles["backgroundColor"] = color;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
-      this.imageRef.backgroundColor = color;
+      this.layoutImage.styles["background-color"] = color;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
@@ -198,12 +195,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleFileUploaded(URL: string) {
     this.ShowUploadImage = !this.ShowUploadImage;
-    this.imageRef.url = URL;
+    this.layoutImage.content = URL;
   }
 
   handleUrl(url: string) {
     this.showURLLink = !this.showURLLink;
-    this.imageRef.url = url;
+    this.layoutImage.content = url;
   }
 
   displayStatusMessage(message: string, messageType: messageTypes) {
@@ -220,17 +217,18 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   createRecord() {
-    let textAreas: IText[] = [];
-    let imageAreas: IImage[] = [];
-    textAreas.push(this.textRef);
-    imageAreas.push(this.imageRef);
+    // let textAreas: IText[] = [];
+    // let imageAreas: IImage[] = [];
+    // textAreas.push(this.textRef);
+    // imageAreas.push(this.imageRef);
+
     this.page = {
       uid: "",
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
-      textAreas: textAreas,
-      imageAreas: imageAreas
+      // textAreas: textAreas,
+      // imageAreas: imageAreas
     };
     this.pageService
       .addRecord(this.page)
