@@ -95,12 +95,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.setEdit();
         break;
       case "increaseFont":
-        this.textRef.size++;
-        this.layoutText.textStyles.size++;
+        parseInt(this.textRef["size"].value)+1;
+      
         break;
       case "decreaseFont":
-        this.textRef.size--;
-        this.layoutText.textStyles.size--;
+        parseInt(this.textRef["size"].value)-1;
+        
         break;
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
@@ -114,7 +114,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
       case "uploadClicked":
-        this.imageRef.url = "";
+        this.imageRef["url"] = "";
         this.ShowUploadImage = !this.ShowUploadImage;
         break;
       case "imageBackgroundColor":
@@ -122,18 +122,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
         break;
       case "imgDecreaseSize":
-        this.imageRef.height--;
-        this.imageRef.width--;
-        break;
+        parseInt(this.imageRef["height"])-1
+      
       case "imgIncreaseSize":
-        this.imageRef.height++;
-        this.imageRef.width--;
+        parseInt(this.imageRef["height"])+1;
+    
         break;
       case "imgLeft":
-        this.imageRef.position.left--;
+        parseInt(this.imageRef["left"]) - 1;
         break;
       case "imgRight":
-        this.imageRef.position.left++;
+        parseInt(this.imageRef["left"]) + 1;
         break;
       case "imgUp":
         this.imageRef.position.top--;
