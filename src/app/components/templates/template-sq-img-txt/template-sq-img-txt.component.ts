@@ -13,12 +13,12 @@ import {
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
 // interface intialisers
-import { textInitial } from "../../../../assets/data/interface-initialisers/textInitial";
-import { imageInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
+import { initTextStyles } from "../../../../assets/data/interface-initialisers/textInitial";
+import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
 // import { pageMasterInitial } from '../../../../assets/data/interface-initialisers/pageMasterInitial';
 // interfaces
-import { IImage } from "src/app/models/interfaces/image";
-import { IText } from "src/app/models/interfaces/text";
+// import { IImage } from "src/app/models/interfaces/image";
+// import { IText } from "src/app/models/interfaces/text";
 import { IStatusMessage,  messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
@@ -31,7 +31,7 @@ import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
 import { ILayout } from 'src/app/models/interfaces/layout';
-import { HtmlTags } from 'src/app/models/enums/htmlTags';
+// import { HtmlTags } from 'src/app/models/enums/htmlTags';
 import { initLayoutSqImgText, initLayoutSqImgImage, layoutInitial } from 'src/assets/data/interface-initialisers/layout-Initial';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 
@@ -81,8 +81,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutText: ILayout = initLayoutSqImgText();
   layoutImage: ILayout = initLayoutSqImgImage();
   //variables linked to the image
-  imageRef:ICssStyles[] = imageInitial;
-  textRef:ICssStyles[]  = textInitial;
+  imageRef:ICssStyles[] = initImageStylesInitial();
+  textRef:ICssStyles[]  = initTextStyles();
   page: IPage;
   path: string = "images/";
   clickevent: string;
@@ -227,6 +227,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
+      layout:
       // textAreas: textAreas,
       // imageAreas: imageAreas
     };
