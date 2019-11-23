@@ -13,13 +13,14 @@ import {
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
 // interface intialisers
-import { initTextStyles } from "../../../../assets/data/interface-initialisers/textInitial";
+import { initTextStylesInitial } from "../../../../assets/data/interface-initialisers/textInitial";
 import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
+import { initSqImgTxtPage } from "../../../../assets/data/interface-initialisers/page-square-image-text-initial";
 // import { pageMasterInitial } from '../../../../assets/data/interface-initialisers/pageMasterInitial';
 // interfaces
 // import { IImage } from "src/app/models/interfaces/image";
 // import { IText } from "src/app/models/interfaces/text";
-import { IStatusMessage,  messageTypes } from "../../../models/interfaces/status-message";
+import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
 // import { IPageMaster } from '../../../models/interfaces/pageMaster';
@@ -32,8 +33,9 @@ import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
 import { ILayout } from 'src/app/models/interfaces/layout';
 // import { HtmlTags } from 'src/app/models/enums/htmlTags';
-import { initLayoutSqImgText, initLayoutSqImgImage, layoutInitial } from 'src/assets/data/interface-initialisers/layout-Initial';
+import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTxtImageParent, initLayoutSquareImgTxtImageChild } from 'src/assets/data/interface-initialisers/layout-square-image-text-Initial';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
+import { config } from 'src/assets/data/config.ts/config';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -47,11 +49,32 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private pageService: PageTemplateService,
     private fontService: FontsService,
     private pageBuilder: PageBuilderService
-  ) {}
+  ) { }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.pageMaster = initSqImgTxtPage();
+    this.pageMasterLayout = initMasterPageLayout();
+    this.layoutText = initLayoutSquareImgTxtText();
+    this.layoutImageParent = initLayoutSquareImgTxtImageParent();
+    this.layoutImageChild = initLayoutSquareImgTxtImageChild();
+    this.imageStyles = initImageStylesInitial();
+    this.textStyles = initTextStylesInitial();
+    this.fontColor = this.getStyleValue(initTextStylesInitial(), "color");
+    this.fontBackgroundColor = this.getStyleValue(initTextStylesInitial(), "backgroundColor");
+    this.fontFamily = this.getStyleValue(initTextStylesInitial(), "font");
+    this.fontSize = this.getStyleValue(initTextStylesInitial(), "size");
+    this.fontHorizontalAlignment
+    this.fontVerticalAlignment
+    this.imageBackGroundColor  = this.getStyleValue(initImageStylesInitial(), "backgroundColor");
+    this.imageUrl = this.getStyleValue(initImageStylesInitial(), "url");
+    this.imageTop = this.getStyleValue(initImageStylesInitial(),"top");
+    this.imageLeft = this.getStyleValue(initImageStylesInitial(),"left");
+    this.imageHeight = this.getStyleValue(initImageStylesInitial(),"height");
+    this.imageWidth = this.getStyleValue(initImageStylesInitial(),"width");
 
-  pageTemplate: ILayout = layoutInitial;
+  }
+
+
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
   imgEditButtons: IIconButton[] = imgEditButtons;
@@ -70,7 +93,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   isEditingColor: boolean = false;
   isEditingBackgroundColor: boolean = false;
   isShowStatus: boolean = false;
-  ShowUploadImage: boolean = false;
+  showUploadImage: boolean = false;
   showURLLink: boolean = false;
   isEditingImageBackgroundColor: boolean = false;
   statusMessage: IStatusMessage = {
@@ -78,15 +101,31 @@ export class TemplateSqImgTxtComponent implements OnInit {
     messageType: messageTypes.warning
   };
 
-  layoutText: ILayout = initLayoutSqImgText();
-  layoutImage: ILayout = initLayoutSqImgImage();
+  pageMaster: IPage;
+  pageMasterLayout: ILayout;
+  layoutText: ILayout;
+  layoutImageParent: ILayout;
+  layoutImageChild: ILayout;
   //variables linked to the image
-  imageRef:ICssStyles[] = initImageStylesInitial();
-  textRef:ICssStyles[]  = initTextStyles();
-  page: IPage;
-  path: string = "images/";
-  clickevent: string;
+  imageStyles: ICssStyles[];
+  textStyles: ICssStyles[];
+  textStylesArray: ICssStyles[]; // directive  is bound to this array
+  path: string = config.imageFilePath;
+  clickevent: string;           // holds the value of the button that has been clicked
   isDirty: boolean = false;
+  fontFamily: ICssStyles;
+  fontSize: ICssStyles;
+  fontColor: ICssStyles;
+  fontBackgroundColor: ICssStyles;
+  fontVerticalAlignment: ICssStyles;
+  fontHorizontalAlignment: ICssStyles;
+  imageBackGroundColor:  ICssStyles;
+  imageUrl: ICssStyles;
+  imageTop: ICssStyles;
+  imageLeft: ICssStyles;
+  imageHeight: ICssStyles;
+  imageWidth: ICssStyles;
+
 
   handleClick(event) {
     this.isDirty = true;
@@ -95,12 +134,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.setEdit();
         break;
       case "increaseFont":
-        parseInt(this.textRef["size"].value)+1;
-      
+        this.fontSize.value = (parseInt(this.fontSize.value) + 1).toString();
         break;
       case "decreaseFont":
-        parseInt(this.textRef["size"].value)-1;
-        
+        this.fontSize.value = (parseInt(this.fontSize.value) - 1).toString();
         break;
       case "font":
         this.isShowFontPicker = !this.isShowFontPicker;
@@ -114,31 +151,32 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
       case "uploadClicked":
-        this.imageRef["url"] = "";
-        this.ShowUploadImage = !this.ShowUploadImage;
+        this.imageUrl.value = "";
+        this.showUploadImage = !this.showUploadImage;
         break;
       case "imageBackgroundColor":
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
         break;
       case "imgDecreaseSize":
-        parseInt(this.imageRef["height"])-1
-      
+        this.imageHeight.value = (parseInt(this.imageHeight.value) - 1).toString();
+        this.imageWidth.value = (parseInt(this.imageWidth.value) - 1).toString();
+        break;
       case "imgIncreaseSize":
-        parseInt(this.imageRef["height"])+1;
-    
+        this.imageWidth.value = (parseInt(this.imageWidth.value) + 1).toString();
+        this.imageHeight.value = (parseInt(this.imageHeight.value) + 1).toString();
         break;
       case "imgLeft":
-        parseInt(this.imageRef["left"]) - 1;
+        this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
         break;
       case "imgRight":
-        parseInt(this.imageRef["left"]) + 1;
+        this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
         break;
       case "imgUp":
-        this.imageRef.position.top--;
+        this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
         break;
       case "imgDown":
-        this.imageRef.position.top++;
+        this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
         break;
       case "urlClicked":
         this.showURLLink = true;
@@ -153,6 +191,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       default:
         this.clickevent = event;
+        if(event != undefined){
+          if(event.charAt(0) === "H"){
+            this.fontHorizontalAlignment.value = event.charAt(2);
+          }
+          if(event.charAt(0) === "V"){
+            this.fontVerticalAlignment.value = event.charAt(2);
+          }
+      }
     }
   }
 
@@ -167,7 +213,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.layoutText.styles["font"].value = font;
+    this.fontFamily.value = font;
   }
 
   setEdit() {
@@ -176,30 +222,35 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
   }
 
+  getStyleValue(stylesArray: ICssStyles[], styleTofind:string): ICssStyles {
+    return stylesArray.filter(style => style.pmStyleProperty === styleTofind)[0];
+  }
+
+
   setColor(color: string) {
     if (this.isEditingColor) {
-      this.layoutText.styles[color].value = color;
+      this.fontColor.value = color;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
-      this.layoutText.styles["backgroundColor"] = color;
+      this.fontBackgroundColor.value = color;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
-      this.layoutImage.styles["background-color"] = color;
+      this.imageBackGroundColor.value = color;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
   }
 
-  handleFileUploaded(URL: string) {
-    this.ShowUploadImage = !this.ShowUploadImage;
-    this.layoutImage.content = URL;
+  handleFileUploaded(url: string) {
+    this.showUploadImage = !this.showUploadImage;
+    this.imageUrl.value = url;
   }
 
   handleUrl(url: string) {
     this.showURLLink = !this.showURLLink;
-    this.layoutImage.content = url;
+    this.imageUrl.value = url;
   }
 
   displayStatusMessage(message: string, messageType: messageTypes) {
@@ -209,61 +260,77 @@ export class TemplateSqImgTxtComponent implements OnInit {
     setTimeout(() => { this.isShowStatus = false; alert('timeout expired'); }, 3000);
   }
 
+  buildStyleArrayText(): ICssStyles[] {
+    let styles: ICssStyles[] = [];
+    styles.push(this.fontColor);
+    styles.push(this.fontBackgroundColor);
+    styles.push(this.fontFamily);
+    styles.push(this.fontSize);
+    styles.push(this.fontVerticalAlignment);
+    styles.push(this.fontHorizontalAlignment);
+    return styles;
+  }
+
+  buildStyleArrayImage(): ICssStyles[]{
+    let styles: ICssStyles[] = [];
+    styles.push(this.imageHeight);
+    styles.push(this.imageWidth);
+    styles.push(this.imageLeft);
+    styles.push(this.imageTop);
+    styles.push(this.imageUrl);
+    return styles;
+
+  }
+
+  assemblePage(): ILayout {
+
+    this.layoutText.styles = this.buildStyleArrayText();
+    this.pageMasterLayout.children.push(this.layoutText);
+    this.layoutImageParent.styles.push(this.imageBackGroundColor)
+    this.layoutImageChild.styles = this.buildStyleArrayImage();
+    this.layoutImageParent.children.push(this.layoutImageChild);
+    this.pageMasterLayout.children.push(this.layoutImageParent);
+    return this.pageMasterLayout;
+  }
+
   savePage() {
-    if (this.page.uid != "") {
+    if (this.pageMaster.uid != "") {
       this.updateRecord();
     } else this.createRecord();
   }
 
   createRecord() {
-    // let textAreas: IText[] = [];
-    // let imageAreas: IImage[] = [];
-    // textAreas.push(this.textRef);
-    // imageAreas.push(this.imageRef);
-
-    this.page = {
+    this.pageMaster = {
       uid: "",
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
-      layout:
-      // textAreas: textAreas,
-      // imageAreas: imageAreas
+      layout: this.assemblePage()
     };
-    this.pageService
-      .addRecord(this.page)
+    this.pageService.addRecord(this.pageMaster)
       .then(result => {
         if (result.result) {
           this.isDirty = false;
-          this.page.id = result.msg;
+          this.pageMaster.id = result.msg;
           this.displayStatusMessage("Content saved", messageTypes.information);
-
         } else {
           this.displayStatusMessage(`Error: ${result.message}`, messageTypes.warning);
-
         }
       })
       .catch(err => {
         this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
       });
   }
+
   // update the record in fireBase
   updateRecord() {
-    let textAreas: IText[] = [];
-    let imageAreas: IImage[] = [];
-    textAreas.push(this.layoutText.textStyles);
-    imageAreas.push(this.imageRef);
-
-    this.page.imageAreas = imageAreas;
-    this.page.textAreas = textAreas;
-
-    this.pageService
-      .updateRecord(this.page)
+    this.pageMaster.layout = this.assemblePage();
+    this.pageService.updateRecord(this.pageMaster)
       .then(res => {
         this.displayStatusMessage("Record Updated", messageTypes.information);
-
       })
-      .catch(err => {console.log(err)
+      .catch(err => {
+        console.log(err)
         this.displayStatusMessage(err.message, messageTypes.error)
       });
   }
@@ -273,24 +340,24 @@ export class TemplateSqImgTxtComponent implements OnInit {
       let page = result[0];
       console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page", page)
       this.fontService.getFontNames();
-      this.imageRef = page.imageAreas[0];
-      console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> layoutImage", this.layoutImage)
-      console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page.imageAreas[0]", page.imageAreas[0])
-      this.layoutText.textStyles = page.textAreas[0];
-      this.page = page;
+      // this.imageStyles = page.imageAreas[0];
+
+      // console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page.imageAreas[0]", page.imageAreas[0])
+      // this.layoutText.textStyles = page.textAreas[0];
+      // this.page = page;
     });
   }
 
   publish() {
-    console.log("Ipage=", this.page, "pageTemplate=", this.pageTemplate);
-    this.pageTemplate.children = [];
-    this.pageTemplate.children.push(this.layoutText);
-    this.pageTemplate.children.push(this.layoutImage);
-    this.pageBuilder.createPage(this.page, this.pageTemplate)
-    .then(result => {
-      this.statusMessage = result;
-      this.isShowStatus = true;
+    // console.log("Ipage=", this.pageMaster, "pageTemplate=", this.pageTemplate);
+    // this.pageTemplate.children = [];
+    // this.pageTemplate.children.push(this.layoutText);
+    // this.pageTemplate.children.push(this.layoutImage);
+    // this.pageBuilder.createPage(this.page, this.pageTemplate)
+    // .then(result => {
+    //   this.statusMessage = result;
+    //   this.isShowStatus = true;
 
-    })
+    // })
   }
 }

@@ -16,5 +16,4 @@ export interface IPage {
   // textAreas: IText[], //stores the formating and content for each text area element
   // imageAreas: IImage[] // stores the formatting and content for each page area element
   layout: ILayout,
-  
 }

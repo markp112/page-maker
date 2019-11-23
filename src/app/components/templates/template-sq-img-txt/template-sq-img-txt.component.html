@@ -25,11 +25,11 @@
         </div>
       </div>
     </div>
-    <div class="image-area" [ngStyle]="{'backgroundColor':imageRef.backgroundColor}">
+    <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}">
       <div>
-        <img [src]="imageRef.url" alt=""  appImageFormatter  [height]="imageRef.height" [width]="imageRef.width" [left]="imageRef.position.left" [top]="imageRef.position.top">
+        <img [src]="imageUrl.value" alt=""  appImageFormatter  [height]="imageHeight.value" [width]="imageWidth.value" [left]="imageLeft.value" [top]="imageTop.value">
       </div>
-      <div class="img-upload-buttons-wrapper" *ngIf="ShowUploadImage">
+      <div class="img-upload-buttons-wrapper" *ngIf="showUploadImage">
         <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)"></app-file-upload>
       </div>
       <div class="img-url-wrapper" *ngIf="showURLLink" >
@@ -38,23 +38,22 @@
     </div>
     <div class="text-area"
       appTextFormatter
+      [fontSize]="fontSize.value"
+      [fontFamily]="fontFamily.value"
+      [foreColor]="fontColor.value"
+      [backColor]="fontBackgroundColor.value"
       [textEvent]="clickevent"
       [isEditingText]="showTextEditor"
-      [fontSize]="layoutText.textStyles.size"
-      [fontFamily]="layoutText.textStyles.font"
-      [foreColor]="layoutText.textStyles.color"
-      [backColor]="layoutText.textStyles.backgroundColor"
-      [horizontalAlignment]="layoutText.textStyles.horizontalAlignment"
-      [verticalAlignment]="layoutText.textStyles.verticalAlignment"
+
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
-      {{ layoutText.textStyles.content }}
+      {{ layoutText.content }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>
         </div>
     </div>
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
-        [textContent]="this.layoutText.textStyles.content"></app-text-input>
+        [textContent]="this.layoutText.content"></app-text-input>
     </div>
   </div>
   <app-status-message [message]='statusMessage' *ngIf="isShowStatus"></app-status-message>

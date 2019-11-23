@@ -1,25 +1,29 @@
-import { ILayout, ITextLayout, IImageLayout } from "src/app/models/interfaces/layout";
+import { ILayout } from "src/app/models/interfaces/layout";
 import { HtmlTags } from "src/app/models/enums/htmlTags";
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 import { initImageStylesInitial } from 'src/assets/data/interface-initialisers/imageInitial';
-import { initTextStyles } from 'src/assets/data/interface-initialisers/textInitial';
+import { initTextStylesInitial } from 'src/assets/data/interface-initialisers/textInitial';
 
-export const layoutInitial: ILayout = {
-  htmlTag: HtmlTags.section,
-  cssClass: `display: grid;
-        grid-template-columns: 6fr 6fr;
-        grid-template-rows: 1.5fr 0.25fr 5fr;
-        grid-template-areas:  ". ."
-                              "toolbar toolbar"
-                              "image-area text-area";
-      `,
-  className: `template-sq-img-txt`,
-  styles: [],
-  children: []
-};
+const initMasterPageLayout =() =>{
+    let layout: ILayout = {
+    htmlTag: HtmlTags.section,
+    cssClass: `display: grid;
+          grid-template-columns: 6fr 6fr;
+          grid-template-rows: 1.5fr 0.25fr 5fr;
+          grid-template-areas:  ". ."
+                                "toolbar toolbar"
+                                "image-area text-area";
+        `,
+    className: `template-sq-img-txt`,
+    content:"",
+    styles: [],
+    children: []
+  };
+return layout;
+}
 
 ///layout elements for text
-const initLayoutSqImgText = (): ILayout => {
+const initLayoutSquareImgTxtText = (): ILayout => {
 
   const layoutSqImgText: ILayout = {
     cssClass: `grid-area: text-area;
@@ -29,15 +33,16 @@ const initLayoutSqImgText = (): ILayout => {
               display: flex;
               flex-direction: column;`,
     htmlTag: HtmlTags.div,
+    content:"",
     className: `text-area`,
-    styles: [] = initTextStyles(),
+    styles: [] = initTextStylesInitial(),
     children: [],
   };
   return layoutSqImgText;
 }
 
 // parent wrapper for image
-const initLayoutSqImgImage = (): ILayout => {
+const initLayoutSquareImgTxtImageParent = (): ILayout => {
   const layoutSqImgImage: ILayout = {
     cssClass: ` grid-area: image-area;
                 width: 100%;
@@ -56,8 +61,10 @@ const initLayoutSqImgImage = (): ILayout => {
   };
   let backgroundColor: ICssStyles = { styleTag: "background-color", pmStyleProperty: "backgroundColor", value:"rgba(241,242,244,1)" };
   layoutSqImgImage.styles.push(backgroundColor);
-
-  // initial data for the image element
+  return layoutSqImgImage;
+}
+  // initial data for the image element#
+  const initLayoutSquareImgTxtImageChild=()=>{
   let imageLayout: ILayout = {
     cssClass: `img {
         display: block;
@@ -74,13 +81,14 @@ const initLayoutSqImgImage = (): ILayout => {
     styles: [] = initImageStylesInitial(),
     content:"",
     children: [],
-    
+
   }
-  layoutSqImgImage.children.push(imageLayout);
-  return layoutSqImgImage;
+    return imageLayout;
 }
 
 export {
-  initLayoutSqImgText,
-  initLayoutSqImgImage
+  initMasterPageLayout,
+  initLayoutSquareImgTxtText,
+  initLayoutSquareImgTxtImageParent,
+  initLayoutSquareImgTxtImageChild
 }

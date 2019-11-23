@@ -1,7 +1,7 @@
 import { HtmlTags } from '../enums/htmlTags';
 import { ICssStyles } from './cssStyle';
-import { IText } from './text';
-import { IImage } from './Image';
+// import { IText } from './text';
+// import { IImage } from './Image';
 
 export interface ILayout {
     htmlTag: HtmlTags;    // html tag for this element

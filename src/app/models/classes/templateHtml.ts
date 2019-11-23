@@ -1,5 +1,5 @@
 import { HtmlTags } from '../enums/htmlTags';
-import { ILayout, IImageLayout, ITextLayout } from '../interfaces/layout';
+import { ILayout } from '../interfaces/layout';
 import { Content } from '@angular/compiler/src/render3/r3_ast';
 
 export class HtmlBuilder {
@@ -26,7 +26,7 @@ export class HtmlBuilder {
             let cssLink: string = this.createStyleSheetLinks(cssFileName);
             let pageTitle: string = `<title>${this._pageTitle}</title>`;
             let fontLinks: string = this.getFontLinks(pageLayout);
-            
+
             // At present only expecting div for the page master layout
             tag = this.getTagAsHtml(pageLayout.htmlTag, pageLayout.className, false);
             tag += '>'  // close out the tag as not expecting this to be a tag needing additional attributes
@@ -40,7 +40,7 @@ export class HtmlBuilder {
             reject(error);
           }
         })
-      
+
     }
     // insert links to CSS file
     createStyleSheetLinks(cssFileName: string): string {
@@ -54,15 +54,7 @@ export class HtmlBuilder {
       return link;
     }
 
-    private isTextStyle(styleLayout: ILayout | IImageLayout | ITextLayout): styleLayout is ITextLayout {
-      return (styleLayout as ITextLayout).textStyles !== undefined;
-    }
-
-    private isImageStyle(styleLayout: ILayout | IImageLayout | ITextLayout): styleLayout is IImageLayout {
-      return (styleLayout as IImageLayout).imageStyles !== undefined;
-    }
-
-    // based on the enum for the Html tag convert this into actual
+     // based on the enum for the Html tag convert this into actual
     // html tag with the tag left open so other attributes can be added if needed
     private getTagAsHtml(tag: HtmlTags, className: string, isClosingTag: boolean): string {
       let htmlElement: string;
@@ -97,50 +89,51 @@ export class HtmlBuilder {
     private processChildFonts(layout: ILayout[]): string {
       let fontName: string = '';
       let fontLink: string = '';
-      layout.forEach(element =>{
-        if(this.isTextStyle(element)){
-          if(element.textStyles["font"] !== ''){ 
-            fontName = element.textStyles["font"];
-            fontLink +=`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
-          }
-        }
-        if(element.children.length > 0) fontLink += this.processChildFonts(element.children);
-      })
-      return fontLink;
+      // layout.forEach(element =>{
+
+          // if(element.textStyles["font"] !== ''){
+          //   fontName = element.textStyles["font"];
+          //   fontLink +=`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
+          // }
+        // }
+        // if(element.children.length > 0) fontLink += this.processChildFonts(element.children);
+      // })
+      // return fontLink;
+      return ""
     }
 
     private processChildElements(childElements: ILayout[]): string {
         let content: string='';
-        childElements.forEach(element => {
-            if(this.isTextStyle(element)){
-              content += this.processTextElement(element)
-            }
-            if(this.isImageStyle(element)){
-              content += this.processImageElement(element)
-            }
-            if(element.children.length > 0) content += this.processChildElements(element.children);
-        });
+        // childElements.forEach(element => {
+        //     if(this.isTextStyle(element)){
+        //       content += this.processTextElement(element)
+        //     }
+        //     if(this.isImageStyle(element)){
+        //       content += this.processImageElement(element)
+        //     }
+        //     if(element.children.length > 0) content += this.processChildElements(element.children);
+        // });
         return content;
     }
 
-    private processTextElement(element: ITextLayout): string {
+    private processTextElement(element: ILayout): string {
       let content: string;
       content = this.getTagAsHtml(element.htmlTag, element.className, false);
       content += '>'
-      content += element.textStyles["content"];
+      // content += element.textStyles["content"];
       content += this.getTagAsHtml(element.htmlTag, '', true);
       content += '>'
       return content;
     }
 
-    private processImageElement(element: IImageLayout): string {
+    private processImageElement(element: ILayout): string {
     console.log("TCL: HtmlBuilder -> element", element)
       let content: string = '';
       content += this.getTagAsHtml(element.htmlTag, element.className, false);
-      if(element.htmlTag === HtmlTags.img) {
-        content += element.imageStyles.url;
-      }
-      content += '>'
+      // if(element.htmlTag === HtmlTags.img) {
+      //   content += element.imageStyles.url;
+      // }
+      // content += '>'
       content += this.getTagAsHtml(element.htmlTag, '', true);
       content += '>'
       return content;

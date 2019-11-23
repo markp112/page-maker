@@ -22,6 +22,8 @@ import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 
 export const initImageStylesInitial = (): ICssStyles[] => {
   let styles: ICssStyles[] = [];
+  let backgroundColor: ICssStyles = {"styleTag": "background-color", pmStyleProperty:"backgroundColor", value: "rgba(38,1,89, 1)"}
+  let url:  ICssStyles = {"styleTag": "url", pmStyleProperty:"url", value: "../../../../assets/images/placeholder-image.png"}
   let height: ICssStyles = {
     styleTag: "height",
     pmStyleProperty: "height",
@@ -42,5 +44,7 @@ export const initImageStylesInitial = (): ICssStyles[] => {
   styles.push(width);
   styles.push(top);
   styles.push(left);
+  styles.push(backgroundColor);
+  styles.push(url);
   return styles;
 };

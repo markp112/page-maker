@@ -17,7 +17,7 @@ import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 //   content:""
 // }
 
-export const initTextStyles = (): ICssStyles[] => {
+export const initTextStylesInitial = (): ICssStyles[] => {
   let textElements: ICssStyles[] = [];
   let color: ICssStyles = {
     styleTag: "color",
