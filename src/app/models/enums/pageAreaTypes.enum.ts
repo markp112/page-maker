@@ -1,4 +1,5 @@
-export enum PageAreaTypes {
+export enum PageAreaTypesEnum {
   textArea,
-  imageArea
+  imageArea,
+  masterPageTemplate,
 }

@@ -1,10 +1,11 @@
-import { HtmlTags } from '../enums/htmlTags';
+import { HtmlTagsEnum } from '../enums/htmlTags';
 import { ILayout } from '../interfaces/layout';
-import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { cssStyleEnum } from '../enums/cssStylesEnum';
+import { ICssStyles } from '../interfaces/cssStyle';
+
 
 export class HtmlBuilder {
-    _pageTitle: string; // title for the top of the page
-
+    private _pageTitle: string; // title for the top of the page
 
     constructor(pageTitle: string){
         this._pageTitle = pageTitle;
@@ -18,8 +19,7 @@ export class HtmlBuilder {
 
     //extract the html tags from the page layout along with the content and construct the html
     //for the page
-    buildHtml(pageLayout: ILayout, cssFileName: string): Promise<any> {
-        let tag: string;
+   public buildHtml(pageLayout: ILayout, cssFileName: string): Promise<any> {
         let page: string;
         return new Promise ((resolve, reject)=>{
           try {
@@ -28,22 +28,17 @@ export class HtmlBuilder {
             let fontLinks: string = this.getFontLinks(pageLayout);
 
             // At present only expecting div for the page master layout
-            tag = this.getTagAsHtml(pageLayout.htmlTag, pageLayout.className, false);
-            tag += '>'  // close out the tag as not expecting this to be a tag needing additional attributes
-            let content: string = this.processChildElements(pageLayout.children)
-            tag += content + this.getTagAsHtml(pageLayout.htmlTag, '', true);
-            tag += '>'
+            let pageHtmlContent = this.getHTMLforPage(pageLayout);
             page = `${this.docHead}${this.pageHead}${pageTitle}${cssLink}${fontLinks}</head>`;
-            page += `${this.bodyStart}${tag}${this.bodyEnd}${this.closingTag}`;
+            page += `${this.bodyStart}${pageHtmlContent}${this.bodyEnd}${this.closingTag}`;
             resolve(page);
           } catch (error) {
             reject(error);
           }
         })
-
     }
     // insert links to CSS file
-    createStyleSheetLinks(cssFileName: string): string {
+    private createStyleSheetLinks(cssFileName: string): string {
       let link: string;
       link =`<link
           rel="stylesheet"
@@ -54,88 +49,48 @@ export class HtmlBuilder {
       return link;
     }
 
-     // based on the enum for the Html tag convert this into actual
-    // html tag with the tag left open so other attributes can be added if needed
-    private getTagAsHtml(tag: HtmlTags, className: string, isClosingTag: boolean): string {
-      let htmlElement: string;
-      if(isClosingTag) htmlElement = "</"; else htmlElement = "<";
-      switch (tag) {
-            case HtmlTags.div:
-              htmlElement += 'div';
-              break;
-            case HtmlTags.img:
-              htmlElement += 'img'
-              break;
-            case HtmlTags.section:
-              htmlElement += 'section'
-              break;
-            default:
-              htmlElement = "";
-        }
-        if(className) htmlElement +=` class="${className}"`;
-        return htmlElement;
+    private getTag(htmlTag: HtmlTagsEnum): string{
+        switch (htmlTag) {
+        case HtmlTagsEnum.section:
+          return 'section';
+        case HtmlTagsEnum.div:
+            return 'div';
+        case HtmlTagsEnum.img:
+            return 'img';
+        default:
+          return "";
+      }
     }
+
+    private getHtmlTagOpen (htmlTag: HtmlTagsEnum): string {
+      return `<${this.getTag(htmlTag)}`;
+    }
+
+    private getHtmlTagClose (htmlTag: HtmlTagsEnum): string {
+      return `</${this.getTag(htmlTag)}>`;
+    }
+
+    private getImageTagUrlFromStyles(styles: ICssStyles[]): string {
+      return ` src="${styles.filter(style => style.pmStyleProperty === cssStyleEnum.url)[0].value}"`
+    }
+
+    private getHTMLforPage(layout:ILayout): string {
+      let html: string = "";
+      html = this.getHtmlTagOpen(layout.htmlTag);
+      if(layout.className !== "") html += `class="${layout.className}"`;
+      if(layout.htmlTag === HtmlTagsEnum.img) html += this.getImageTagUrlFromStyles(layout.styles);
+      html += ">"
+      if(layout.content !== "") html += layout.content;
+      html += this.getHtmlTagClose(layout.htmlTag);
+      return html;
+    }
+
     private getFontLinks(layout: ILayout): string {
       let fontName: string;
       let fontLink: string = '';
-      if(layout.styles["font"] !== '') {
-          fontName = layout.styles["font"];
-          fontLink =`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
-      }
-      fontLink += this.processChildFonts(layout.children);
+      fontName = layout.styles.filter(style => style.pmStyleProperty === cssStyleEnum.fontFamily)[0].value
+      if (fontName !== '') fontLink =`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
+      layout.children.forEach(layout => fontLink += this.getFontLinks(layout));
       return fontLink;
     }
-
-    private processChildFonts(layout: ILayout[]): string {
-      let fontName: string = '';
-      let fontLink: string = '';
-      // layout.forEach(element =>{
-
-          // if(element.textStyles["font"] !== ''){
-          //   fontName = element.textStyles["font"];
-          //   fontLink +=`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
-          // }
-        // }
-        // if(element.children.length > 0) fontLink += this.processChildFonts(element.children);
-      // })
-      // return fontLink;
-      return ""
-    }
-
-    private processChildElements(childElements: ILayout[]): string {
-        let content: string='';
-        // childElements.forEach(element => {
-        //     if(this.isTextStyle(element)){
-        //       content += this.processTextElement(element)
-        //     }
-        //     if(this.isImageStyle(element)){
-        //       content += this.processImageElement(element)
-        //     }
-        //     if(element.children.length > 0) content += this.processChildElements(element.children);
-        // });
-        return content;
-    }
-
-    private processTextElement(element: ILayout): string {
-      let content: string;
-      content = this.getTagAsHtml(element.htmlTag, element.className, false);
-      content += '>'
-      // content += element.textStyles["content"];
-      content += this.getTagAsHtml(element.htmlTag, '', true);
-      content += '>'
-      return content;
-    }
-
-    private processImageElement(element: ILayout): string {
-    console.log("TCL: HtmlBuilder -> element", element)
-      let content: string = '';
-      content += this.getTagAsHtml(element.htmlTag, element.className, false);
-      // if(element.htmlTag === HtmlTags.img) {
-      //   content += element.imageStyles.url;
-      // }
-      // content += '>'
-      content += this.getTagAsHtml(element.htmlTag, '', true);
-      content += '>'
-      return content;
-    }
-}
+  }

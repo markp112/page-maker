@@ -16,4 +16,4 @@ export interface ITextAlignment {
   horizontalAlignment: textHorizontalAlignment,
   verticalAlignment: textVerticalAlignment,
 
-  }
+}

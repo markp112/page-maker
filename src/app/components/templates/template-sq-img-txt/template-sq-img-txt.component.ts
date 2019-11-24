@@ -16,15 +16,10 @@ import {
 import { initTextStylesInitial } from "../../../../assets/data/interface-initialisers/textInitial";
 import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
 import { initSqImgTxtPage } from "../../../../assets/data/interface-initialisers/page-square-image-text-initial";
-// import { pageMasterInitial } from '../../../../assets/data/interface-initialisers/pageMasterInitial';
-// interfaces
-// import { IImage } from "src/app/models/interfaces/image";
-// import { IText } from "src/app/models/interfaces/text";
 import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
-// import { IPageMaster } from '../../../models/interfaces/pageMaster';
-import { PageAreaTypes } from '../../../models/enums/pageAreaTypes.enum';
+import { PageAreaTypesEnum } from '../../../models/enums/pageAreaTypes.enum';
 import { pageLayoutTypes } from 'src/app/models/enums/pageLayouts.enum';
 import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
 // services
@@ -32,10 +27,10 @@ import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
 import { ILayout } from 'src/app/models/interfaces/layout';
-// import { HtmlTags } from 'src/app/models/enums/htmlTags';
 import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTxtImageParent, initLayoutSquareImgTxtImageChild } from 'src/assets/data/interface-initialisers/layout-square-image-text-Initial';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 import { config } from 'src/assets/data/config.ts/config';
+import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -59,18 +54,18 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
     this.imageStyles = initImageStylesInitial();
     this.textStyles = initTextStylesInitial();
-    this.fontColor = this.getStyleValue(initTextStylesInitial(), "color");
-    this.fontBackgroundColor = this.getStyleValue(initTextStylesInitial(), "backgroundColor");
-    this.fontFamily = this.getStyleValue(initTextStylesInitial(), "font");
-    this.fontSize = this.getStyleValue(initTextStylesInitial(), "size");
-    this.fontHorizontalAlignment
-    this.fontVerticalAlignment
-    this.imageBackGroundColor  = this.getStyleValue(initImageStylesInitial(), "backgroundColor");
-    this.imageUrl = this.getStyleValue(initImageStylesInitial(), "url");
-    this.imageTop = this.getStyleValue(initImageStylesInitial(),"top");
-    this.imageLeft = this.getStyleValue(initImageStylesInitial(),"left");
-    this.imageHeight = this.getStyleValue(initImageStylesInitial(),"height");
-    this.imageWidth = this.getStyleValue(initImageStylesInitial(),"width");
+    this.fontColor = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.color);
+    this.fontBackgroundColor = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.backgroundColor);
+    this.fontFamily = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.fontFamily);
+    this.fontSize = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.fontSize);
+    this.fontHorizontalAlignment = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.horizontalAlignment);
+    this.fontVerticalAlignment = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.verticalAlignment);
+    this.imageBackGroundColor = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.backgroundColor);
+    this.imageUrl = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.url);
+    this.imageTop = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.top);
+    this.imageLeft = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.left);
+    this.imageHeight = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.height);
+    this.imageWidth = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.width);
 
   }
 
@@ -119,7 +114,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   fontBackgroundColor: ICssStyles;
   fontVerticalAlignment: ICssStyles;
   fontHorizontalAlignment: ICssStyles;
-  imageBackGroundColor:  ICssStyles;
+  imageBackGroundColor: ICssStyles;
   imageUrl: ICssStyles;
   imageTop: ICssStyles;
   imageLeft: ICssStyles;
@@ -173,13 +168,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
         break;
       case "imgUp":
-        this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
+        this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
         break;
       case "imgDown":
-        this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
+        this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
         break;
       case "urlClicked":
         this.showURLLink = true;
+        break;
       case "saveClicked":
         this.savePage();
         break;
@@ -191,14 +187,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       default:
         this.clickevent = event;
-        if(event != undefined){
-          if(event.charAt(0) === "H"){
+        if (event != undefined) {
+          if (event.charAt(0) === "H") {
             this.fontHorizontalAlignment.value = event.charAt(2);
           }
-          if(event.charAt(0) === "V"){
+          if (event.charAt(0) === "V") {
             this.fontVerticalAlignment.value = event.charAt(2);
           }
-      }
+        }
     }
   }
 
@@ -222,7 +218,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
   }
 
-  getStyleValue(stylesArray: ICssStyles[], styleTofind:string): ICssStyles {
+  getStyleValue(stylesArray: ICssStyles[], styleTofind: cssStyleEnum): ICssStyles {
     return stylesArray.filter(style => style.pmStyleProperty === styleTofind)[0];
   }
 
@@ -271,7 +267,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     return styles;
   }
 
-  buildStyleArrayImage(): ICssStyles[]{
+  buildStyleArrayImage(): ICssStyles[] {
     let styles: ICssStyles[] = [];
     styles.push(this.imageHeight);
     styles.push(this.imageWidth);
@@ -283,8 +279,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   assemblePage(): ILayout {
-
     this.layoutText.styles = this.buildStyleArrayText();
+    this.pageMasterLayout.children = [];
     this.pageMasterLayout.children.push(this.layoutText);
     this.layoutImageParent.styles.push(this.imageBackGroundColor)
     this.layoutImageChild.styles = this.buildStyleArrayImage();
@@ -335,29 +331,77 @@ export class TemplateSqImgTxtComponent implements OnInit {
       });
   }
 
+  getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
+    styles.forEach(style => {
+      switch (style.pmStyleProperty) {
+        case cssStyleEnum.backgroundColor:
+          if (layoutType === PageAreaTypesEnum.imageArea) this.imageBackGroundColor = style
+          else this.fontBackgroundColor = style;
+          break;
+        case cssStyleEnum.color:
+          this.fontColor = style;
+          break;
+        case cssStyleEnum.fontFamily:
+          this.fontFamily = style;
+          break;
+        case cssStyleEnum.fontSize:
+          this.fontSize = style;
+          break;
+        case cssStyleEnum.height:
+          this.imageHeight = style;
+          break;
+        case cssStyleEnum.horizontalAlignment:
+          this.fontHorizontalAlignment = style;
+          break;
+        case cssStyleEnum.left:
+          this.imageLeft = style;
+          break;
+        case cssStyleEnum.top:
+          this.imageTop = style;
+          break;
+        case cssStyleEnum.url:
+          this.imageUrl = style;
+          break;
+        case cssStyleEnum.verticalAlignment:
+          this.fontVerticalAlignment = style;
+          break;
+        case cssStyleEnum.width:
+          this.imageWidth = style;
+          break;
+      }
+    })
+
+  }
+
+  processLayoutContent(layouts: ILayout[]): void {
+    layouts.forEach(childLayout => {
+      this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType)
+      if (childLayout.layoutType === PageAreaTypesEnum.textArea) this.layoutText.content = childLayout.content;
+      if (childLayout.children.length > 0) this.processLayoutContent(childLayout.children);
+    })
+  }
+
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
-      let page = result[0];
-      console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page", page)
+      let page: IPage = result[0];
+      this.pageMaster = page;
       this.fontService.getFontNames();
-      // this.imageStyles = page.imageAreas[0];
-
-      // console.log("TCL: TemplateSqImgTxtComponent -> getTemplate -> page.imageAreas[0]", page.imageAreas[0])
-      // this.layoutText.textStyles = page.textAreas[0];
-      // this.page = page;
-    });
+      this.processLayoutContent(page.layout.children);
+    })
   }
 
   publish() {
-    // console.log("Ipage=", this.pageMaster, "pageTemplate=", this.pageTemplate);
-    // this.pageTemplate.children = [];
-    // this.pageTemplate.children.push(this.layoutText);
-    // this.pageTemplate.children.push(this.layoutImage);
-    // this.pageBuilder.createPage(this.page, this.pageTemplate)
-    // .then(result => {
-    //   this.statusMessage = result;
-    //   this.isShowStatus = true;
-
-    // })
+    console.log("Ipage=", this.pageMaster );
+    let pageLayout: ILayout = this.assemblePage();
+    this.pageMaster.layout = pageLayout;
+    this.pageBuilder.createPage(this.pageMaster, "main.css")
+    .then( result => {
+      this.statusMessage = result;
+      this.isShowStatus;
+    })
+    .catch(err =>  {
+      this.statusMessage = err;
+      this.isShowStatus;
+    });
   }
 }

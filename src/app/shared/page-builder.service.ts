@@ -11,7 +11,13 @@ import {
 import { FireStorageService } from '../shared/fire-storage.service'
 import { IStatusMessage } from '../models/interfaces/status-message';
 import { HtmlBuilder } from '../models/classes/templateHtml';
-import { resolve } from 'q';
+import { HtmlTagsEnum } from '../models/enums/htmlTags';
+import { Content } from '@angular/compiler/src/render3/r3_ast';
+import { ICssStyles } from '../models/interfaces/cssStyle';
+import { cssStyleEnum } from '../models/enums/cssStylesEnum';
+import { ITextAlignment } from '../models/interfaces/text';
+
+
 
 @Injectable({
   providedIn: "root"
@@ -19,36 +25,51 @@ import { resolve } from 'q';
 export class PageBuilderService {
   constructor(private fireStorage: FireStorageService) { }
 
-
+  private cssContent: string;
+  private htmlContent: string;
 
   //todo - Add a property for the filename and path
-  createPage(pageData: IPage, pageLayout: ILayout): Promise<IStatusMessage> {
+  createPage(pageData: IPage, cssFileName: string): Promise<IStatusMessage> {
+    let pageLayout: ILayout = pageData.layout;
     let css: string = "";
-    if (pageLayout.className !== "") {
-      css = `.${pageLayout.className} \{${pageLayout.cssClass}`;
-    } else css = pageLayout.cssClass;
+    this.createPageLayout(pageLayout)
+
 
     return new Promise((resolve, reject) => {
       css += this.processChildren(pageLayout.children);
       this.writeCSS(css)
       .then(result => {
-          this.buildHtml(pageLayout, "main.css")
-          .then(Htmlpage =>{
+          this.buildHtml(pageLayout, cssFileName)
+          .then(Htmlpage => {
             //write Html Page to file
             this.writeHTML(Htmlpage)
-            .then (result =>resolve(result) )
-
+            .then (result => resolve(result))
           })
-
         })
       .catch(err => reject(err));
   })
 }
 
-  buildHtml(layouts: ILayout, cssFileName: string):Promise<string> {
-    let htmlBuilder: HtmlBuilder = new HtmlBuilder('Test Page');
-    let htmlContent: string;
 
+getCssClass(layout:ILayout): string {
+  let className: string = "";
+  if(layout.className != "") className = `.${layout.className}\{${layout.cssClass}`
+  if(layout.styles.length > 0 && className !=="") {
+    layout.styles.forEach(style => {
+      if (style.pmStyleProperty == cssStyleEnum.horizontalAlignment) className += `${style.styleTag}:${this.getHorizontalAlignment(style.value)};`
+      className += `${style.styleTag}:${style.value};`
+    });
+  }
+  if(className !== "") className += "}";
+  return className;
+}
+
+createPageLayout(pageLayout: ILayout){
+  this.cssContent += this.getCssClass(pageLayout);
+}
+
+buildHtml(layouts: ILayout, cssFileName: string):Promise<string> {
+    let htmlBuilder: HtmlBuilder = new HtmlBuilder('Test Page');
     return new Promise((resolve, reject) => {
       htmlBuilder.buildHtml(layouts,cssFileName)
       .then(htmlContent => resolve(htmlContent));
@@ -57,56 +78,9 @@ export class PageBuilderService {
 
   }
 
-  processTextStyles(layout: ILayout): string {
-    let css: string = "";
-    if (layout.className !== "") css = `.${layout.className} \{${layout.cssClass}`;
-    else css = layout.cssClass;
-    layout.styles.forEach(style => {
-      switch (style.styleTag) {
-        case "text-align":
-          // css += `${this.getHorizontalAlignment(layout.textStyles[style.pmStyleProperty])};`;
-          break;
-        case "justify-content":
-          // css += `${this.getVerticalAlignment(layout.textStyles[style.pmStyleProperty])};`;
-          break;
-        default:
-          // css += `${style.styleTag}:${layout.textStyles[style.pmStyleProperty]};`;
-      }
-    })
-    css += "}";
-    return css;
-  }
 
-  processImageStyles(layout: ILayout): string {
-    let css: string = "";
-    if (layout.className !== "") {
-      css = `.${layout.className} \{${layout.cssClass}`
-    } else css = layout.cssClass;
-    layout.styles.forEach(style => {
-      if (style.styleTag === "top" || style.styleTag === "left") {
-        // css += `${style.styleTag}:${layout.imageStyles["position"][style.pmStyleProperty]};`;
-      } else {
-        // css += `${style.styleTag}:${layout.imageStyles[style.pmStyleProperty]};`;
-      }
-    })
-    css += "}";
-    return css;
-  }
-
-  processChildren(children: ILayout[]): string {
-    let css = "";
-    children.forEach(child => {
-      // if (this.isTextStyle(child)) {
-      //   css += this.processTextStyles(child);
-      // } else if (this.isImageStyle(child)) {
-      //   css += this.processImageStyles(child);
-      // }
-      if (child.children.length > 0) css += this.processChildren(child.children);
-    });
-    return css;
-  }
-
-  private getHorizontalAlignment(horizontalAlignment: textHorizontalAlignment) {
+  private getHorizontalAlignment(value: string) {
+    let horizontalAlignment: ITextAlignment = ITextAlignment[parseInt(value)]
     switch (horizontalAlignment) {
       case textHorizontalAlignment.alignLeft:
         return "text-align:left";

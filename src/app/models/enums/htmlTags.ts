@@ -1,4 +1,4 @@
-export enum HtmlTags {
+export enum HtmlTagsEnum {
     empty,
     div,
     img,

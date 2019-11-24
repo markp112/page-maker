@@ -1,6 +1,6 @@
-import { PageAreaTypes } from '../enums/pageAreaTypes.enum';
+import { PageAreaTypesEnum } from '../enums/pageAreaTypes.enum';
 
 export interface IPageAreas {
-  areaType: PageAreaTypes;
+  areaType: PageAreaTypesEnum;
   areaName: string;
 }

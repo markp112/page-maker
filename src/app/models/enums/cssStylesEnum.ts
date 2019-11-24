@@ -11,5 +11,5 @@ export enum cssStyleEnum{
   horizontalAlignment,
   verticalAlignment,
   justify,
-
+  url
 }
