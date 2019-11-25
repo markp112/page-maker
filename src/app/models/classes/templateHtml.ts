@@ -26,8 +26,6 @@ export class HtmlBuilder {
             let cssLink: string = this.createStyleSheetLinks(cssFileName);
             let pageTitle: string = `<title>${this._pageTitle}</title>`;
             let fontLinks: string = this.getFontLinks(pageLayout);
-
-            // At present only expecting div for the page master layout
             let pageHtmlContent = this.getHTMLforPage(pageLayout);
             page = `${this.docHead}${this.pageHead}${pageTitle}${cssLink}${fontLinks}</head>`;
             page += `${this.bodyStart}${pageHtmlContent}${this.bodyEnd}${this.closingTag}`;
@@ -74,13 +72,14 @@ export class HtmlBuilder {
       return ` src="${styles.filter(style => style.pmStyleProperty === cssStyleEnum.url)[0].value}"`
     }
 
-    private getHTMLforPage(layout:ILayout): string {
+    private getHTMLforPage(layout: ILayout): string {
       let html: string = "";
       html = this.getHtmlTagOpen(layout.htmlTag);
-      if(layout.className !== "") html += `class="${layout.className}"`;
+      if(layout.className !== "") html += ` class="${layout.className}"`;
       if(layout.htmlTag === HtmlTagsEnum.img) html += this.getImageTagUrlFromStyles(layout.styles);
       html += ">"
       if(layout.content !== "") html += layout.content;
+      layout.children.forEach(layout => html += this.getHTMLforPage(layout));
       html += this.getHtmlTagClose(layout.htmlTag);
       return html;
     }
@@ -88,6 +87,7 @@ export class HtmlBuilder {
     private getFontLinks(layout: ILayout): string {
       let fontName: string;
       let fontLink: string = '';
+      if(layout.styles.length === 0) return fontLink;
       fontName = layout.styles.filter(style => style.pmStyleProperty === cssStyleEnum.fontFamily)[0].value
       if (fontName !== '') fontLink =`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
       layout.children.forEach(layout => fontLink += this.getFontLinks(layout));

@@ -396,12 +396,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.pageMaster.layout = pageLayout;
     this.pageBuilder.createPage(this.pageMaster, "main.css")
     .then( result => {
+      console.log("Result=",result)
       this.statusMessage = result;
-      this.isShowStatus;
+      this.isShowStatus = !this.isShowStatus;
     })
     .catch(err =>  {
       this.statusMessage = err;
-      this.isShowStatus;
+      this.isShowStatus = !this.isShowStatus;
     });
   }
 }

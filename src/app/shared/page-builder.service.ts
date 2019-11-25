@@ -9,13 +9,9 @@ import {
   textVerticalAlignment
 } from "../models/enums/text-component.enum";
 import { FireStorageService } from '../shared/fire-storage.service'
-import { IStatusMessage } from '../models/interfaces/status-message';
+import { IStatusMessage, messageTypes } from '../models/interfaces/status-message';
 import { HtmlBuilder } from '../models/classes/templateHtml';
-import { HtmlTagsEnum } from '../models/enums/htmlTags';
-import { Content } from '@angular/compiler/src/render3/r3_ast';
-import { ICssStyles } from '../models/interfaces/cssStyle';
 import { cssStyleEnum } from '../models/enums/cssStylesEnum';
-import { ITextAlignment } from '../models/interfaces/text';
 
 
 
@@ -25,25 +21,23 @@ import { ITextAlignment } from '../models/interfaces/text';
 export class PageBuilderService {
   constructor(private fireStorage: FireStorageService) { }
 
-  private cssContent: string;
-  private htmlContent: string;
+  private cssContent: string ='';
+
 
   //todo - Add a property for the filename and path
   createPage(pageData: IPage, cssFileName: string): Promise<IStatusMessage> {
     let pageLayout: ILayout = pageData.layout;
-    let css: string = "";
     this.createPageLayout(pageLayout)
-
-
     return new Promise((resolve, reject) => {
-      css += this.processChildren(pageLayout.children);
-      this.writeCSS(css)
+      this.writeCSS(this.cssContent)
       .then(result => {
           this.buildHtml(pageLayout, cssFileName)
           .then(Htmlpage => {
-            //write Html Page to file
             this.writeHTML(Htmlpage)
-            .then (result => resolve(result))
+            .then (result =>{
+              let statusMessage: IStatusMessage ={messageType: messageTypes.information, message: "Requested page has been created"}
+              resolve(statusMessage)})
+            .catch(err => reject(err));
           })
         })
       .catch(err => reject(err));
@@ -53,34 +47,51 @@ export class PageBuilderService {
 
 getCssClass(layout:ILayout): string {
   let className: string = "";
-  if(layout.className != "") className = `.${layout.className}\{${layout.cssClass}`
-  if(layout.styles.length > 0 && className !=="") {
+  if(layout.className !== undefined) className = `.${layout.className}\{${layout.cssClass}`
+  if(layout.styles.length > 0 && className !== undefined) {
     layout.styles.forEach(style => {
-      if (style.pmStyleProperty == cssStyleEnum.horizontalAlignment) className += `${style.styleTag}:${this.getHorizontalAlignment(style.value)};`
-      className += `${style.styleTag}:${style.value};`
+      if (style.pmStyleProperty == cssStyleEnum.horizontalAlignment) className += `${this.getHorizontalAlignment(style.value)};`
+      else if (style.pmStyleProperty == cssStyleEnum.verticalAlignment) className += `${this.getVerticalAlignment(style.value)};`
+      else className += this.getStyleTag(style);
     });
   }
   if(className !== "") className += "}";
   return className;
 }
+  getStyleTag(style: import("../models/interfaces/cssStyle").ICssStyles) {
+    if(style.pmStyleProperty === cssStyleEnum.url) return;
+    let styleTag: string = `${style.styleTag}:${style.value}`;
+    if(style.pmStyleProperty === cssStyleEnum.height || style.pmStyleProperty === cssStyleEnum.width || style.pmStyleProperty === cssStyleEnum.top || style.pmStyleProperty === cssStyleEnum.left){
+      if(!isNaN(parseInt(style.value))) styleTag += 'px';
+    }
+    styleTag += ';'
+    return styleTag;
+    }
+
+
+
 
 createPageLayout(pageLayout: ILayout){
   this.cssContent += this.getCssClass(pageLayout);
+  pageLayout.children.forEach(layout => {
+    console.log('%c⧭ layout=', 'color: #ffcc00', layout);
+
+    this.createPageLayout(layout);
+  });
 }
 
-buildHtml(layouts: ILayout, cssFileName: string):Promise<string> {
+buildHtml(layout: ILayout, cssFileName: string):Promise<string> {
     let htmlBuilder: HtmlBuilder = new HtmlBuilder('Test Page');
     return new Promise((resolve, reject) => {
-      htmlBuilder.buildHtml(layouts,cssFileName)
-      .then(htmlContent => resolve(htmlContent));
-
-    })
-
+      htmlBuilder.buildHtml(layout ,cssFileName)
+      .then(htmlContent => resolve(htmlContent))
+      .catch(err => reject(err));
+    });
   }
 
 
   private getHorizontalAlignment(value: string) {
-    let horizontalAlignment: ITextAlignment = ITextAlignment[parseInt(value)]
+    let horizontalAlignment: textHorizontalAlignment = parseInt(value);
     switch (horizontalAlignment) {
       case textHorizontalAlignment.alignLeft:
         return "text-align:left";
@@ -93,7 +104,8 @@ buildHtml(layouts: ILayout, cssFileName: string):Promise<string> {
     }
   }
 
-  private getVerticalAlignment(verticalAlignment: textVerticalAlignment) {
+  private getVerticalAlignment(value: string) {
+    let verticalAlignment: textVerticalAlignment = parseInt(value);
     switch (verticalAlignment) {
       case textVerticalAlignment.alignBottom:
         return "justify-content:flex-end";
