@@ -275,7 +275,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
     styles.push(this.imageTop);
     styles.push(this.imageUrl);
     return styles;
-
   }
 
   removeUserControlledElementsFromMasterLayout(){
@@ -286,11 +285,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
   assemblePage(): ILayout {
     this.layoutText.styles = this.buildStyleArrayText();
     this.removeUserControlledElementsFromMasterLayout();
-    this.pageMasterLayout.children.push(this.layoutText);
+    this.pageMasterLayout.children[0].children.push(this.layoutText);
     this.layoutImageParent.styles.push(this.imageBackGroundColor)
     this.layoutImageChild.styles = this.buildStyleArrayImage();
     this.layoutImageParent.children.push(this.layoutImageChild);
-    this.pageMasterLayout.children.push(this.layoutImageParent);
+    this.pageMasterLayout.children[0].children.push(this.layoutImageParent);
     return this.pageMasterLayout;
   }
 

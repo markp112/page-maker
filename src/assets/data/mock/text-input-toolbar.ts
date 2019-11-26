@@ -6,6 +6,7 @@ import {
   faAlignRight,
   faAlignCenter,
   faAlignJustify,
+  faFont,
   faMehBlank,
   faPlus,
   faMinus,
@@ -47,9 +48,9 @@ export const textEditorButtonsGrp1: IIconButton[] = [
 
 export const textEditorButtonsGrp2: IIconButton[] = [
   {
-    icon: faMehBlank,
-    style: styles.Text,
-    text: "F",
+    icon: faFont,
+    style: styles.Icon,
+    text: "",
     eventName: "font"
   },
   {

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { IPage } from "../models/interfaces/page";
 import { ILayout } from "../models/interfaces/layout";
-import {  textHorizontalAlignment,  textVerticalAlignment} from "../models/enums/text-component.enum";
+import { textHorizontalAlignment,  textVerticalAlignment} from "../models/enums/text-component.enum";
 import { FireStorageService } from '../shared/fire-storage.service'
 import { IStatusMessage, messageTypes } from '../models/interfaces/status-message';
 import { HtmlBuilder } from '../models/classes/templateHtml';
@@ -39,13 +39,14 @@ export class PageBuilderService {
   }
 
   getStyleTag(style: import("../models/interfaces/cssStyle").ICssStyles) {
-    if (style.pmStyleProperty === cssStyleEnum.url) return;
+    if (style.pmStyleProperty === cssStyleEnum.url) return '';
     let styleTag: string = `${style.styleTag}:${style.value}`;
     if (
       style.pmStyleProperty === cssStyleEnum.height ||
       style.pmStyleProperty === cssStyleEnum.width ||
       style.pmStyleProperty === cssStyleEnum.top ||
-      style.pmStyleProperty === cssStyleEnum.left
+      style.pmStyleProperty === cssStyleEnum.left ||
+      style.pmStyleProperty === cssStyleEnum.fontSize
     ) {
       if (!isNaN(parseInt(style.value))) styleTag += "px";
     }
@@ -55,16 +56,16 @@ export class PageBuilderService {
 
   getCssClass(layout: ILayout): string {
     let className: string = "";
-    if (layout.className !== undefined && layout.className !== '')
-      
-      className = `.${layout.className}\{${layout.cssClass}`;
-    if (layout.styles.length > 0 && className !== undefined) {
+    if (layout.className !== undefined && layout.className !== '') className = `.${layout.className}\{`;
+    className += `${layout.cssClass}`;
+    if (layout.styles.length > 0 && className !== '') {
       layout.styles.forEach(style => {
         if (style.pmStyleProperty == cssStyleEnum.horizontalAlignment)
           className += `${this.getHorizontalAlignment(style.value)};`;
         else if (style.pmStyleProperty == cssStyleEnum.verticalAlignment)
           className += `${this.getVerticalAlignment(style.value)};`;
         else className += this.getStyleTag(style);
+
       });
     }
     if (className !== "") className += "}";
@@ -115,7 +116,7 @@ export class PageBuilderService {
       case textVerticalAlignment.alignTop:
         return "justify-content:flex-start";
       case textVerticalAlignment.alignCenter:
-        return "justify-content:centre";
+        return "justify-content:center";
     }
   }
   private writeHTML(htmlPage: string): Promise<IStatusMessage> {

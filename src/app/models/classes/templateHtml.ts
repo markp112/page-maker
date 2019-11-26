@@ -85,11 +85,12 @@ export class HtmlBuilder {
     }
 
     private getFontLinks(layout: ILayout): string {
-      let fontName: string;
+      let fontName: ICssStyles[] = [];
       let fontLink: string = '';
-      if(layout.styles.length === 0) return fontLink;
-      fontName = layout.styles.filter(style => style.pmStyleProperty === cssStyleEnum.fontFamily)[0].value
-      if (fontName !== '') fontLink =`<link href="https://fonts.googleapis.com/css?family=${fontName}&display=swap" rel="stylesheet">`
+      if(layout.styles.length > 0)  fontName = layout.styles.filter(style => style.pmStyleProperty === cssStyleEnum.fontFamily);
+      console.log('FontName %c%s', 'color: #aa00ff', fontName);
+
+      if (fontName.length > 0) fontLink +=`<link href="https://fonts.googleapis.com/css?family=${fontName[0].value}&display=swap" rel="stylesheet">`
       layout.children.forEach(layout => fontLink += this.getFontLinks(layout));
       return fontLink;
     }

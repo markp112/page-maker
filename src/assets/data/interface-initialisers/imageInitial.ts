@@ -9,7 +9,7 @@ export const initImageStylesInitial = (): ICssStyles[] => {
   let height: ICssStyles = {
     styleTag: "height",
     pmStyleProperty: cssStyleEnum.height,
-    value: "700"
+    value: "auto"
   };
   let width: ICssStyles = {
     styleTag: "width",

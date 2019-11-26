@@ -22,20 +22,20 @@ const initMasterPageLayout = () => {
       styles: [],
       children: []
     };
-  
+
     let subPageLayout: ILayout = {
     layoutType: PageAreaTypesEnum.masterPageTemplate,
     htmlTag: HtmlTagsEnum.div,
     cssClass: `display: grid;
-          grid-template-columns: 6fr 6fr;
-          grid-template-rows: 1.5fr 0.25fr 5fr;
-          grid-template-areas:  ". ."
-                                "toolbar toolbar"
-                                "image-area text-area";
+          grid-template-columns:2fr 6fr 6fr 2fr;
+          grid-template-rows: 1.5fr 0.5fr 5fr;
+          grid-template-areas:  ". . . ."
+                                ". toolbar toolbar ."
+                                ". image-area text-area .";
         `,
     className: `template-sq-img-txt`,
     styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
-    content:"",
+    content: "",
     styles: [],
     children: []
   };
@@ -89,19 +89,15 @@ const initLayoutSquareImgTxtImageParent = (): ILayout => {
   return layoutSqImgImage;
 }
   // initial data for the image element#
-  const initLayoutSquareImgTxtImageChild=()=>{
+  const initLayoutSquareImgTxtImageChild = () => {
   let imageLayout: ILayout = {
     layoutType: PageAreaTypesEnum.imageArea,
     cssClass: `img {
         display: block;
         max-width: 500px;
         max-height: 400px;
-        width: width;
-        height: auto;
         object-fit: contain;
-        position: absolute;
-        top: 0;
-        left: 0;`,
+        position: absolute;`,
     htmlTag: HtmlTagsEnum.img,
     styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
     className: '',
