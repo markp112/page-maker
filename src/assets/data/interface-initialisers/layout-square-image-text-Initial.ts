@@ -5,11 +5,27 @@ import { initImageStylesInitial } from 'src/assets/data/interface-initialisers/i
 import { initTextStylesInitial } from 'src/assets/data/interface-initialisers/textInitial';
 import { PageAreaTypesEnum } from 'src/app/models/enums/pageAreaTypes.enum';
 import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
+import { cssStyleTagTypesEnum } from 'src/app/models/enums/css-style-tag-types-enum';
 
-const initMasterPageLayout =() =>{
+const initMasterPageLayout = () => {
     let layout: ILayout = {
+      layoutType: PageAreaTypesEnum.masterPageTemplate,
+      htmlTag: HtmlTagsEnum.section,
+      styleTagType: cssStyleTagTypesEnum.elementTag,
+      content: ``,
+      cssClass: `width: 100vw;
+                  height: 500px;
+                  display: flex;
+                  flex-direction: row;
+                  justify-content: center;`,
+      className: `template`,
+      styles: [],
+      children: []
+    };
+  
+    let subPageLayout: ILayout = {
     layoutType: PageAreaTypesEnum.masterPageTemplate,
-    htmlTag: HtmlTagsEnum.section,
+    htmlTag: HtmlTagsEnum.div,
     cssClass: `display: grid;
           grid-template-columns: 6fr 6fr;
           grid-template-rows: 1.5fr 0.25fr 5fr;
@@ -18,11 +34,13 @@ const initMasterPageLayout =() =>{
                                 "image-area text-area";
         `,
     className: `template-sq-img-txt`,
+    styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
     content:"",
     styles: [],
     children: []
   };
-return layout;
+  layout.children.push(subPageLayout);
+  return layout;
 }
 
 ///layout elements for text
@@ -37,6 +55,7 @@ const initLayoutSquareImgTxtText = (): ILayout => {
               display: flex;
               flex-direction: column;`,
     htmlTag: HtmlTagsEnum.div,
+    styleTagType: cssStyleTagTypesEnum.elementTag,
     content:"",
     className: `text-area`,
     styles: [] = initTextStylesInitial(),
@@ -59,6 +78,7 @@ const initLayoutSquareImgTxtImageParent = (): ILayout => {
                 position: relative;
                 overflow: hidden;`,
     htmlTag: HtmlTagsEnum.div,
+    styleTagType: cssStyleTagTypesEnum.elementTag,
     content: "",
     className:`image-area`,
     styles: [],
@@ -83,6 +103,7 @@ const initLayoutSquareImgTxtImageParent = (): ILayout => {
         top: 0;
         left: 0;`,
     htmlTag: HtmlTagsEnum.img,
+    styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
     className: '',
     styles: [] = initImageStylesInitial(),
     content:"",

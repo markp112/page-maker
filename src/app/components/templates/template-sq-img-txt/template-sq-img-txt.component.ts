@@ -278,9 +278,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   }
 
+  removeUserControlledElementsFromMasterLayout(){
+    let pageLayouts: ILayout[] = this.pageMasterLayout.children.filter(childElement => childElement.layoutType === PageAreaTypesEnum.masterPageTemplate);
+    this.pageMasterLayout.children = pageLayouts;
+  }
+
   assemblePage(): ILayout {
     this.layoutText.styles = this.buildStyleArrayText();
-    this.pageMasterLayout.children = [];
+    this.removeUserControlledElementsFromMasterLayout();
     this.pageMasterLayout.children.push(this.layoutText);
     this.layoutImageParent.styles.push(this.imageBackGroundColor)
     this.layoutImageChild.styles = this.buildStyleArrayImage();
