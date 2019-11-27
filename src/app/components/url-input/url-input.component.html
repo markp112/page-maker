@@ -1,7 +1,9 @@
 <section>
+    <app-icon-button [iconButton]="cancelButton" class="cancel-button" (clickEvent)="handleCloseClick()"></app-icon-button>
     <label for="url">Paste in URL and click ok to upload image</label>
     <div class="wrapper">
       <input type="text" #url name="url" type="text">
       <span (click)="handleOkClick(url.value)">Ok</span>
+    
     </div>
 </section>

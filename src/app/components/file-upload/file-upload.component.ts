@@ -2,6 +2,10 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { AngularFireStorage, AngularFireStorageReference, AngularFireUploadTask } from 'angularfire2/storage';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { IconButtonComponent } from '../icon-button/icon-button.component';
+import { styles } from 'src/app/models/enums/icon-buton-styles.enum';
+import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { ButtonBuilder } from 'src/app/models/classes/builders/butonBuilder';
 
 @Component({
   selector: "app-file-upload",
@@ -11,6 +15,7 @@ import { tap } from 'rxjs/operators';
 export class FileUploadComponent implements OnInit {
   @Input() path: string;
   @Output() handleFileUploadComplete = new EventEmitter();
+  @Output() handleCancelClicked = new EventEmitter();
 
   uploadProgress: Observable<number>;
   downloadUrl: Observable<string>;
@@ -25,7 +30,7 @@ export class FileUploadComponent implements OnInit {
   downloadURL: Observable<string>;
   // State for dropzone CSS toggling
   isHovering: boolean;
-
+  cancelButton: IIconButton = ButtonBuilder.CancelButton();
   constructor(private afStorage: AngularFireStorage) {}
 
   ngOnInit() {}
@@ -45,19 +50,19 @@ export class FileUploadComponent implements OnInit {
     // The storage path
     const path = `${this.path}/${file.name}`;
     // Totally optional metadata
-    
+
     this.ref = this.afStorage.ref(path);
     // The main task
     this.task = this.afStorage.upload(path, file);
     // Progress monitoring
     this.percentage = this.task.percentageChanges();
     this.snapshot = this.task.snapshotChanges().pipe(
-      tap(snap =>{
+      tap(snap => {
         if (snap.bytesTransferred === snap.totalBytes) {
           this.downloadUrl = this.ref.getDownloadURL();
           this.downloadUrl.subscribe(url => {
-              this.handleFileUploadComplete.emit(url);
-            })
+            this.handleFileUploadComplete.emit(url);
+          });
         }
       })
     );
@@ -69,5 +74,9 @@ export class FileUploadComponent implements OnInit {
       snapshot.state === "running" &&
       snapshot.bytesTransferred < snapshot.totalBytes
     );
+  }
+
+  handleClose(){
+    this.handleCancelClicked.emit();
   }
 }

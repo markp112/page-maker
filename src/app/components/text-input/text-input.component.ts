@@ -27,6 +27,5 @@ export class TextInputComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.textContent)
   }
 }

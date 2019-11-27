@@ -37,8 +37,6 @@ export class TextFormatterDirective implements OnChanges{
     if(changes.foreColor) this.el.nativeElement.style.color = this.foreColor;
     if(changes.backColor) this.el.nativeElement.style.background = this.backColor;
     if(changes.horizontalAlignment){
-      console.log('%c⧭', 'color: #006dcc', changes.horizontalAlignment);
-
       this.textRef.horizontalAlignment = changes.horizontalAlignment.currentValue;
       this.applyClasses()
     };
@@ -81,7 +79,6 @@ export class TextFormatterDirective implements OnChanges{
       this.renderer.addClass(this.el.nativeElement, 'align-content-right');
   }
   if (this.textRef.horizontalAlignment == textHorizontalAlignment.alignCenter) {
-    console.log("came here")
     this.renderer.addClass(this.el.nativeElement, 'align-content-center');
   }
   if (this.textRef.horizontalAlignment == textHorizontalAlignment.alignJustify) {

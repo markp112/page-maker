@@ -12,7 +12,6 @@ export class ColorPickerWrapperComponent implements OnInit {
   ngOnInit() {
   }
   handleColorClickEvent(color: string) {
-    console.log(color)
     this.handleColorSelected.emit(color);
 
   }

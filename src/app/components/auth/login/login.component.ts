@@ -22,7 +22,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {}
 
   handleSignIn() {
-    console.log(this.user.email);
     this.auth
       .signInRegular(this.user)
       .then(result => {

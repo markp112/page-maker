@@ -88,8 +88,6 @@ export class HtmlBuilder {
       let fontName: ICssStyles[] = [];
       let fontLink: string = '';
       if(layout.styles.length > 0)  fontName = layout.styles.filter(style => style.pmStyleProperty === cssStyleEnum.fontFamily);
-      console.log('FontName %c%s', 'color: #aa00ff', fontName);
-
       if (fontName.length > 0) fontLink +=`<link href="https://fonts.googleapis.com/css?family=${fontName[0].value}&display=swap" rel="stylesheet">`
       layout.children.forEach(layout => fontLink += this.getFontLinks(layout));
       return fontLink;

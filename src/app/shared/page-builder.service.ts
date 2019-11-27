@@ -69,17 +69,12 @@ export class PageBuilderService {
       });
     }
     if (className !== "") className += "}";
-    console.log("layout.classname=%c%s ", "color: #00a3cc", layout.className);
-    console.log("classnme= %c%s ", "color: #00e600", className);
-
     return className;
   }
 
   createPageCss(pageLayout: ILayout) {
     this.cssContent += this.getCssClass(pageLayout);
     pageLayout.children.forEach(layout => {
-      console.log("%c⧭ layout=", "color: #ffcc00", layout);
-
       this.createPageCss(layout);
     });
   }

@@ -65,8 +65,6 @@ export class PageTemplateService {
   updateRecord(pageRecord: IPage):Promise<any> {
 
     return new Promise((resolve,reject) =>{
-
-      console.log("uid=", pageRecord.uid);
       const coll = this.afs.collection ('pages').doc(pageRecord.uid);
       coll.set(pageRecord)
       .then(res =>{

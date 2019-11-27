@@ -30,10 +30,10 @@
         <img [src]="imageUrl.value" alt=""  appImageFormatter  [height]="imageHeight.value" [width]="imageWidth.value" [left]="imageLeft.value" [top]="imageTop.value">
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="showUploadImage">
-        <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)"></app-file-upload>
+        <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)" (handleCancelClicked)="handleFileUploadCancelClicked()"></app-file-upload>
       </div>
       <div class="img-url-wrapper" *ngIf="showURLLink" >
-        <app-url-input (url)="handleUrl($event)"></app-url-input>
+        <app-url-input (url)="handleUrl($event)" (handleCancelClicked)="handleUrlCancelClicked()"></app-url-input>
       </div>
     </div>
     <div class="text-area"

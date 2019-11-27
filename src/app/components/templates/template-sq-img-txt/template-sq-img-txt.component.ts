@@ -44,7 +44,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private pageService: PageTemplateService,
     private fontService: FontsService,
     private pageBuilder: PageBuilderService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.pageMaster = initSqImgTxtPage();
@@ -54,21 +54,55 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
     this.imageStyles = initImageStylesInitial();
     this.textStyles = initTextStylesInitial();
-    this.fontColor = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.color);
-    this.fontBackgroundColor = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.backgroundColor);
-    this.fontFamily = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.fontFamily);
-    this.fontSize = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.fontSize);
-    this.fontHorizontalAlignment = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.horizontalAlignment);
-    this.fontVerticalAlignment = this.getStyleValue(initTextStylesInitial(), cssStyleEnum.verticalAlignment);
-    this.imageBackGroundColor = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.backgroundColor);
-    this.imageUrl = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.url);
-    this.imageTop = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.top);
-    this.imageLeft = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.left);
-    this.imageHeight = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.height);
-    this.imageWidth = this.getStyleValue(initImageStylesInitial(), cssStyleEnum.width);
-
+    this.fontColor = this.getStyleValue(
+      initTextStylesInitial(),
+      cssStyleEnum.color
+    );
+    this.fontBackgroundColor = this.getStyleValue(
+      initTextStylesInitial(),
+      cssStyleEnum.backgroundColor
+    );
+    this.fontFamily = this.getStyleValue(
+      initTextStylesInitial(),
+      cssStyleEnum.fontFamily
+    );
+    this.fontSize = this.getStyleValue(
+      initTextStylesInitial(),
+      cssStyleEnum.fontSize
+    );
+    this.fontHorizontalAlignment = this.getStyleValue(
+      initTextStylesInitial(),
+      cssStyleEnum.horizontalAlignment
+    );
+    this.fontVerticalAlignment = this.getStyleValue(
+      initTextStylesInitial(),
+      cssStyleEnum.verticalAlignment
+    );
+    this.imageBackGroundColor = this.getStyleValue(
+      initImageStylesInitial(),
+      cssStyleEnum.backgroundColor
+    );
+    this.imageUrl = this.getStyleValue(
+      initImageStylesInitial(),
+      cssStyleEnum.url
+    );
+    this.imageTop = this.getStyleValue(
+      initImageStylesInitial(),
+      cssStyleEnum.top
+    );
+    this.imageLeft = this.getStyleValue(
+      initImageStylesInitial(),
+      cssStyleEnum.left
+    );
+    this.imageHeight = this.getStyleValue(
+      initImageStylesInitial(),
+      cssStyleEnum.height
+    );
+    this.imageWidth = this.getStyleValue(
+      initImageStylesInitial(),
+      cssStyleEnum.width
+    );
   }
-
 
   // buttons for toolbar
   nonEditButtons: IIconButton[] = templateInitial;
@@ -106,7 +140,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   textStyles: ICssStyles[];
   textStylesArray: ICssStyles[]; // directive  is bound to this array
   path: string = config.imageFilePath;
-  clickevent: string;           // holds the value of the button that has been clicked
+  clickevent: string; // holds the value of the button that has been clicked
   isDirty: boolean = false;
   fontFamily: ICssStyles;
   fontSize: ICssStyles;
@@ -120,7 +154,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imageLeft: ICssStyles;
   imageHeight: ICssStyles;
   imageWidth: ICssStyles;
-
 
   handleClick(event) {
     this.isDirty = true;
@@ -147,19 +180,29 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       case "uploadClicked":
         this.imageUrl.value = "";
+        this.showURLLink = false;
         this.showUploadImage = !this.showUploadImage;
         break;
       case "imageBackgroundColor":
         this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
+        this.isEditingImageBackgroundColor = !this
+          .isEditingImageBackgroundColor;
         break;
       case "imgDecreaseSize":
-        this.imageHeight.value = (parseInt(this.imageHeight.value) - 1).toString();
-        this.imageWidth.value = (parseInt(this.imageWidth.value) - 1).toString();
+        this.imageHeight.value = (
+          parseInt(this.imageHeight.value) - 1
+        ).toString();
+        this.imageWidth.value = (
+          parseInt(this.imageWidth.value) - 1
+        ).toString();
         break;
       case "imgIncreaseSize":
-        this.imageWidth.value = (parseInt(this.imageWidth.value) + 1).toString();
-        this.imageHeight.value = (parseInt(this.imageHeight.value) + 1).toString();
+        this.imageWidth.value = (
+          parseInt(this.imageWidth.value) + 1
+        ).toString();
+        this.imageHeight.value = (
+          parseInt(this.imageHeight.value) + 1
+        ).toString();
         break;
       case "imgLeft":
         this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
@@ -174,7 +217,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
         break;
       case "urlClicked":
-        this.showURLLink = true;
+        this.showURLLink = !this.showURLLink;
+        this.showUploadImage = false;
         break;
       case "saveClicked":
         this.savePage();
@@ -218,10 +262,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
   }
 
-  getStyleValue(stylesArray: ICssStyles[], styleTofind: cssStyleEnum): ICssStyles {
-    return stylesArray.filter(style => style.pmStyleProperty === styleTofind)[0];
+  getStyleValue(
+    stylesArray: ICssStyles[],
+    styleTofind: cssStyleEnum
+  ): ICssStyles {
+    return stylesArray.filter(
+      style => style.pmStyleProperty === styleTofind
+    )[0];
   }
-
 
   setColor(color: string) {
     if (this.isEditingColor) {
@@ -244,16 +292,25 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.imageUrl.value = url;
   }
 
+  handleFileUploadCancelClicked() {
+    this.showUploadImage = !this.showUploadImage;
+  }
+
   handleUrl(url: string) {
     this.showURLLink = !this.showURLLink;
     this.imageUrl.value = url;
   }
-
+  handleUrlCancelClicked(){
+    this.showURLLink = !this.showURLLink;
+  }
   displayStatusMessage(message: string, messageType: messageTypes) {
     this.statusMessage.message = message;
     this.statusMessage.messageType = messageType;
     this.isShowStatus = true;
-    setTimeout(() => { this.isShowStatus = false; alert('timeout expired'); }, 3000);
+    setTimeout(() => {
+      this.isShowStatus = false;
+      alert("timeout expired");
+    }, 3000);
   }
 
   buildStyleArrayText(): ICssStyles[] {
@@ -277,8 +334,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
     return styles;
   }
 
-  removeUserControlledElementsFromMasterLayout(){
-    let pageLayouts: ILayout[] = this.pageMasterLayout.children.filter(childElement => childElement.layoutType === PageAreaTypesEnum.masterPageTemplate);
+  removeUserControlledElementsFromMasterLayout() {
+    let pageLayouts: ILayout[] = this.pageMasterLayout.children.filter(
+      childElement =>
+        childElement.layoutType === PageAreaTypesEnum.masterPageTemplate
+    );
     this.pageMasterLayout.children = pageLayouts;
   }
 
@@ -286,7 +346,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutText.styles = this.buildStyleArrayText();
     this.removeUserControlledElementsFromMasterLayout();
     this.pageMasterLayout.children[0].children.push(this.layoutText);
-    this.layoutImageParent.styles.push(this.imageBackGroundColor)
+    this.layoutImageParent.styles.push(this.imageBackGroundColor);
     this.layoutImageChild.styles = this.buildStyleArrayImage();
     this.layoutImageParent.children.push(this.layoutImageChild);
     this.pageMasterLayout.children[0].children.push(this.layoutImageParent);
@@ -307,14 +367,18 @@ export class TemplateSqImgTxtComponent implements OnInit {
       template: pageTemplates.sqImgText,
       layout: this.assemblePage()
     };
-    this.pageService.addRecord(this.pageMaster)
+    this.pageService
+      .addRecord(this.pageMaster)
       .then(result => {
         if (result.result) {
           this.isDirty = false;
           this.pageMaster.id = result.msg;
           this.displayStatusMessage("Content saved", messageTypes.information);
         } else {
-          this.displayStatusMessage(`Error: ${result.message}`, messageTypes.warning);
+          this.displayStatusMessage(
+            `Error: ${result.message}`,
+            messageTypes.warning
+          );
         }
       })
       .catch(err => {
@@ -325,13 +389,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
   // update the record in fireBase
   updateRecord() {
     this.pageMaster.layout = this.assemblePage();
-    this.pageService.updateRecord(this.pageMaster)
+    this.pageService
+      .updateRecord(this.pageMaster)
       .then(res => {
         this.displayStatusMessage("Record Updated", messageTypes.information);
       })
       .catch(err => {
-        console.log(err)
-        this.displayStatusMessage(err.message, messageTypes.error)
+        this.displayStatusMessage(err.message, messageTypes.error);
       });
   }
 
@@ -339,7 +403,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
     styles.forEach(style => {
       switch (style.pmStyleProperty) {
         case cssStyleEnum.backgroundColor:
-          if (layoutType === PageAreaTypesEnum.imageArea) this.imageBackGroundColor = style
+          if (layoutType === PageAreaTypesEnum.imageArea)
+            this.imageBackGroundColor = style;
           else this.fontBackgroundColor = style;
           break;
         case cssStyleEnum.color:
@@ -373,16 +438,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
           this.imageWidth = style;
           break;
       }
-    })
-
+    });
   }
 
   processLayoutContent(layouts: ILayout[]): void {
     layouts.forEach(childLayout => {
-      this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType)
-      if (childLayout.layoutType === PageAreaTypesEnum.textArea) this.layoutText.content = childLayout.content;
-      if (childLayout.children.length > 0) this.processLayoutContent(childLayout.children);
-    })
+      this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
+      if (childLayout.layoutType === PageAreaTypesEnum.textArea)
+        this.layoutText.content = childLayout.content;
+      if (childLayout.children.length > 0)
+        this.processLayoutContent(childLayout.children);
+    });
   }
 
   getTemplate() {
@@ -391,22 +457,21 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.pageMaster = page;
       this.fontService.getFontNames();
       this.processLayoutContent(page.layout.children);
-    })
+    });
   }
 
   publish() {
-    console.log("Ipage=", this.pageMaster );
     let pageLayout: ILayout = this.assemblePage();
     this.pageMaster.layout = pageLayout;
-    this.pageBuilder.createPage(this.pageMaster, "main.css")
-    .then( result => {
-      console.log("Result=",result)
-      this.statusMessage = result;
-      this.isShowStatus = !this.isShowStatus;
-    })
-    .catch(err =>  {
-      this.statusMessage = err;
-      this.isShowStatus = !this.isShowStatus;
-    });
+    this.pageBuilder
+      .createPage(this.pageMaster, "main.css")
+      .then(result => {
+        this.statusMessage = result;
+        this.isShowStatus = !this.isShowStatus;
+      })
+      .catch(err => {
+        this.statusMessage = err;
+        this.isShowStatus = !this.isShowStatus;
+      });
   }
 }
