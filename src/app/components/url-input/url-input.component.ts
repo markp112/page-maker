@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
-import { ButtonBuilder } from 'src/app/models/classes/builders/butonBuilder';
+import { ButtonBuilder } from 'src/app/models/classes/builders/button-builder/butonBuilder';
 
 @Component({
   selector: "app-url-input",

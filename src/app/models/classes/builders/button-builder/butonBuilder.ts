@@ -1,6 +1,6 @@
-import { IIconButton } from '../../interfaces/icon-button-interface';
+import { IIconButton } from '../../../interfaces/icon-button-interface';
 import { faWindowClose } from "@fortawesome/free-solid-svg-icons";
-import { styles } from '../../enums/icon-buton-styles.enum';
+import { styles } from '../../../enums/icon-buton-styles.enum';
 
 export class ButtonBuilder {
 
@@ -8,7 +8,7 @@ export class ButtonBuilder {
         return {
             icon: faWindowClose,
             text: "",
-            eventName: "handleCancelClick",
+            eventName: "cancelClicked",
             style: styles.Icon,
             enabled: true
         };

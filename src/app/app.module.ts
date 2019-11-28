@@ -26,6 +26,7 @@ import { FontApiService }  from './shared/font-api.service';
 import { AuthService } from './shared/auth.service';
 import { PageTemplateService } from "./shared/page-template.service";
 import { FireStorageService } from './shared/fire-storage.service';
+import { PageBuilderService } from './shared/page-builder.service';
 
 // Vendor
 import { AngularFireModule } from 'angularfire2';
@@ -85,7 +86,7 @@ import { StatusMessageComponent } from './components/status-message/status-messa
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence()
   ],
-  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService],
+  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService, PageBuilderService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

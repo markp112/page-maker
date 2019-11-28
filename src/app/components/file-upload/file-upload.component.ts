@@ -5,7 +5,7 @@ import { tap } from 'rxjs/operators';
 import { IconButtonComponent } from '../icon-button/icon-button.component';
 import { styles } from 'src/app/models/enums/icon-buton-styles.enum';
 import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
-import { ButtonBuilder } from 'src/app/models/classes/builders/butonBuilder';
+import { ButtonBuilder } from 'src/app/models/classes/builders/button-builder/butonBuilder';
 
 @Component({
   selector: "app-file-upload",
