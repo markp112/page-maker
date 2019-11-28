@@ -16,6 +16,18 @@ import { WelcomeComponent } from "./components/welcome/welcome.component";
 import { SignUpComponent } from "./components/auth/sign-up/sign-up.component";
 import { FontAwesomeModule } from "@fortawesome/angular-fontawesome";
 import { AppRoutingModule } from "./app-routing.module";
+import { ColorPickerModule } from "./color-picker/color-picker.module";
+import { StatusMessageComponent } from './components/status-message/status-message.component';
+import { DropzoneDirective } from './directives/dropzone.directive';
+import { TextFormatterDirective } from './directives/text-formatter.directive';
+import { ImageFormatterDirective } from './directives/image-formatter.directive';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireStorageModule } from 'angularfire2/storage';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFirestoreModule } from 'angularfire2/firestore'
+import { AngularFireAuthModule } from 'angularfire2/auth'
+import { AuthService } from './shared/auth.service';
+import {secrets } from '../../secrets';
 
 describe("AppComponent", () => {
   let component: TestComponent<AppComponent>;
@@ -36,10 +48,26 @@ describe("AppComponent", () => {
         ToolbarGroupComponent,
         WelcomeComponent,
         TextInputComponent,
-        UrlInputComponent
+        UrlInputComponent,
+        StatusMessageComponent,
+        DropzoneDirective,
+        TextFormatterDirective,
+        ImageFormatterDirective
+
 
       ],
-      imports: [FontAwesomeModule, AppRoutingModule, FormsModule]
+      imports: [FontAwesomeModule, AppRoutingModule, FormsModule, ColorPickerModule,
+        AngularFireModule,AngularFireAuthModule,  AngularFireStorageModule,
+        AngularFireDatabaseModule, AngularFirestoreModule.enablePersistence(),
+        AngularFireModule.initializeApp({apiKey: secrets.google.webAPIKey,
+        authDomain: secrets.google.authDomain,
+        storageBucket: secrets.google.storageBucket,
+        projectId: secrets.google.projectId,
+        databaseURL: secrets.google.databaseURL,
+        appId: secrets.google.appId,
+        messagingSenderId: secrets.google.messagingSenderId
+      }),
+        ]
     });
     component.initialise();
   });

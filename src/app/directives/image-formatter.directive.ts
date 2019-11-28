@@ -1,11 +1,11 @@
 import { Directive, Input, ElementRef, SimpleChanges } from '@angular/core';
-import { IImage } from '../models/interfaces/image';
+
 
 @Directive({
   selector: "[appImageFormatter]"
 })
 export class ImageFormatterDirective {
-  
+
   @Input() height: number;
   @Input() width: number;
   @Input() left: number;

@@ -20,6 +20,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { LoginComponent } from './components/auth/login/login.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
+import { StatusMessageComponent } from './components/status-message/status-message.component';
 
 // Services
 import { FontApiService }  from './shared/font-api.service';
@@ -33,7 +34,7 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore'
-import { AngularFireAuthModule, AngularFireAuth } from 'angularfire2/auth'
+import { AngularFireAuthModule } from 'angularfire2/auth'
 // directives
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { TextFormatterDirective } from './directives/text-formatter.directive';
@@ -41,7 +42,6 @@ import { ImageFormatterDirective } from './directives/image-formatter.directive'
 
 import { secrets } from 'secrets';
 // import { messaging } from 'firebase';
-import { StatusMessageComponent } from './components/status-message/status-message.component';
 
 
 @NgModule({
@@ -63,7 +63,11 @@ import { StatusMessageComponent } from './components/status-message/status-messa
     LoginComponent,
     WelcomeComponent,
     SignUpComponent,
-    StatusMessageComponent
+    StatusMessageComponent,
+
+
+
+
   ],
   imports: [
     BrowserModule,
