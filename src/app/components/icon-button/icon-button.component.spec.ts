@@ -9,11 +9,11 @@ import { faWindowClose } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   template:
-  '<app-icon-button  [iconButton]="button" (clickEvent)="testClick($event)"></app-icon-button>'
+  '<app-icon-button  [iconButton]="iconButton" (clickEvent)="testClick($event)"></app-icon-button>'
 })
 
 class MockParentComponent {
-  iconButton: IIconButton;
+  iconButton: IIconButton = ButtonBuilder.CancelButton();
   testClick(input: any) {
     return input;
   };
@@ -51,6 +51,6 @@ describe('IconButtonComponent', () => {
       enabled: true
   };
         testIconButton.setParentProps({iconButton: aTestButton});
-    // expect(testIconButton.instance.iconButton).toEqual(aTestButton);
+        expect(testIconButton.instance.iconButton).toEqual(aTestButton);
   })
 });
