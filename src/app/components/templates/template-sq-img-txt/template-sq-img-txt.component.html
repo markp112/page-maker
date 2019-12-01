@@ -37,15 +37,10 @@
       </div>
     </div>
     <div class="text-area"
-      appTextFormatter
-      [fontSize]="fontSize.value"
-      [fontFamily]="fontFamily.value"
-      [foreColor]="fontColor.value"
-      [backColor]="fontBackgroundColor.value"
-      [textEvent]="clickevent"
-      [horizontalAlignment]="fontHorizontalAlignment.value"
-      [verticalAlignment]="fontVerticalAlignment.value"
-      [isEditingText]="showTextEditor"
+      appTextFormatterDirective
+
+      [buttonEvent]="buttonEvent"
+      [changedValue]="changedValue"
 
       (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
       {{ layoutText.content }}

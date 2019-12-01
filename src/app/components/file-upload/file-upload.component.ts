@@ -30,7 +30,7 @@ export class FileUploadComponent implements OnInit {
   downloadURL: Observable<string>;
   // State for dropzone CSS toggling
   isHovering: boolean;
-  cancelButton: IIconButton = ButtonBuilder.CancelButton();
+  cancelButton: IIconButton = ButtonBuilder.cancelButton();
   constructor(private afStorage: AngularFireStorage) {}
 
   ngOnInit() {}

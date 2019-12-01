@@ -37,10 +37,11 @@ import { AngularFirestoreModule } from 'angularfire2/firestore'
 import { AngularFireAuthModule } from 'angularfire2/auth'
 // directives
 import { DropzoneDirective } from './directives/dropzone.directive';
-import { TextFormatterDirective } from './directives/text-formatter.directive';
+import { TextFormatterDirectiveDirective } from './directives/text-formatter/text-formatter-directive.directive';
 import { ImageFormatterDirective } from './directives/image-formatter.directive';
 
 import { secrets } from 'secrets';
+
 // import { messaging } from 'firebase';
 
 
@@ -58,15 +59,12 @@ import { secrets } from 'secrets';
     UrlInputComponent,
     FileUploadComponent,
     DropzoneDirective,
-    TextFormatterDirective,
+    TextFormatterDirectiveDirective,
     ImageFormatterDirective,
     LoginComponent,
     WelcomeComponent,
     SignUpComponent,
     StatusMessageComponent,
-
-
-
 
   ],
   imports: [

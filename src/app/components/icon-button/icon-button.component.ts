@@ -3,6 +3,7 @@ import { Component, OnInit, Input, Output,  EventEmitter  } from '@angular/core'
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface"
 import { styles } from "src/app/models/enums/icon-buton-styles.enum"
 import { ButtonBuilder } from 'src/app/models/classes/builders/button-builder/butonBuilder';
+import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { ButtonBuilder } from 'src/app/models/classes/builders/button-builder/bu
 })
 export class IconButtonComponent implements OnInit {
   @Input() iconButton: IIconButton;
-  @Output() clickEvent: EventEmitter<string> = new EventEmitter();
+  @Output() clickEvent: EventEmitter<ButtonEventEnums> = new EventEmitter();
 
   styles = styles;
 
@@ -25,14 +26,8 @@ export class IconButtonComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    // this.iconButton.style === styles.Icon
-    //   ? (this.showIcon = true)
-    //   : (this.showIcon = false);
+    this.iconButton.style === styles.Icon
+      ? (this.showIcon = true)
+      : (this.showIcon = false);
   }
-
-  // ngOnChange() {
-  //   this.iconButton.style === styles.Icon
-  //     ? (this.showIcon = true)
-  //     : (this.showIcon = false);
-  // }
 }

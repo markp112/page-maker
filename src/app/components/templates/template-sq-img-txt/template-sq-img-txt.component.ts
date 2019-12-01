@@ -1,12 +1,6 @@
 import { Component, OnInit, Input, ɵConsole } from "@angular/core";
 import { templateInitial } from "src/assets/data/mock/template-toolbar";
-// data
-import {
-  textEditorButtonsGrp1,
-  textEditorButtonsGrp2,
-  textEditorButtonsGrp3,
-  textEditorButtonsGrp4
-} from "src/assets/data/mock/text-input-toolbar";
+
 import {
   imgEditButtons,
   imgPositionButtons,
@@ -20,8 +14,7 @@ import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
 import { PageAreaTypesEnum } from '../../../models/enums/pageAreaTypes.enum';
-import { pageLayoutTypes } from 'src/app/models/enums/pageLayouts.enum';
-import { IPageAreas } from 'src/app/models/interfaces/pageAreas-interface';
+
 // services
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
@@ -31,6 +24,9 @@ import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTx
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 import { config } from 'src/assets/data/config.ts/config';
 import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
+import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
+import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
+import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -54,30 +50,30 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
     this.imageStyles = initImageStylesInitial();
     this.textStyles = initTextStylesInitial();
-    this.fontColor = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.color
-    );
-    this.fontBackgroundColor = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.backgroundColor
-    );
-    this.fontFamily = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.fontFamily
-    );
-    this.fontSize = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.fontSize
-    );
-    this.fontHorizontalAlignment = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.horizontalAlignment
-    );
-    this.fontVerticalAlignment = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.verticalAlignment
-    );
+    // this.fontColor = this.getStyleValue(
+    //   initTextStylesInitial(),
+    //   cssStyleEnum.color
+    // );
+    // this.fontBackgroundColor = this.getStyleValue(
+    //   initTextStylesInitial(),
+    //   cssStyleEnum.backgroundColor
+    // );
+    // this.fontFamily = this.getStyleValue(
+    //   initTextStylesInitial(),
+    //   cssStyleEnum.fontFamily
+    // );
+    // this.fontSize = this.getStyleValue(
+    //   initTextStylesInitial(),
+    //   cssStyleEnum.fontSize
+    // );
+    // this.fontHorizontalAlignment = this.getStyleValue(
+    //   initTextStylesInitial(),
+    //   cssStyleEnum.horizontalAlignment
+    // );
+    // this.fontVerticalAlignment = this.getStyleValue(
+    //   initTextStylesInitial(),
+    //   cssStyleEnum.verticalAlignment
+    // );
     this.imageBackGroundColor = this.getStyleValue(
       initImageStylesInitial(),
       cssStyleEnum.backgroundColor
@@ -102,6 +98,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
       initImageStylesInitial(),
       cssStyleEnum.width
     );
+    let builder= new ToolBarBuilder();
+
+    this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
+    this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
+    this.textEditButtonsGrp3 = builder.build(ToolbarTypesEnum.TextColourSettings);
+    this.textEditButtonsGrp4 = builder.build(ToolbarTypesEnum.VerticalAlignment);
+    console.log('%c⧭', 'color: #00e600', this.textEditButtonsGrp1);
   }
 
   // buttons for toolbar
@@ -110,11 +113,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imgPositionButtons: IIconButton[] = imgPositionButtons;
   imgSizeButtons: IIconButton[] = imgSizeButtons;
   // buttons for text toolbar
-  textEditButtonsGrp1: IIconButton[] = textEditorButtonsGrp1;
-  textEditButtonsGrp2: IIconButton[] = textEditorButtonsGrp2;
-  textEditButtonsGrp3: IIconButton[] = textEditorButtonsGrp3;
-  textEditButtonsGrp4: IIconButton[] = textEditorButtonsGrp4;
+  textEditButtonsGrp1: IIconButton[];
+  textEditButtonsGrp2: IIconButton[];
+  textEditButtonsGrp3: IIconButton[];
+  textEditButtonsGrp4: IIconButton[];
   // boolean flags for managing state
+  buttonEvent: ButtonEventEnums;
+  changeValue: string;
+
   isEditing: boolean = false;
   showTextEditor: boolean = false;
   isShowFontPicker: boolean = false;
@@ -155,90 +161,93 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imageHeight: ICssStyles;
   imageWidth: ICssStyles;
 
-  handleClick(event) {
+  handleClick(event:ButtonEventEnums) {
+    console.log('event =%c⧭', 'color: #00a3cc', event);
     this.isDirty = true;
+
     switch (event) {
-      case "editClicked":
+      case ButtonEventEnums.Edit:
+        console.log("Edit Clicked");
         this.setEdit();
         break;
-      case "increaseFont":
-        this.fontSize.value = (parseInt(this.fontSize.value) + 1).toString();
+      case ButtonEventEnums.IncreaseFontSize:
+        this.buttonEvent = event;
         break;
-      case "decreaseFont":
-        this.fontSize.value = (parseInt(this.fontSize.value) - 1).toString();
+      case ButtonEventEnums.DecreaseFontSize:
+        this.buttonEvent = event
         break;
-      case "font":
-        this.isShowFontPicker = !this.isShowFontPicker;
-        break;
-      case "fontColor":
-        this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingColor = !this.isEditingColor;
-        break;
-      case "backgroundColor":
-        this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
-        break;
-      case "uploadClicked":
-        this.imageUrl.value = "";
-        this.showURLLink = false;
-        this.showUploadImage = !this.showUploadImage;
-        break;
-      case "imageBackgroundColor":
-        this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingImageBackgroundColor = !this
-          .isEditingImageBackgroundColor;
-        break;
-      case "imgDecreaseSize":
-        this.imageHeight.value = (
-          parseInt(this.imageHeight.value) - 1
-        ).toString();
-        this.imageWidth.value = (
-          parseInt(this.imageWidth.value) - 1
-        ).toString();
-        break;
-      case "imgIncreaseSize":
-        this.imageWidth.value = (
-          parseInt(this.imageWidth.value) + 1
-        ).toString();
-        this.imageHeight.value = (
-          parseInt(this.imageHeight.value) + 1
-        ).toString();
-        break;
-      case "imgLeft":
-        this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
-        break;
-      case "imgRight":
-        this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
-        break;
-      case "imgUp":
-        this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
-        break;
-      case "imgDown":
-        this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
-        break;
-      case "urlClicked":
-        this.showURLLink = !this.showURLLink;
-        this.showUploadImage = false;
-        break;
-      case "saveClicked":
-        this.savePage();
-        break;
-      case "getClicked":
-        this.getTemplate();
-        break;
-      case "publishClicked":
-        this.publish();
-        break;
-      default:
-        this.clickevent = event;
-        if (event != undefined) {
-          if (event.charAt(0) === "H") {
-            this.fontHorizontalAlignment.value = event.charAt(2);
-          }
-          if (event.charAt(0) === "V") {
-            this.fontVerticalAlignment.value = event.charAt(2);
-          }
-        }
+      // case "font":
+      //   this.isShowFontPicker = !this.isShowFontPicker;
+      //   break;
+      // case "fontColor":
+      //   this.isShowColourPicker = !this.isShowColourPicker;
+      //   this.isEditingColor = !this.isEditingColor;
+      //   break;
+      // case "backgroundColor":
+      //   this.isShowColourPicker = !this.isShowColourPicker;
+      //   this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
+      //   break;
+      // case "uploadClicked":
+      //   this.imageUrl.value = "";
+      //   this.showURLLink = false;
+      //   this.showUploadImage = !this.showUploadImage;
+      //   break;
+      // case "imageBackgroundColor":
+      //   this.isShowColourPicker = !this.isShowColourPicker;
+      //   this.isEditingImageBackgroundColor = !this
+      //     .isEditingImageBackgroundColor;
+      //   break;
+      // case "imgDecreaseSize":
+      //   this.imageHeight.value = (
+      //     parseInt(this.imageHeight.value) - 1
+      //   ).toString();
+      //   this.imageWidth.value = (
+      //     parseInt(this.imageWidth.value) - 1
+      //   ).toString();
+      //   break;
+      // case "imgIncreaseSize":
+      //   this.imageWidth.value = (
+      //     parseInt(this.imageWidth.value) + 1
+      //   ).toString();
+      //   this.imageHeight.value = (
+      //     parseInt(this.imageHeight.value) + 1
+      //   ).toString();
+      //   break;
+      // case "imgLeft":
+      //   this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
+      //   break;
+      // case "imgRight":
+      //   this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
+      //   break;
+      // case "imgUp":
+      //   this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
+      //   break;
+      // case "imgDown":
+      //   this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
+      //   break;
+      // case "urlClicked":
+      //   this.showURLLink = !this.showURLLink;
+      //   this.showUploadImage = false;
+      //   break;
+      // case "saveClicked":
+      //   this.savePage();
+      //   break;
+      // case "getClicked":
+      //   this.getTemplate();
+      //   break;
+      // case "publishClicked":
+      //   this.publish();
+      //   break;
+      // default:
+      //   this.clickevent = event;
+      //   if (event != undefined) {
+      //     if (event.charAt(0) === "H") {
+      //       this.fontHorizontalAlignment.value = event.charAt(2);
+      //     }
+      //     if (event.charAt(0) === "V") {
+      //       this.fontVerticalAlignment.value = event.charAt(2);
+      //     }
+      //   }
     }
   }
 
@@ -259,6 +268,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   setEdit() {
     if (!this.isShowColourPicker) {
       this.isEditing = !this.isEditing;
+      this.buttonEvent = ButtonEventEnums.Edit;
     }
   }
 

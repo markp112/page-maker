@@ -11,7 +11,7 @@ export class UrlInputComponent implements OnInit {
   @Output() url = new EventEmitter();
   @Output() handleCancelClicked = new EventEmitter();
 
-  cancelButton: IIconButton = ButtonBuilder.CancelButton();
+  cancelButton: IIconButton = ButtonBuilder.cancelButton();
 
   constructor() {}
 
