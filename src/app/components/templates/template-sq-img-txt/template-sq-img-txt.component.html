@@ -38,11 +38,9 @@
     </div>
     <div class="text-area"
       appTextFormatterDirective
-
       [buttonEvent]="buttonEvent"
-      [changedValue]="changedValue"
-
-      (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
+      [changedValue]="changeValue"
+      (click)="handleTextEditorClick()">
       {{ layoutText.content }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>

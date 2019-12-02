@@ -29,6 +29,8 @@ export enum ButtonEventEnums {
   FontTypeSerif,
   FontTypeSansSerif,
   // alignment formatters
+  HorizontalAlignmentChanged,
+  VerticalAlignmentChanged,
   VerticalAlignTop = 'vertical-align-top',
   VerticalAlignBottom = 'vertical-align-bottom',
   VerticalAlignCenter = 'vertical-align-centre',

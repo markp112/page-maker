@@ -40,7 +40,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private pageService: PageTemplateService,
     private fontService: FontsService,
     private pageBuilder: PageBuilderService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.pageMaster = initSqImgTxtPage();
@@ -50,30 +50,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
     this.imageStyles = initImageStylesInitial();
     this.textStyles = initTextStylesInitial();
-    // this.fontColor = this.getStyleValue(
-    //   initTextStylesInitial(),
-    //   cssStyleEnum.color
-    // );
-    // this.fontBackgroundColor = this.getStyleValue(
-    //   initTextStylesInitial(),
-    //   cssStyleEnum.backgroundColor
-    // );
-    // this.fontFamily = this.getStyleValue(
-    //   initTextStylesInitial(),
-    //   cssStyleEnum.fontFamily
-    // );
-    // this.fontSize = this.getStyleValue(
-    //   initTextStylesInitial(),
-    //   cssStyleEnum.fontSize
-    // );
-    // this.fontHorizontalAlignment = this.getStyleValue(
-    //   initTextStylesInitial(),
-    //   cssStyleEnum.horizontalAlignment
-    // );
-    // this.fontVerticalAlignment = this.getStyleValue(
-    //   initTextStylesInitial(),
-    //   cssStyleEnum.verticalAlignment
-    // );
+
     this.imageBackGroundColor = this.getStyleValue(
       initImageStylesInitial(),
       cssStyleEnum.backgroundColor
@@ -98,13 +75,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
       initImageStylesInitial(),
       cssStyleEnum.width
     );
-    let builder= new ToolBarBuilder();
+    let builder = new ToolBarBuilder();
 
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
     this.textEditButtonsGrp3 = builder.build(ToolbarTypesEnum.TextColourSettings);
     this.textEditButtonsGrp4 = builder.build(ToolbarTypesEnum.VerticalAlignment);
-    console.log('%c⧭', 'color: #00e600', this.textEditButtonsGrp1);
   }
 
   // buttons for toolbar
@@ -161,94 +137,84 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imageHeight: ICssStyles;
   imageWidth: ICssStyles;
 
-  handleClick(event:ButtonEventEnums) {
+  handleClick(event: ButtonEventEnums) {
     console.log('event =%c⧭', 'color: #00a3cc', event);
-    this.isDirty = true;
 
     switch (event) {
       case ButtonEventEnums.Edit:
-        console.log("Edit Clicked");
         this.setEdit();
         break;
       case ButtonEventEnums.IncreaseFontSize:
+        this.changeValue = Math.random().toString();
         this.buttonEvent = event;
         break;
       case ButtonEventEnums.DecreaseFontSize:
+        this.changeValue = Math.random().toString();
         this.buttonEvent = event
         break;
-      // case "font":
-      //   this.isShowFontPicker = !this.isShowFontPicker;
-      //   break;
-      // case "fontColor":
-      //   this.isShowColourPicker = !this.isShowColourPicker;
-      //   this.isEditingColor = !this.isEditingColor;
-      //   break;
-      // case "backgroundColor":
-      //   this.isShowColourPicker = !this.isShowColourPicker;
-      //   this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
-      //   break;
-      // case "uploadClicked":
-      //   this.imageUrl.value = "";
-      //   this.showURLLink = false;
-      //   this.showUploadImage = !this.showUploadImage;
-      //   break;
-      // case "imageBackgroundColor":
-      //   this.isShowColourPicker = !this.isShowColourPicker;
-      //   this.isEditingImageBackgroundColor = !this
-      //     .isEditingImageBackgroundColor;
-      //   break;
-      // case "imgDecreaseSize":
-      //   this.imageHeight.value = (
-      //     parseInt(this.imageHeight.value) - 1
-      //   ).toString();
-      //   this.imageWidth.value = (
-      //     parseInt(this.imageWidth.value) - 1
-      //   ).toString();
-      //   break;
-      // case "imgIncreaseSize":
-      //   this.imageWidth.value = (
-      //     parseInt(this.imageWidth.value) + 1
-      //   ).toString();
-      //   this.imageHeight.value = (
-      //     parseInt(this.imageHeight.value) + 1
-      //   ).toString();
-      //   break;
-      // case "imgLeft":
-      //   this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
-      //   break;
-      // case "imgRight":
-      //   this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
-      //   break;
-      // case "imgUp":
-      //   this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
-      //   break;
-      // case "imgDown":
-      //   this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
-      //   break;
-      // case "urlClicked":
-      //   this.showURLLink = !this.showURLLink;
-      //   this.showUploadImage = false;
-      //   break;
-      // case "saveClicked":
-      //   this.savePage();
-      //   break;
-      // case "getClicked":
-      //   this.getTemplate();
-      //   break;
-      // case "publishClicked":
-      //   this.publish();
-      //   break;
-      // default:
-      //   this.clickevent = event;
-      //   if (event != undefined) {
-      //     if (event.charAt(0) === "H") {
-      //       this.fontHorizontalAlignment.value = event.charAt(2);
-      //     }
-      //     if (event.charAt(0) === "V") {
-      //       this.fontVerticalAlignment.value = event.charAt(2);
-      //     }
-      //   }
+      case ButtonEventEnums.FontFamily:
+        this.isShowFontPicker = !this.isShowFontPicker;
+        break;
+      case ButtonEventEnums.ForeColour:
+        this.isShowColourPicker = !this.isShowColourPicker;
+        this.isEditingColor = !this.isEditingColor;
+        break;
+      case ButtonEventEnums.BackgroundColour:
+        this.isShowColourPicker = !this.isShowColourPicker;
+        this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
+        break;
+      case ButtonEventEnums.UploadFile:
+        this.imageUrl.value = "";
+        this.showURLLink = false;
+        this.showUploadImage = !this.showUploadImage;
+        break;
+      case ButtonEventEnums.ImageBackgroundColour:
+        this.isShowColourPicker = !this.isShowColourPicker;
+        this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
+        break;
+      case ButtonEventEnums.ImageDecreaseSize:
+        this.imageHeight.value = (parseInt(this.imageHeight.value) - 1).toString();
+        this.imageWidth.value = (parseInt(this.imageWidth.value) - 1).toString();
+        break;
+      case ButtonEventEnums.ImageIncreaseSize:
+        this.imageWidth.value = (parseInt(this.imageWidth.value) + 1).toString();
+        this.imageHeight.value = (parseInt(this.imageHeight.value) + 1).toString();
+        break;
+      case ButtonEventEnums.ImageLeft:
+        this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
+        break;
+      case ButtonEventEnums.ImageRight:
+        this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
+        break;
+      case ButtonEventEnums.ImageUp:
+        this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
+        break;
+      case ButtonEventEnums.ImageDown:
+        this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
+        break;
+      case ButtonEventEnums.UploadUrl:
+        this.showURLLink = !this.showURLLink;
+        this.showUploadImage = false;
+        break;
+      case ButtonEventEnums.Save:
+        this.savePage();
+        break;
+      case ButtonEventEnums.RetrieveSavedData:
+        this.getTemplate();
+        break;
+      case ButtonEventEnums.Publish:
+        this.publish();
+        break;
+      default:
+        this.changeValue = event.toString();
+        if(event === ButtonEventEnums.AlignRight || event === ButtonEventEnums.AlignLeft || event === ButtonEventEnums.AlignCenter
+          || event === ButtonEventEnums.Justify)
+          this.buttonEvent = ButtonEventEnums.HorizontalAlignmentChanged;
+        else if (event === ButtonEventEnums.VerticalAlignBottom || event === ButtonEventEnums.VerticalAlignTop || event === ButtonEventEnums.VerticalAlignCenter) {
+          this.buttonEvent = ButtonEventEnums.VerticalAlignmentChanged;
+        }
     }
+
   }
 
   //event handlers
@@ -262,32 +228,35 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.fontFamily.value = font;
+    this.changeValue = font;
+    this.buttonEvent = ButtonEventEnums.FontFamily;
   }
 
   setEdit() {
     if (!this.isShowColourPicker) {
       this.isEditing = !this.isEditing;
-      this.buttonEvent = ButtonEventEnums.Edit;
     }
   }
 
-  getStyleValue(
-    stylesArray: ICssStyles[],
-    styleTofind: cssStyleEnum
-  ): ICssStyles {
+  handleTextEditorClick(){
+    this.showTextEditor= !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
+    this.isEditing = true;
+  }
+
+  getStyleValue(stylesArray: ICssStyles[], styleTofind: cssStyleEnum): ICssStyles {
     return stylesArray.filter(
-      style => style.pmStyleProperty === styleTofind
-    )[0];
+      style => style.pmStyleProperty === styleTofind)[0];
   }
 
   setColor(color: string) {
     if (this.isEditingColor) {
-      this.fontColor.value = color;
+      this.changeValue = color;
+      this.buttonEvent = ButtonEventEnums.ForeColour;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
-      this.fontBackgroundColor.value = color;
+      this.changeValue = color;
+      this.buttonEvent = ButtonEventEnums.BackgroundColour
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
@@ -310,7 +279,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.showURLLink = !this.showURLLink;
     this.imageUrl.value = url;
   }
-  handleUrlCancelClicked(){
+  handleUrlCancelClicked() {
     this.showURLLink = !this.showURLLink;
   }
   displayStatusMessage(message: string, messageType: messageTypes) {

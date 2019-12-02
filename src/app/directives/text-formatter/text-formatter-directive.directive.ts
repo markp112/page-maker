@@ -1,4 +1,4 @@
-import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef, Output, EventEmitter, SimpleChange } from '@angular/core';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 import { initTextStylesInitial } from 'src/assets/data/interface-initialisers/textInitial';
@@ -15,7 +15,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   @Input() changedValue: string;
   @Output() styles = new EventEmitter<ICssStyles[]>();
 
-
+  private lastButtonClick: ButtonEventEnums;
   private isEditingText: boolean = false;
   private fontSize: ICssStyles;
   private fontFamily: ICssStyles;
@@ -55,33 +55,41 @@ export class TextFormatterDirectiveDirective implements OnChanges {
 
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('%c⧭', 'color: #aa00ff', changes);
-
-    if (changes.buttonEvent) {
-      // let buttonClicked = changes.buttonEvent.currentValue;
-      this.respondToButtonClick(this.buttonEvent);
-
+    console.log('chnages calleds%c⧭', 'color: #aa00ff', changes);
+    let buttonClicked: ButtonEventEnums;
+    if(changes.buttonEvent){
+      buttonClicked = changes.buttonEvent.currentValue;
+      this.lastButtonClick = buttonClicked;
+    } else {
+      buttonClicked = this.lastButtonClick;
     }
+    this.respondToButtonClick(this.buttonEvent);
+
   }
 
   private respondToButtonClick(buttonClickedEvent: ButtonEventEnums) {
+  console.log('%c%s', 'color: #d90000', buttonClickedEvent);
 
     switch (buttonClickedEvent) {
-      case ButtonEventEnums.AlignRight || ButtonEventEnums.AlignCenter || ButtonEventEnums.AlignRight
-        || ButtonEventEnums.Justify || ButtonEventEnums.VerticalAlignBottom || ButtonEventEnums.VerticalAlignCenter
-        || ButtonEventEnums.VerticalAlignTop:
+      // case ButtonEventEnums.AlignRight || ButtonEventEnums.AlignCenter || ButtonEventEnums.AlignRight
+      //   || ButtonEventEnums.Justify || ButtonEventEnums.VerticalAlignBottom || ButtonEventEnums.VerticalAlignCenter
+      //   || ButtonEventEnums.VerticalAlignTop:
+      case ButtonEventEnums.VerticalAlignmentChanged:
+        this.updateTextAlignment(buttonClickedEvent);
+        break;
+      case ButtonEventEnums.HorizontalAlignmentChanged:
         this.updateTextAlignment(buttonClickedEvent);
         break;
       case ButtonEventEnums.FontFamily:
-          this.fontFamily.value = this.changedValue;
-          this.updateElement('fontFamily', `${this.fontFamily.value}`);
+        this.fontFamily.value = this.changedValue;
+        this.updateElement('fontFamily', `${this.fontFamily.value}`);
         break;
       case ButtonEventEnums.IncreaseFontSize:
         this.fontSize.value = (parseInt(this.fontSize.value) + 1).toString();
         this.updateElement('fontSize', `${this.fontSize.value}px`);
         break;
       case ButtonEventEnums.DecreaseFontSize:
-          this.fontSize.value = (parseInt(this.fontSize.value) - 1).toString();
+        this.fontSize.value = (parseInt(this.fontSize.value) - 1).toString();
         this.updateElement('fontSize', `${this.fontSize.value}px`);
         break;
       case ButtonEventEnums.ForeColour:
@@ -93,10 +101,12 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         this.updateElement('backgroundColor', `${this.backgroundColor.value}`)
         break;
       case ButtonEventEnums.Edit:
+        console.log("eidting")
         this.isEditingText = !this.isEditingText;
         break;
       case ButtonEventEnums.Save:
         this.buildStylesArray();
+        break;
     }
   }
 
@@ -113,14 +123,15 @@ export class TextFormatterDirectiveDirective implements OnChanges {
 
   private updateTextAlignment(alignment: ButtonEventEnums) {
     switch (alignment) {
-      case  ButtonEventEnums.AlignRight || ButtonEventEnums.AlignCenter || ButtonEventEnums.AlignRight
-        || ButtonEventEnums.Justify:
-        this.horizontalAlignment.value = ButtonEventEnums[alignment];
+      case ButtonEventEnums.HorizontalAlignmentChanged:
+
+        this.horizontalAlignment.value = this.changedValue;
+        console.log('H =  %c⧭', 'color: #917399',  this.changedValue);
         break;
-      case  ButtonEventEnums.VerticalAlignBottom || ButtonEventEnums.VerticalAlignCenter
-        || ButtonEventEnums.VerticalAlignTop:
-        this.verticalAlignment.value = ButtonEventEnums[alignment];
-      break;
+      case ButtonEventEnums.VerticalAlignmentChanged:
+        console.log('V =  %c⧭', 'color: #917399', this.changedValue);
+        this.verticalAlignment.value = this.changedValue;
+        break;
     }
     this.removeClasses();
     this.applyClasses();

@@ -7,7 +7,7 @@ export class ToolBarBuilder {
   private toolbar: IIconButton[] = [];
 
   public build(toolBarToBuild: ToolbarTypesEnum): IIconButton[] {
-
+    this.toolbar = [];
     switch (toolBarToBuild) {
       case ToolbarTypesEnum.TextAlignment:
         this.buildTextAlignmentToolBar();
@@ -20,13 +20,15 @@ export class ToolBarBuilder {
       case ToolbarTypesEnum.TextColourSettings:
         this.buildColorToolBar();
         break;
+
+      case ToolbarTypesEnum.VerticalAlignment:
+        this.buildTextVerticalAlignment();
     }
     console.log('%c⧭', 'color: #f2ceb6', this.toolbar);
     return this.toolbar;
   }
 
   private buildTextAlignmentToolBar() {
-    this.toolbar = [];
     this.toolbar.push(ButtonBuilder.alignLeftButton());
     this.toolbar.push(ButtonBuilder.alignCenterButton());
     this.toolbar.push(ButtonBuilder.alignJustifyButton());
@@ -35,15 +37,19 @@ export class ToolBarBuilder {
   }
 
   private buildFontToolBar() {
-    this.toolbar = [];
     this.toolbar.push(ButtonBuilder.fontSelectionButton());
     this.toolbar.push(ButtonBuilder.fontIncreaseSizeButton());
     this.toolbar.push(ButtonBuilder.fontDecreaseSizeButton());
   }
 
   private buildColorToolBar() {
-    this.toolbar = [];
     this.toolbar.push(ButtonBuilder.setForeColourButton());
     this.toolbar.push(ButtonBuilder.setBackgroundColourButton());
+  }
+
+  private buildTextVerticalAlignment() {
+    this.toolbar.push(ButtonBuilder.verticalAlignTopButton());
+    this.toolbar.push(ButtonBuilder.verticalAlignCenterButton());
+    this.toolbar.push(ButtonBuilder.verticalAlignBottomButton());
   }
 }
