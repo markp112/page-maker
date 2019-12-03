@@ -1,10 +1,7 @@
-import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef, Output, EventEmitter, SimpleChange } from '@angular/core';
+import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { initTextStylesInitial } from 'src/assets/data/interface-initialisers/textInitial';
-import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
-
-
+import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 
 @Directive({
   selector: "[appTextFormatterDirective]"
@@ -12,62 +9,39 @@ import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 export class TextFormatterDirectiveDirective implements OnChanges {
   @Input() buttonEvent: ButtonEventEnums;
   @Input() changedValue: string;
+  @Input() setTextStyles: TextStyles;
   @Output() stylesUpdated = new EventEmitter<ICssStyles[]>();
   @Output() stylesCreated = new EventEmitter<ICssStyles[]>();
 
   private lastButtonClick: ButtonEventEnums;
   private isEditingText: boolean = false;
-  private fontSize: ICssStyles;
-  private fontFamily: ICssStyles;
-  private foreColor: ICssStyles;
-  private backgroundColor: ICssStyles;
-  private verticalAlignment: ICssStyles;
-  private horizontalAlignment: ICssStyles;
+  private textStyles: TextStyles = new TextStyles();
 
-  constructor(private el: ElementRef, private renderer: Renderer2) {}
+  constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit() {
-    this.foreColor = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.color
-    );
-    this.backgroundColor = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.backgroundColor
-    );
-    this.fontFamily = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.fontFamily
-    );
-    this.fontSize = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.fontSize
-    );
-    this.horizontalAlignment = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.horizontalAlignment
-    );
-    this.verticalAlignment = this.getStyleValue(
-      initTextStylesInitial(),
-      cssStyleEnum.verticalAlignment
-    );
+
   }
 
   ngOnChanges(changes: SimpleChanges) {
     console.log("chnages calleds%c⧭", "color: #aa00ff", changes);
-    let buttonClicked: ButtonEventEnums;
-    if (changes.buttonEvent) {
-      buttonClicked = changes.buttonEvent.currentValue;
-      this.lastButtonClick = buttonClicked;
-    } else {
-      buttonClicked = this.lastButtonClick;
+    if(changes.setTextStyles){
+      this.textStyles = this.setTextStyles;
+      this.applyAllStyles();
+    }else{
+
+      let buttonClicked: ButtonEventEnums;
+      if (changes.buttonEvent) {
+        buttonClicked = changes.buttonEvent.currentValue;
+        this.lastButtonClick = buttonClicked;
+      } else {
+        buttonClicked = this.lastButtonClick;
+      }
+      this.respondToButtonClick(this.buttonEvent);
     }
-    this.respondToButtonClick(this.buttonEvent);
   }
 
   private respondToButtonClick(buttonClickedEvent: ButtonEventEnums) {
-    console.log("%c%s", "color: #d90000", buttonClickedEvent);
-
     switch (buttonClickedEvent) {
       case ButtonEventEnums.VerticalAlignmentChanged:
         this.updateTextAlignment(buttonClickedEvent);
@@ -76,60 +50,57 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         this.updateTextAlignment(buttonClickedEvent);
         break;
       case ButtonEventEnums.FontFamily:
-        this.fontFamily.value = this.changedValue;
-        this.updateElement("fontFamily", `${this.fontFamily.value}`);
+        this.textStyles.fontFamily = this.changedValue;
+        this.updateElement("fontFamily", `${this.textStyles.fontFamily}`);
         break;
       case ButtonEventEnums.IncreaseFontSize:
-        this.fontSize.value = (parseInt(this.fontSize.value) + 1).toString();
-        this.updateElement("fontSize", `${this.fontSize.value}px`);
+        this.textStyles.incrementDecrementFont(1);
+        this.updateElement("fontSize", `${this.textStyles.fontSize}px`);
         break;
       case ButtonEventEnums.DecreaseFontSize:
-        this.fontSize.value = (parseInt(this.fontSize.value) - 1).toString();
-        this.updateElement("fontSize", `${this.fontSize.value}px`);
+        this.textStyles.incrementDecrementFont(-1);
+        this.updateElement("fontSize", `${this.textStyles.fontSize}px`);
         break;
       case ButtonEventEnums.ForeColour:
-        this.foreColor.value = this.changedValue;
-        this.updateElement("color", `${this.foreColor.value}`);
+        this.textStyles.foreColour = this.changedValue;
+        this.updateElement("color", `${this.textStyles.foreColour}`);
         break;
       case ButtonEventEnums.BackgroundColour:
-        this.backgroundColor.value = this.changedValue;
-        this.updateElement("backgroundColor", `${this.backgroundColor.value}`);
+        this.textStyles.fontBackgroundColour = this.changedValue;
+        this.updateElement("backgroundColor", `${this.textStyles.fontBackgroundColour}`);
         break;
       case ButtonEventEnums.Edit:
         this.isEditingText = !this.isEditingText;
         break;
       case ButtonEventEnums.Save:
-        console.log("Saved event");
         this.stylesCreated.emit(this.buildStylesArray());
         break;
       case ButtonEventEnums.UpdateRecord:
-        console.log("Update event");
         this.stylesUpdated.emit(this.buildStylesArray());
         break;
     }
   }
 
+  private applyAllStyles(){
+    this.updateElement("fontFamily", `${this.textStyles.fontFamily}`);
+    this.updateElement("backgroundColor", `${this.textStyles.fontBackgroundColour}`);
+    this.updateElement("color", `${this.textStyles.foreColour}`);
+    this.updateElement("fontSize", `${this.textStyles.fontSize}px`);
+    this.removeClasses();
+    this.applyClasses();
+  }
+
   private buildStylesArray(): ICssStyles[] {
-    let styles: ICssStyles[] = [];
-    styles.push(this.foreColor);
-    styles.push(this.backgroundColor);
-    styles.push(this.fontFamily);
-    styles.push(this.fontSize);
-    styles.push(this.verticalAlignment);
-    styles.push(this.horizontalAlignment);
-    console.log("Styles Built", styles);
-    return styles;
+    return this.textStyles.getStyles();
   }
 
   private updateTextAlignment(alignment: ButtonEventEnums) {
     switch (alignment) {
       case ButtonEventEnums.HorizontalAlignmentChanged:
-        this.horizontalAlignment.value = this.changedValue;
-        console.log("H =  %c⧭", "color: #917399", this.changedValue);
+        this.textStyles.fontHorizontalAlignment = this.changedValue;
         break;
       case ButtonEventEnums.VerticalAlignmentChanged:
-        console.log("V =  %c⧭", "color: #917399", this.changedValue);
-        this.verticalAlignment.value = this.changedValue;
+        this.textStyles.fontVerticalAlignment = this.changedValue;
         break;
     }
     this.removeClasses();
@@ -158,19 +129,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   private applyClasses() {
     if (!this.isEditingText)
       this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
-    this.renderer.addClass(
-      this.el.nativeElement,
-      this.horizontalAlignment.value
-    );
-    this.renderer.addClass(this.el.nativeElement, this.verticalAlignment.value);
-  }
-
-  private getStyleValue(
-    stylesArray: ICssStyles[],
-    styleTofind: cssStyleEnum
-  ): ICssStyles {
-    return stylesArray.filter(
-      style => style.pmStyleProperty === styleTofind
-    )[0];
+    this.renderer.addClass(this.el.nativeElement, this.textStyles.fontHorizontalAlignment);
+    this.renderer.addClass(this.el.nativeElement, this.textStyles.fontVerticalAlignment);
   }
 }

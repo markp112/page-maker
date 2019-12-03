@@ -7,7 +7,6 @@ import {
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
 // interface intialisers
-import { initTextStylesInitial } from "../../../../assets/data/interface-initialisers/textInitial";
 import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
 import { initSqImgTxtPage } from "../../../../assets/data/interface-initialisers/page-square-image-text-initial";
 import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
@@ -27,6 +26,8 @@ import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
+import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
+import { text } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -49,7 +50,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutImageParent = initLayoutSquareImgTxtImageParent();
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
     this.imageStyles = initImageStylesInitial();
-    this.textStyles = initTextStylesInitial();
+
 
     this.imageBackGroundColor = this.getStyleValue(
       initImageStylesInitial(),
@@ -118,18 +119,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutImageParent: ILayout;
   layoutImageChild: ILayout;
   //variables linked to the image
+  textStyles:TextStyles;
   imageStyles: ICssStyles[];
-  textStyles: ICssStyles[];
-  textStylesArray: ICssStyles[]; // directive  is bound to this array
   path: string = config.imageFilePath;
   clickevent: string; // holds the value of the button that has been clicked
   isDirty: boolean = false;
-  fontFamily: ICssStyles;
-  fontSize: ICssStyles;
-  fontColor: ICssStyles;
-  fontBackgroundColor: ICssStyles;
-  fontVerticalAlignment: ICssStyles;
-  fontHorizontalAlignment: ICssStyles;
   imageBackGroundColor: ICssStyles;
   imageUrl: ICssStyles;
   imageTop: ICssStyles;
@@ -334,7 +328,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   createRecord(stylesArray: ICssStyles[]) {
     this.pageMaster = {
-      
+
       uid: "",
       pageRef: "12",
       pageName: "page 1",
@@ -375,29 +369,20 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
     console.log('Style =%c⧭', 'color: #00e600', styles);
-    
+    if(layoutType == PageAreaTypesEnum.textArea) {
+      this.textStyles = new TextStyles();
+      this.textStyles.setStyles(styles);
+
+    }
     styles.forEach(style => {
       switch (style.pmStyleProperty) {
         case cssStyleEnum.backgroundColor:
           if (layoutType === PageAreaTypesEnum.imageArea)
             this.imageBackGroundColor = style;
-          else this.fontBackgroundColor = style;
-          break;
-        case cssStyleEnum.color:
-          this.fontColor = style;
-          break;
-        case cssStyleEnum.fontFamily:
-          this.fontFamily = style;
-          break;
-        case cssStyleEnum.fontSize:
-          this.fontSize = style;
-          break;
+         break;
         case cssStyleEnum.height:
           this.imageHeight = style;
-          break;
-        case cssStyleEnum.horizontalAlignment:
-          this.fontHorizontalAlignment = style;
-          break;
+          break
         case cssStyleEnum.left:
           this.imageLeft = style;
           break;
@@ -406,9 +391,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
           break;
         case cssStyleEnum.url:
           this.imageUrl = style;
-          break;
-        case cssStyleEnum.verticalAlignment:
-          this.fontVerticalAlignment = style;
           break;
         case cssStyleEnum.width:
           this.imageWidth = style;
@@ -419,7 +401,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   processLayoutContent(layouts: ILayout[]): void {
     console.log('Layouts-->%c⧭', 'color: #00a3cc', layouts);
-    
+
     layouts.forEach(childLayout => {
       this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
       if (childLayout.layoutType === PageAreaTypesEnum.textArea)

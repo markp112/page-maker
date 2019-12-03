@@ -17,12 +17,11 @@ describe('ToolBarBuilder build text Alignment toolbar', () => {
   });
 
   it('should have a total of four buttons', () => {
-    // const toolbarBuilder = new ToolBarBuilder();
-    // let toolBar:IIconButton[] =[];
-    // console.log(toolbarBuilder.build(ToolbarTypesEnum.TextAlignment))
-    // toolBar = toolbarBuilder.build(ToolbarTypesEnum.TextAlignment);
-
-    // expect(toolBar.length).toBe(3)
+    const toolbarBuilder = new ToolBarBuilder();
+    let toolBar:IIconButton[] = [];
+    console.log("toolbbar = ",toolbarBuilder.build(ToolbarTypesEnum.TextAlignment))
+    toolBar = toolbarBuilder.build(ToolbarTypesEnum.TextAlignment);
+    expect(toolBar.length).toBe(3)
   })
 
 

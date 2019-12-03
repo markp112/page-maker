@@ -3,9 +3,10 @@ import { Component } from '@angular/core';
 import { IntegrationComponent } from "@nology/angular-test-simplifier";
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
-  template:'<div class="text-area" appTextFormatterDirective [buttonEvent]="buttonClickEvent" [changedValue] = "changedValue" (styles)="testStylesOutput()"></div>'
+  template:'<div class="text-area" appTextFormatterDirective [buttonEvent]="buttonClickEvent" [changedValue]="changedValue" (styles)="testStylesOutput()"></div>'
 })
 
 class MockParentComponent {
@@ -17,21 +18,21 @@ class MockParentComponent {
   }
 }
 
-// describe('TextFormatterDirectiveDirective', () => {
-//   let testDirectiveTextFormatter: IntegrationComponent<TextFormatterDirectiveDirective, MockParentComponent>;
+describe('TextFormatterDirectiveDirective', () => {
+  let testDirectiveTextFormatter: IntegrationComponent<TextFormatterDirectiveDirective, MockParentComponent>;
 
-//   beforeEach(() => {
-//     testDirectiveTextFormatter = new IntegrationComponent<TextFormatterDirectiveDirective, MockParentComponent>(
-//       TextFormatterDirectiveDirective, MockParentComponent);
-//     testDirectiveTextFormatter.configure({
-//       declarations:[],
-//       imports:[],
-//       providers:[]
-//     });
-//     testDirectiveTextFormatter.initialise();
-//   });
+  beforeEach(() => {
+    testDirectiveTextFormatter = new IntegrationComponent<TextFormatterDirectiveDirective, MockParentComponent>(
+      TextFormatterDirectiveDirective, MockParentComponent);
+    testDirectiveTextFormatter.configure({
+      declarations:[],
+      imports:[FontAwesomeModule],
+      providers:[]
+    });
+    testDirectiveTextFormatter.initialise();
+  });
 
-
+});
 //   it('should create an instance', () => {
 //     const directive = new TextFormatterDirectiveDirective(Element);
 //     expect(directive).toBeTruthy();
