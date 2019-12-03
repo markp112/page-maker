@@ -6,7 +6,6 @@ export enum ButtonEventEnums {
   BackgroundColour,
   IncreaseFontSize,
   DecreaseFontSize,
-
   ImageBackgroundColour,
   ImageIncreaseSize,
   ImageDecreaseSize,
@@ -17,6 +16,7 @@ export enum ButtonEventEnums {
   //editing commands
   Save,
   Edit,
+  UpdateRecord,
   RetrieveSavedData,
   UploadUrl,
   UploadFile,

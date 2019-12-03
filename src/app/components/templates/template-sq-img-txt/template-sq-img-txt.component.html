@@ -40,7 +40,9 @@
       appTextFormatterDirective
       [buttonEvent]="buttonEvent"
       [changedValue]="changeValue"
-      (click)="handleTextEditorClick()">
+      (click)="handleTextEditorClick()"
+      (stylesUpdated)="updateRecord($event)"
+      (stylesCreated)="createRecord($event)">
       {{ layoutText.content }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>

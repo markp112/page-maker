@@ -197,13 +197,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.showUploadImage = false;
         break;
       case ButtonEventEnums.Save:
+        console.log("Save button detected")
         this.savePage();
         break;
       case ButtonEventEnums.RetrieveSavedData:
         this.getTemplate();
         break;
       case ButtonEventEnums.Publish:
-        this.publish();
+        this.buttonEvent = ButtonEventEnums.Publish;
         break;
       default:
         this.changeValue = event.toString();
@@ -279,9 +280,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.showURLLink = !this.showURLLink;
     this.imageUrl.value = url;
   }
+
   handleUrlCancelClicked() {
     this.showURLLink = !this.showURLLink;
   }
+
   displayStatusMessage(message: string, messageType: messageTypes) {
     this.statusMessage.message = message;
     this.statusMessage.messageType = messageType;
@@ -290,17 +293,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.isShowStatus = false;
       alert("timeout expired");
     }, 3000);
-  }
-
-  buildStyleArrayText(): ICssStyles[] {
-    let styles: ICssStyles[] = [];
-    styles.push(this.fontColor);
-    styles.push(this.fontBackgroundColor);
-    styles.push(this.fontFamily);
-    styles.push(this.fontSize);
-    styles.push(this.fontVerticalAlignment);
-    styles.push(this.fontHorizontalAlignment);
-    return styles;
   }
 
   buildStyleArrayImage(): ICssStyles[] {
@@ -321,8 +313,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.pageMasterLayout.children = pageLayouts;
   }
 
-  assemblePage(): ILayout {
-    this.layoutText.styles = this.buildStyleArrayText();
+  assemblePage(stylesArray: ICssStyles[]): ILayout {
+    this.layoutText.styles = stylesArray;
     this.removeUserControlledElementsFromMasterLayout();
     this.pageMasterLayout.children[0].children.push(this.layoutText);
     this.layoutImageParent.styles.push(this.imageBackGroundColor);
@@ -334,23 +326,26 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   savePage() {
     if (this.pageMaster.uid != "") {
-      this.updateRecord();
-    } else this.createRecord();
+      this.buttonEvent = ButtonEventEnums.UpdateRecord;
+    } else {
+      this.buttonEvent = ButtonEventEnums.Save;
+    };
   }
 
-  createRecord() {
+  createRecord(stylesArray: ICssStyles[]) {
     this.pageMaster = {
+      
       uid: "",
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
-      layout: this.assemblePage()
+      layout: this.assemblePage(stylesArray)
     };
+    console.log("%c⧭", "color: #e50000", this.pageMaster);
     this.pageService
       .addRecord(this.pageMaster)
       .then(result => {
         if (result.result) {
-          this.isDirty = false;
           this.pageMaster.id = result.msg;
           this.displayStatusMessage("Content saved", messageTypes.information);
         } else {
@@ -366,8 +361,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   // update the record in fireBase
-  updateRecord() {
-    this.pageMaster.layout = this.assemblePage();
+  updateRecord(stylesArray:ICssStyles[]) {
+    this.pageMaster.layout = this.assemblePage(stylesArray);
     this.pageService
       .updateRecord(this.pageMaster)
       .then(res => {
@@ -379,6 +374,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
+    console.log('Style =%c⧭', 'color: #00e600', styles);
+    
     styles.forEach(style => {
       switch (style.pmStyleProperty) {
         case cssStyleEnum.backgroundColor:
@@ -421,6 +418,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   processLayoutContent(layouts: ILayout[]): void {
+    console.log('Layouts-->%c⧭', 'color: #00a3cc', layouts);
+    
     layouts.forEach(childLayout => {
       this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
       if (childLayout.layoutType === PageAreaTypesEnum.textArea)
@@ -433,14 +432,15 @@ export class TemplateSqImgTxtComponent implements OnInit {
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
       let page: IPage = result[0];
+      console.log('Page = %c⧭', 'color: #aa00ff', page);
       this.pageMaster = page;
       this.fontService.getFontNames();
       this.processLayoutContent(page.layout.children);
     });
   }
 
-  publish() {
-    let pageLayout: ILayout = this.assemblePage();
+  publish(stylesArray: ICssStyles[]) {
+    let pageLayout: ILayout = this.assemblePage(stylesArray);
     this.pageMaster.layout = pageLayout;
     this.pageBuilder
       .createPage(this.pageMaster, "main.css")

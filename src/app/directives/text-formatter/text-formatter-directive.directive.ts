@@ -7,13 +7,13 @@ import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 
 
 @Directive({
-  selector: '[appTextFormatterDirective]'
+  selector: "[appTextFormatterDirective]"
 })
 export class TextFormatterDirectiveDirective implements OnChanges {
-
   @Input() buttonEvent: ButtonEventEnums;
   @Input() changedValue: string;
-  @Output() styles = new EventEmitter<ICssStyles[]>();
+  @Output() stylesUpdated = new EventEmitter<ICssStyles[]>();
+  @Output() stylesCreated = new EventEmitter<ICssStyles[]>();
 
   private lastButtonClick: ButtonEventEnums;
   private isEditingText: boolean = false;
@@ -24,7 +24,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   private verticalAlignment: ICssStyles;
   private horizontalAlignment: ICssStyles;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   ngOnInit() {
     this.foreColor = this.getStyleValue(
@@ -53,27 +53,22 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     );
   }
 
-
   ngOnChanges(changes: SimpleChanges) {
-    console.log('chnages calleds%c⧭', 'color: #aa00ff', changes);
+    console.log("chnages calleds%c⧭", "color: #aa00ff", changes);
     let buttonClicked: ButtonEventEnums;
-    if(changes.buttonEvent){
+    if (changes.buttonEvent) {
       buttonClicked = changes.buttonEvent.currentValue;
       this.lastButtonClick = buttonClicked;
     } else {
       buttonClicked = this.lastButtonClick;
     }
     this.respondToButtonClick(this.buttonEvent);
-
   }
 
   private respondToButtonClick(buttonClickedEvent: ButtonEventEnums) {
-  console.log('%c%s', 'color: #d90000', buttonClickedEvent);
+    console.log("%c%s", "color: #d90000", buttonClickedEvent);
 
     switch (buttonClickedEvent) {
-      // case ButtonEventEnums.AlignRight || ButtonEventEnums.AlignCenter || ButtonEventEnums.AlignRight
-      //   || ButtonEventEnums.Justify || ButtonEventEnums.VerticalAlignBottom || ButtonEventEnums.VerticalAlignCenter
-      //   || ButtonEventEnums.VerticalAlignTop:
       case ButtonEventEnums.VerticalAlignmentChanged:
         this.updateTextAlignment(buttonClickedEvent);
         break;
@@ -82,35 +77,39 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         break;
       case ButtonEventEnums.FontFamily:
         this.fontFamily.value = this.changedValue;
-        this.updateElement('fontFamily', `${this.fontFamily.value}`);
+        this.updateElement("fontFamily", `${this.fontFamily.value}`);
         break;
       case ButtonEventEnums.IncreaseFontSize:
         this.fontSize.value = (parseInt(this.fontSize.value) + 1).toString();
-        this.updateElement('fontSize', `${this.fontSize.value}px`);
+        this.updateElement("fontSize", `${this.fontSize.value}px`);
         break;
       case ButtonEventEnums.DecreaseFontSize:
         this.fontSize.value = (parseInt(this.fontSize.value) - 1).toString();
-        this.updateElement('fontSize', `${this.fontSize.value}px`);
+        this.updateElement("fontSize", `${this.fontSize.value}px`);
         break;
       case ButtonEventEnums.ForeColour:
         this.foreColor.value = this.changedValue;
-        this.updateElement('color', `${this.foreColor.value}`);
+        this.updateElement("color", `${this.foreColor.value}`);
         break;
       case ButtonEventEnums.BackgroundColour:
         this.backgroundColor.value = this.changedValue;
-        this.updateElement('backgroundColor', `${this.backgroundColor.value}`)
+        this.updateElement("backgroundColor", `${this.backgroundColor.value}`);
         break;
       case ButtonEventEnums.Edit:
-        console.log("eidting")
         this.isEditingText = !this.isEditingText;
         break;
       case ButtonEventEnums.Save:
-        this.buildStylesArray();
+        console.log("Saved event");
+        this.stylesCreated.emit(this.buildStylesArray());
+        break;
+      case ButtonEventEnums.UpdateRecord:
+        console.log("Update event");
+        this.stylesUpdated.emit(this.buildStylesArray());
         break;
     }
   }
 
-  private buildStylesArray() {
+  private buildStylesArray(): ICssStyles[] {
     let styles: ICssStyles[] = [];
     styles.push(this.foreColor);
     styles.push(this.backgroundColor);
@@ -118,18 +117,18 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     styles.push(this.fontSize);
     styles.push(this.verticalAlignment);
     styles.push(this.horizontalAlignment);
-    this.styles.emit(styles);
+    console.log("Styles Built", styles);
+    return styles;
   }
 
   private updateTextAlignment(alignment: ButtonEventEnums) {
     switch (alignment) {
       case ButtonEventEnums.HorizontalAlignmentChanged:
-
         this.horizontalAlignment.value = this.changedValue;
-        console.log('H =  %c⧭', 'color: #917399',  this.changedValue);
+        console.log("H =  %c⧭", "color: #917399", this.changedValue);
         break;
       case ButtonEventEnums.VerticalAlignmentChanged:
-        console.log('V =  %c⧭', 'color: #917399', this.changedValue);
+        console.log("V =  %c⧭", "color: #917399", this.changedValue);
         this.verticalAlignment.value = this.changedValue;
         break;
     }
@@ -146,19 +145,23 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   private removeClasses(): void {
-    this.removeClass('align-content-right');
-    this.removeClass('align-content-center');
-    this.removeClass('align-content-left');
-    this.removeClass('text-align-justify');
-    this.removeClass('vertical-align-bottom');
-    this.removeClass('vertical-align-top');
-    this.removeClass('vertical-align-centre');
-    this.removeClass('text-area-non-edit');
+    this.removeClass("align-content-right");
+    this.removeClass("align-content-center");
+    this.removeClass("align-content-left");
+    this.removeClass("text-align-justify");
+    this.removeClass("vertical-align-bottom");
+    this.removeClass("vertical-align-top");
+    this.removeClass("vertical-align-centre");
+    this.removeClass("text-area-non-edit");
   }
 
   private applyClasses() {
-    if (!this.isEditingText) this.renderer.addClass(this.el.nativeElement, 'text-area-non-edit');
-    this.renderer.addClass(this.el.nativeElement, this.horizontalAlignment.value);
+    if (!this.isEditingText)
+      this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
+    this.renderer.addClass(
+      this.el.nativeElement,
+      this.horizontalAlignment.value
+    );
     this.renderer.addClass(this.el.nativeElement, this.verticalAlignment.value);
   }
 
