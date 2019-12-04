@@ -20,7 +20,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 
   ngOnInit() {
-
+    this.textStyles = new TextStyles();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,6 +50,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         this.updateTextAlignment(buttonClickedEvent);
         break;
       case ButtonEventEnums.FontFamily:
+        console.log(this.textStyles);
         this.textStyles.fontFamily = this.changedValue;
         this.updateElement("font-family", `${this.textStyles.fontFamily}`);
         break;

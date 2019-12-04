@@ -1,6 +1,6 @@
-import { Injectable, APP_ID } from '@angular/core';
-import {FontApiService} from './font-api.service';
-import { IGooglefont,Item } from '../models/interfaces/google-font-api';
+import { Injectable } from '@angular/core';
+import { FontApiService } from './font-api.service';
+import { IGooglefont } from '../models/interfaces/google-font-api';
 import * as WebFont from "webfontloader";
 
  class IFontItem  {
@@ -21,7 +21,7 @@ export class FontsService {
   public fontData:IGooglefont;
   public fontNameList:string [];
 
-  constructor(private apiService: FontApiService) { 
+  constructor(private apiService: FontApiService) {
     this.fontNames = [];
     this.fontNameList = [];
     apiService.getFonts().subscribe(res => {
@@ -40,7 +40,7 @@ export class FontsService {
     });
   }
 
-  getFontNames(): string[]{ 
+  getFontNames(): string[]{
     return this.fontNameList;
   };
 

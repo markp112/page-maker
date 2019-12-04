@@ -91,7 +91,6 @@ export class TextStyles {
       pmStyleProperty: cssStyleEnum.verticalAlignment,
       value: verticalAlignment
     };
-    console.log("fontFamily =",this._fontFamily)
   }
 
   public getStyles(): ICssStyles[] {

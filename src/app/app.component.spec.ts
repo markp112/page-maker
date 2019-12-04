@@ -19,14 +19,14 @@ import { AppRoutingModule } from "./app-routing.module";
 import { ColorPickerModule } from "./color-picker/color-picker.module";
 import { StatusMessageComponent } from './components/status-message/status-message.component';
 import { DropzoneDirective } from './directives/dropzone.directive';
-import { TextFormatterDirective } from './directives/text-formatter.directive';
 import { ImageFormatterDirective } from './directives/image-formatter.directive';
+import { TextFormatterDirectiveDirective } from './directives/text-formatter/text-formatter-directive.directive'
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore'
 import { AngularFireAuthModule } from 'angularfire2/auth'
-import { AuthService } from './shared/auth.service';
+
 import {secrets } from '../../secrets';
 
 describe("AppComponent", () => {
@@ -51,9 +51,8 @@ describe("AppComponent", () => {
         UrlInputComponent,
         StatusMessageComponent,
         DropzoneDirective,
-        TextFormatterDirective,
-        ImageFormatterDirective
-
+        ImageFormatterDirective,
+        TextFormatterDirectiveDirective
 
       ],
       imports: [FontAwesomeModule, AppRoutingModule, FormsModule, ColorPickerModule,

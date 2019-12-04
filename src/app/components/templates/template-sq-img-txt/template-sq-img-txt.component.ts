@@ -356,6 +356,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   // update the record in fireBase
   updateRecord(stylesArray:ICssStyles[]) {
+    console.log("update Record:",stylesArray)
     this.pageMaster.layout = this.assemblePage(stylesArray);
     this.pageService
       .updateRecord(this.pageMaster)
@@ -368,18 +369,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
-    console.log('Style =%c⧭', 'color: #00e600', styles);
     if(layoutType == PageAreaTypesEnum.textArea) {
       this.textStyles = new TextStyles();
       this.textStyles.setStyles(styles);
-
+      console.log(this.textStyles)
     }
     styles.forEach(style => {
       switch (style.pmStyleProperty) {
         case cssStyleEnum.backgroundColor:
           if (layoutType === PageAreaTypesEnum.imageArea)
             this.imageBackGroundColor = style;
-         break;
+          break;
         case cssStyleEnum.height:
           this.imageHeight = style;
           break
@@ -400,9 +400,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   processLayoutContent(layouts: ILayout[]): void {
-    console.log('Layouts-->%c⧭', 'color: #00a3cc', layouts);
-
-    layouts.forEach(childLayout => {
+      layouts.forEach(childLayout => {
       this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
       if (childLayout.layoutType === PageAreaTypesEnum.textArea)
         this.layoutText.content = childLayout.content;
@@ -414,7 +412,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
   getTemplate() {
     this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
       let page: IPage = result[0];
-      console.log('Page = %c⧭', 'color: #aa00ff', page);
       this.pageMaster = page;
       this.fontService.getFontNames();
       this.processLayoutContent(page.layout.children);

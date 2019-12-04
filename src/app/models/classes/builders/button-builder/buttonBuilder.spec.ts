@@ -37,7 +37,7 @@ describe("cancelButton Constructor", () => {
 
 describe("AlignLeftButton Constructor", () => {
   let alignLeftButton: IIconButton = ButtonBuilder.alignLeftButton();
-  it("should return an IIconButton with an event name of H-0", () => {
+  it("should return an IIconButton with an event name of Align Left", () => {
     expect(alignLeftButton.eventName).toBe(ButtonEventEnums.AlignLeft);
   });
   it("should return an object with a style set to icon", () => {
@@ -50,7 +50,7 @@ describe("AlignLeftButton Constructor", () => {
 
 describe("AlignCenterButton Constructor", () => {
   let alignCenterButton: IIconButton = ButtonBuilder.alignCenterButton();
-  it("should return an IIconButton with an event name of H-2", () => {
+  it("should return an IIconButton with an event name of Align Center", () => {
     expect(alignCenterButton.eventName).toBe(ButtonEventEnums.AlignCenter);
   });
   it("should return an object with a style set to icon", () => {
@@ -63,7 +63,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("AlignJustifyButton Constructor", () => {
     let alignJustifyButton: IIconButton = ButtonBuilder.alignJustifyButton();
-    it("should return an IIconButton with an event name of H-3", () => {
+    it("should return an IIconButton with an event name of Justify", () => {
       expect(alignJustifyButton.eventName).toBe(ButtonEventEnums.Justify);
     });
     it("should return an object with a style set to icon", () => {
@@ -76,7 +76,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("AlignRightButton Constructor", () => {
     let alignRightButton: IIconButton = ButtonBuilder.alignRightButton();
-    it("should return an IIconButton with an event name of H-1", () => {
+    it("should return an IIconButton with an event name of Align Right", () => {
       expect(alignRightButton.eventName).toBe(ButtonEventEnums.AlignRight);
     });
     it("should return an object with a style set to icon", () => {
@@ -89,7 +89,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("FontSelectionButton Constructor", () => {
     let fontSelectionButton: IIconButton = ButtonBuilder.fontSelectionButton();
-    it("should return an IIconButton with an event name of font", () => {
+    it("should return an IIconButton with an event name of fontFamily", () => {
       expect(fontSelectionButton.eventName).toBe(ButtonEventEnums.FontFamily);
     });
     it("should return an object with a style set to icon", () => {
@@ -128,7 +128,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("SetForeColourButton Constructor", () => {
     let setForeColourButton: IIconButton = ButtonBuilder.setForeColourButton ();
-    it("should return an IIconButton with an event name of fontColor", () => {
+    it("should return an IIconButton with an event name of foreColor", () => {
       expect(setForeColourButton.eventName).toBe(ButtonEventEnums.ForeColour);
     });
     it("should return an object with a style set to icon", () => {
@@ -141,7 +141,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("SetBackgroundColourButton Constructor", () => {
     let setBakcgroundColourButton: IIconButton = ButtonBuilder.setBackgroundColourButton();
-    it("should return an IIconButton with an event name of fontColor", () => {
+    it("should return an IIconButton with an event name of BackgroundColour", () => {
       expect(setBakcgroundColourButton.eventName).toBe(ButtonEventEnums.BackgroundColour);
     });
     it("should return an object with a style set to icon", () => {
@@ -154,7 +154,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("VerticalAlignCenter Constructor", () => {
     let verticalAlignCenterButton: IIconButton = ButtonBuilder.verticalAlignCenterButton();
-    it("should return an IIconButton with an event name of V-2", () => {
+    it("should return an IIconButton with an event name of Vertical Align Centre", () => {
       expect(verticalAlignCenterButton.eventName).toBe(ButtonEventEnums.VerticalAlignCenter);
     });
     it("should return an object with a style set to icon", () => {
@@ -167,7 +167,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("VerticalAlignTopButton Constructor", () => {
     let verticalAlignTopButton: IIconButton = ButtonBuilder.verticalAlignTopButton();
-    it("should return an IIconButton with an event name of V-0", () => {
+    it("should return an IIconButton with an event name of Vertical Align Top", () => {
       expect(verticalAlignTopButton.eventName).toBe(ButtonEventEnums.VerticalAlignTop);
     });
     it("should return an object with a style set to icon", () => {
@@ -180,7 +180,7 @@ describe("AlignCenterButton Constructor", () => {
 
   describe("SetBackgroundColourButton Constructor", () => {
     let verticalAlignBottomButton: IIconButton = ButtonBuilder.verticalAlignBottomButton();
-    it("should return an IIconButton with an event name of V-1", () => {
+    it("should return an IIconButton with an event name of Vertical Align Top", () => {
       expect(verticalAlignBottomButton.eventName).toBe(ButtonEventEnums.VerticalAlignBottom);
     });
     it("should return an object with a style set to icon", () => {
