@@ -32,6 +32,7 @@ export class FontDropDownComponent implements OnInit {
   }
 
   handleButtonClick(whichButton:string):void {
+    console.log("filter =",whichButton)
     this.fontFamilies = this.fontService.filterFontTypes(whichButton);
   }
 

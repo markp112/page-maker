@@ -40,14 +40,6 @@ export class FontsService {
     });
   }
 
-  // private getFontNameArray():string[]{
-  //   let temp:string[]=[];
-  //   this.fontNames.forEach(font => {
-  //       temp.push(font._fontName)
-  //   });
-  //   return temp;
-  // };
-
   getFontNames(): string[]{ 
     return this.fontNameList;
   };
@@ -58,8 +50,9 @@ export class FontsService {
   }
 
   filterFontTypes(fontType: string):string[]{
+    console.log("fontType=", fontType)
     let filteredTypes:string[] =[];
-    let filtered = this.fontNames.filter(font => font._fontType.toLowerCase() === fontType);
+    let filtered = this.fontNames.filter(font => font._fontType.toLowerCase().trim() === fontType);
     filtered.forEach(font => filteredTypes.push(font._fontName));
     return filteredTypes;
   }

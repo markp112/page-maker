@@ -22,20 +22,22 @@ export enum ButtonEventEnums {
   UploadFile,
   Publish,
   Cancel,
-  //font styels
-  FontTypeDisplay,
-  FontTypeMonospace,
-  FontTypeHandwriting,
-  FontTypeSerif,
-  FontTypeSansSerif,
-  // alignment formatters
+
+  // alignment selectors
   HorizontalAlignmentChanged,
   VerticalAlignmentChanged,
-  VerticalAlignTop = 'vertical-align-top',
-  VerticalAlignBottom = 'vertical-align-bottom',
-  VerticalAlignCenter = 'vertical-align-centre',
-  AlignLeft = 'align-content-left',
-  AlignRight = 'align-content-right',
-  AlignCenter = 'align-content-center',
-  Justify = 'text-align-justify'
+  //font style filters
+  FontTypeDisplay = "display",
+  FontTypeMonospace = "monospace",
+  FontTypeHandwriting = "handwriting",
+  FontTypeSerif = "serif",
+  FontTypeSansSerif = "sans-serif",
+  // alignement formatters
+  VerticalAlignTop = "vertical-align-top",
+  VerticalAlignBottom = "vertical-align-bottom",
+  VerticalAlignCenter = "vertical-align-centre",
+  AlignLeft = "align-content-left",
+  AlignRight = "align-content-right",
+  AlignCenter = "align-content-center",
+  Justify = "text-align-justify"
 }

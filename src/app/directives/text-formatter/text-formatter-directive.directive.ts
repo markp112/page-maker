@@ -51,15 +51,15 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         break;
       case ButtonEventEnums.FontFamily:
         this.textStyles.fontFamily = this.changedValue;
-        this.updateElement("fontFamily", `${this.textStyles.fontFamily}`);
+        this.updateElement("font-family", `${this.textStyles.fontFamily}`);
         break;
       case ButtonEventEnums.IncreaseFontSize:
         this.textStyles.incrementDecrementFont(1);
-        this.updateElement("fontSize", `${this.textStyles.fontSize}px`);
+        this.updateElement("font-size", `${this.textStyles.fontSize}px`);
         break;
       case ButtonEventEnums.DecreaseFontSize:
         this.textStyles.incrementDecrementFont(-1);
-        this.updateElement("fontSize", `${this.textStyles.fontSize}px`);
+        this.updateElement("font-size", `${this.textStyles.fontSize}px`);
         break;
       case ButtonEventEnums.ForeColour:
         this.textStyles.foreColour = this.changedValue;
@@ -67,7 +67,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         break;
       case ButtonEventEnums.BackgroundColour:
         this.textStyles.fontBackgroundColour = this.changedValue;
-        this.updateElement("backgroundColor", `${this.textStyles.fontBackgroundColour}`);
+        this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
         break;
       case ButtonEventEnums.Edit:
         this.isEditingText = !this.isEditingText;
@@ -82,10 +82,10 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   private applyAllStyles(){
-    this.updateElement("fontFamily", `${this.textStyles.fontFamily}`);
-    this.updateElement("backgroundColor", `${this.textStyles.fontBackgroundColour}`);
+    this.updateElement("font-family", `${this.textStyles.fontFamily}`);
+    this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
     this.updateElement("color", `${this.textStyles.foreColour}`);
-    this.updateElement("fontSize", `${this.textStyles.fontSize}px`);
+    this.updateElement("font-size", `${this.textStyles.fontSize}px`);
     this.removeClasses();
     this.applyClasses();
   }
