@@ -8,11 +8,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 @Component({
   template:'<div class="text-area" appTextFormatterDirective [buttonEvent]="buttonClickEvent" [changedValue]="changedValue" (styles)="testStylesOutput()"></div>'
 })
-
-class MockParentComponent {
+export class MockParentComponent {
   buttonClickEvent: ButtonEventEnums = ButtonEventEnums.Edit;
   changedValue: string;
-
   testStylesOutput(params:any):ICssStyles[] {
     return params;
   }
@@ -32,19 +30,19 @@ describe('TextFormatterDirectiveDirective', () => {
     testDirectiveTextFormatter.initialise();
   });
 
+
+  it('should create an instance', () => {
+    // const directive = new TextFormatterDirectiveDirective();
+    expect(testDirectiveTextFormatter).toBeTruthy();
+  });
+
+  it('should receive the event of te button clicked from the parent', () => {
+    testDirectiveTextFormatter.parentInstance.buttonClickEvent = ButtonEventEnums.Edit;
+    expect(testDirectiveTextFormatter.instance.buttonEvent).toBe(ButtonEventEnums.Edit);
+  })
+
+  it('should when edit is clicked set isEditing to true', () => {
+
+  })
+
 });
-//   it('should create an instance', () => {
-//     const directive = new TextFormatterDirectiveDirective(Element);
-//     expect(directive).toBeTruthy();
-//   });
-
-//   it('should receive the event of the button clicked from the parent', () => {
-//     // testDirectiveTextFormatter.parentInstance.buttonClickEvent = ButtonEventEnums.Edit;
-//     // expect(testDirectiveTextFormatter.instance.buttonEvent).toBe(ButtonEventEnums.Edit);
-//   })
-
-//   it('should when edit is clicked set isEditing to true', () => {
-
-//   })
-
-// });

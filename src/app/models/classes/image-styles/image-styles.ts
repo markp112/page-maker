@@ -18,12 +18,12 @@ export class ImageStyles {
     this._url.value = url;
   }
 
-  public get height(): string {
-    return this._height.value;
+  public get height(): number {
+    return parseInt(this._height.value);
   }
 
-  public set height(height: string) {
-    this._height.value = height;
+  public set height(height: number) {
+    this._height.value = height.toString();
   }
 
   public get width(): number {
@@ -58,7 +58,7 @@ export class ImageStyles {
     this._left.value = left.toString();
   }
 
-  constructor(url: string = "../../../../assets/images/placeholder-image.png", height: string = "auto",
+  constructor(url: string = "../../../../assets/images/placeholder-image.png", height: number = 488,
     width: number = 650, top: number = 0, left: number = 0, backgroundColour: string = "rgba(241,242,244,1)") {
 
     this._url = {
@@ -74,7 +74,7 @@ export class ImageStyles {
     this._height = {
       styleTag: "height",
       pmStyleProperty: cssStyleEnum.height,
-      value: height
+      value: height.toString()
     };
     this._width = {
       styleTag: "width",
@@ -132,6 +132,7 @@ export class ImageStyles {
 
   public incrementDecrementSize(incrementDecrementBy: number){
     this._width.value = (parseInt(this._width.value) + incrementDecrementBy).toString();
+     this._height.value = (parseInt(this._height.value) + incrementDecrementBy).toString();
   }
 
   public moveLeftRightByAmount(amount: number) {

@@ -20,15 +20,15 @@ describe('FontsService', () => {
   });
 
 
-// describe('getFontNames', () => {
-//   it("should return an array of strings containing font names", () => {
-//     // const fonts = ["Acme", "Actor", "Aladin", "Alef", "Actor"];
-//     // spyOn(fontsService,'getFontNames').and.returnValue(fonts);
-//     // let response = fontsService.getFontNames();
-//     // expect(response).toEqual(fonts);
-//     }
-//   )
-// })
+describe('getFontNames', () => {
+  it("should return an array of strings containing font names", () => {
+    // const fonts = ["Acme", "Actor", "Aladin", "Alef", "Actor"];
+    // spyOn(fontsService,'getFontNames').and.returnValue(fonts);
+    // let response = fontsService.getFontNames();
+    // expect(response).toEqual(fonts);
+    }
+  )
+})
 
 
 });
