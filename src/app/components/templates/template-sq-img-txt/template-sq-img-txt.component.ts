@@ -18,6 +18,7 @@ import { PageAreaTypesEnum } from '../../../models/enums/pageAreaTypes.enum';
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
+import { StylesGeneratorService } from '../../../shared/styles-generator-service/styles-generator.service'
 import { ILayout } from 'src/app/models/interfaces/layout';
 import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTxtImageParent, initLayoutSquareImgTxtImageChild } from 'src/assets/data/interface-initialisers/layout-square-image-text-Initial';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
@@ -27,6 +28,7 @@ import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-bu
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
+import { ImageStyles } from 'src/app/models/classes/image-styles/image-styles'
 import { text } from '@fortawesome/fontawesome-svg-core';
 
 @Component({
@@ -40,7 +42,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   constructor(
     private pageService: PageTemplateService,
     private fontService: FontsService,
-    private pageBuilder: PageBuilderService
+    private pageBuilder: PageBuilderService,
+    private styleGeneratorService: StylesGeneratorService
   ) { }
 
   ngOnInit() {
@@ -49,33 +52,33 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutText = initLayoutSquareImgTxtText();
     this.layoutImageParent = initLayoutSquareImgTxtImageParent();
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
-    this.imageStyles = initImageStylesInitial();
+    // this.imageStyles = initImageStylesInitial();
 
 
-    this.imageBackGroundColor = this.getStyleValue(
-      initImageStylesInitial(),
-      cssStyleEnum.backgroundColor
-    );
-    this.imageUrl = this.getStyleValue(
-      initImageStylesInitial(),
-      cssStyleEnum.url
-    );
-    this.imageTop = this.getStyleValue(
-      initImageStylesInitial(),
-      cssStyleEnum.top
-    );
-    this.imageLeft = this.getStyleValue(
-      initImageStylesInitial(),
-      cssStyleEnum.left
-    );
-    this.imageHeight = this.getStyleValue(
-      initImageStylesInitial(),
-      cssStyleEnum.height
-    );
-    this.imageWidth = this.getStyleValue(
-      initImageStylesInitial(),
-      cssStyleEnum.width
-    );
+    // this.imageBackGroundColor = this.getStyleValue(
+    //   initImageStylesInitial(),
+    //   cssStyleEnum.backgroundColor
+    // );
+    // this.imageUrl = this.getStyleValue(
+    //   initImageStylesInitial(),
+    //   cssStyleEnum.url
+    // );
+    // this.imageTop = this.getStyleValue(
+    //   initImageStylesInitial(),
+    //   cssStyleEnum.top
+    // );
+    // this.imageLeft = this.getStyleValue(
+    //   initImageStylesInitial(),
+    //   cssStyleEnum.left
+    // );
+    // this.imageHeight = this.getStyleValue(
+    //   initImageStylesInitial(),
+    //   cssStyleEnum.height
+    // );
+    // this.imageWidth = this.getStyleValue(
+    //   initImageStylesInitial(),
+    //   cssStyleEnum.width
+    // );
     let builder = new ToolBarBuilder();
 
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
@@ -97,6 +100,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   // boolean flags for managing state
   buttonEvent: ButtonEventEnums;
   changeValue: string;
+  imageButtonEvent: ButtonEventEnums;
+  imageChangedValue: string;
 
   isEditing: boolean = false;
   showTextEditor: boolean = false;
@@ -119,21 +124,20 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutImageParent: ILayout;
   layoutImageChild: ILayout;
   //variables linked to the image
-  textStyles:TextStyles;
-  imageStyles: ICssStyles[];
+  textStyles: TextStyles;
+  immageStyles: ImageStyles;
+  // imageStyles: ICssStyles[];
   path: string = config.imageFilePath;
   clickevent: string; // holds the value of the button that has been clicked
-  isDirty: boolean = false;
-  imageBackGroundColor: ICssStyles;
   imageUrl: ICssStyles;
-  imageTop: ICssStyles;
-  imageLeft: ICssStyles;
-  imageHeight: ICssStyles;
-  imageWidth: ICssStyles;
+  // isDirty: boolean = false;
+  // imageBackGroundColor: ICssStyles;
+  // imageTop: ICssStyles;
+  // imageLeft: ICssStyles;
+  // imageHeight: ICssStyles;
+  // imageWidth: ICssStyles;
 
   handleClick(event: ButtonEventEnums) {
-    console.log('event =%c⧭', 'color: #00a3cc', event);
-
     switch (event) {
       case ButtonEventEnums.Edit:
         this.setEdit();
@@ -158,7 +162,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
         break;
       case ButtonEventEnums.UploadFile:
-        this.imageUrl.value = "";
         this.showURLLink = false;
         this.showUploadImage = !this.showUploadImage;
         break;
@@ -167,31 +170,28 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
         break;
       case ButtonEventEnums.ImageDecreaseSize:
-        this.imageHeight.value = (parseInt(this.imageHeight.value) - 1).toString();
-        this.imageWidth.value = (parseInt(this.imageWidth.value) - 1).toString();
+        this.imageButtonEvent = event;
         break;
       case ButtonEventEnums.ImageIncreaseSize:
-        this.imageWidth.value = (parseInt(this.imageWidth.value) + 1).toString();
-        this.imageHeight.value = (parseInt(this.imageHeight.value) + 1).toString();
+        this.imageButtonEvent = event;
         break;
       case ButtonEventEnums.ImageLeft:
-        this.imageLeft.value = (parseInt(this.imageLeft.value) - 1).toString();
+        this.imageButtonEvent = event;
         break;
       case ButtonEventEnums.ImageRight:
-        this.imageLeft.value = (parseInt(this.imageLeft.value) + 1).toString();
+        this.imageButtonEvent = event;
         break;
       case ButtonEventEnums.ImageUp:
-        this.imageTop.value = (parseInt(this.imageTop.value) - 1).toString();
+        this.imageButtonEvent = event;
         break;
       case ButtonEventEnums.ImageDown:
-        this.imageTop.value = (parseInt(this.imageTop.value) + 1).toString();
+        this.imageButtonEvent = event;
         break;
       case ButtonEventEnums.UploadUrl:
         this.showURLLink = !this.showURLLink;
         this.showUploadImage = false;
         break;
       case ButtonEventEnums.Save:
-        console.log("Save button detected")
         this.savePage();
         break;
       case ButtonEventEnums.RetrieveSavedData:
@@ -234,7 +234,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   handleTextEditorClick(){
-    this.showTextEditor= !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
+    this.showTextEditor = !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
     this.isEditing = true;
   }
 
@@ -255,7 +255,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
-      this.imageBackGroundColor.value = color;
+      this.imageButtonEvent = ButtonEventEnums.ImageBackgroundColour;
+      this.imageChangedValue = color;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
@@ -263,6 +264,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleFileUploaded(url: string) {
     this.showUploadImage = !this.showUploadImage;
+    this.imageButtonEvent = ButtonEventEnums.UploadUrl;
+    this.changeValue = url;
     this.imageUrl.value = url;
   }
 
@@ -272,6 +275,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleUrl(url: string) {
     this.showURLLink = !this.showURLLink;
+    this.imageButtonEvent = ButtonEventEnums.imageUrl;
+    this.changeValue = url;
     this.imageUrl.value = url;
   }
 
@@ -287,16 +292,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.isShowStatus = false;
       alert("timeout expired");
     }, 3000);
-  }
-
-  buildStyleArrayImage(): ICssStyles[] {
-    let styles: ICssStyles[] = [];
-    styles.push(this.imageHeight);
-    styles.push(this.imageWidth);
-    styles.push(this.imageLeft);
-    styles.push(this.imageTop);
-    styles.push(this.imageUrl);
-    return styles;
   }
 
   removeUserControlledElementsFromMasterLayout() {

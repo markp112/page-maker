@@ -24,7 +24,6 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("chnages calleds%c⧭", "color: #aa00ff", changes);
     if(changes.setTextStyles){
       this.textStyles = this.setTextStyles;
       this.applyAllStyles();
@@ -129,7 +128,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
 
   private applyClasses() {
     if (!this.isEditingText)
-      this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
+    this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
     this.renderer.addClass(this.el.nativeElement, this.textStyles.fontHorizontalAlignment);
     this.renderer.addClass(this.el.nativeElement, this.textStyles.fontVerticalAlignment);
   }
