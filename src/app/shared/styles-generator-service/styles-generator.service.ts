@@ -4,17 +4,19 @@ import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class StylesGeneratorService {
   private textStyles: TextStyles;
   private imageStyles: ImageStyles;
-  
+
   private _cssStyleTag: string;
   private _cssClass: string;
   private _value: string;
-  
+
   public get cssStyleTag(): string{
     return this._cssStyleTag;
   }
@@ -31,21 +33,7 @@ export class StylesGeneratorService {
     this.imageStyles = new ImageStyles();
   }
 
-  public setTextStyle(styleElement: string, value: string ){
-    this.textStyles[styleElement] = value;
-  }
-
-  public setImageStyle(styleElement: string, value: string){
-    this.imageStyles[styleElement] = value;
-  }
-
-  public getTextStyle(styleElement: string): string {
-    return this.textStyles[styleElement];
-  }
-
-  public getImageStyle(styleElement: string): string {
-    return this.imageStyles[styleElement];
-  }
+ 
 
   public getAllTextStyles(): ICssStyles[] {
     return this.textStyles.getStyles();
@@ -55,26 +43,24 @@ export class StylesGeneratorService {
     return this.imageStyles.getStyles();
   }
 
-
-
-
-  public processButtonClick(buttonEvent: ButtonEventEnums, propertyValue: string = ""){
+  public processButtonClick(buttonEvent: ButtonEventEnums, propertyValue: string = ""): any {
     this._value = "";
     this._cssClass = "";
     this._cssStyleTag = "";
 
-    if (buttonEvent === ButtonEventEnums.VerticalAlignBottom 
-      || buttonEvent === ButtonEventEnums.VerticalAlignTop 
+    if (buttonEvent === ButtonEventEnums.VerticalAlignBottom
+      || buttonEvent === ButtonEventEnums.VerticalAlignTop
       || buttonEvent === ButtonEventEnums.VerticalAlignCenter) {
       this.textStyles.fontVerticalAlignment = buttonEvent.toString()
       this._cssClass = buttonEvent.toString();
-    } else if (buttonEvent === ButtonEventEnums.AlignRight 
-      || buttonEvent === ButtonEventEnums.AlignLeft 
+    } else if (buttonEvent === ButtonEventEnums.AlignRight
+      || buttonEvent === ButtonEventEnums.AlignLeft
       || buttonEvent === ButtonEventEnums.AlignCenter
       || buttonEvent === ButtonEventEnums.Justify){
         this.textStyles.fontHorizontalAlignment = buttonEvent.toString();
         this._cssClass = buttonEvent.toString();
-    } 
+    }
+
     switch (buttonEvent) {
       case ButtonEventEnums.FontFamily:
         this.textStyles.fontFamily = propertyValue;
@@ -82,13 +68,13 @@ export class StylesGeneratorService {
         break;
       case ButtonEventEnums.IncreaseFontSize:
         this.textStyles.incrementDecrementFont(1);
-        this._value = this.textStyles.fontSize.toString();
-        this._cssStyleTag = "font-size.px";
+        this._value = `${this.textStyles.fontSize}px`;
+        this._cssStyleTag = "font-size";
         break;
       case ButtonEventEnums.DecreaseFontSize:
         this.textStyles.incrementDecrementFont(-1);
-        this._value = this.textStyles.fontSize.toString();
-        this._cssStyleTag = "font-size.px";
+        this._value = `${this.textStyles.fontSize}px`;
+        this._cssStyleTag = "font-size";
         break;
       case ButtonEventEnums.ForeColour:
         this.textStyles.foreColour = propertyValue;
@@ -98,8 +84,14 @@ export class StylesGeneratorService {
         this.textStyles.fontBackgroundColour = propertyValue;
         this._cssStyleTag = "background-color";
         break;
-      
+      default:
+      break;
+
     }
+     console.log("exiting button handler service");
+    
+    return {value: this._value,styleTag:this._cssStyleTag, cssClass: this._cssClass };
+   
   }
 }
 

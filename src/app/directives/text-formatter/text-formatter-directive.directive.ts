@@ -26,12 +26,10 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log(changes)
+    console.log("changes = ",changes)
     if(changes.setTextStyles){
       this.textStyles = this.setTextStyles;
       this.applyAllStyles();
-    }else if (changes.cssStyleTag) {
-      this.updateElement(this.cssStyleTag, this.changedValue)
     }
 
       let buttonClicked: ButtonEventEnums;
@@ -39,15 +37,22 @@ export class TextFormatterDirectiveDirective implements OnChanges {
         buttonClicked = changes.buttonEvent.currentValue;
         this.lastButtonClick = buttonClicked;
       } else {
+        console.log(this.lastButtonClick.toString())
         buttonClicked = this.lastButtonClick;
       }
-      this.respondToButtonClick(this.buttonEvent);
+      this.respondToButtonClick(buttonClicked);
     }
-  
+
   private respondToButtonClick(buttonClickedEvent: ButtonEventEnums) {
-      if (this.cssClass === ""){
+    console.log('button clicked = %c⧭', 'color: #f2ceb6', buttonClickedEvent);
+
+    console.log('css Class = %c⧭', 'color: #f2ceb6', this.cssClass);
+     if(buttonClickedEvent === ButtonEventEnums.HorizontalAlignmentChanged
+      || buttonClickedEvent === ButtonEventEnums.VerticalAlignmentChanged){
 
       }else {
+
+        console.log('%c⧭', 'color: #00e600', this.changedValue, this.cssStyleTag );
         this.updateElement(this.cssStyleTag, this.changedValue)
       }
 
@@ -79,7 +84,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
       //   this.stylesUpdated.emit(this.buildStylesArray());
       //   break;
     }
-  
+
 
   private applyAllStyles(){
     this.updateElement("font-family", `${this.textStyles.fontFamily}`);
@@ -108,6 +113,9 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   private updateElement(styleElement: string, value: string) {
+    console.log('%c%s', 'color: #00a3cc', value);
+    console.log('%c%s', 'color: #00e600', styleElement);
+
     this.el.nativeElement.style[styleElement] = value;
   }
 

@@ -106,6 +106,8 @@ $toolbar-height: 50px;
     color: $seconday-text-hex;
     padding: $content-spacing;
     position: relative;
+    overflow: hidden;
+    overflow-y: scroll;
 
   }
 

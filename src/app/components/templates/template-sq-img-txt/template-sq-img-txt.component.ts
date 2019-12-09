@@ -103,7 +103,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   textEditButtonsGrp4: IIconButton[];
   // boolean flags for managing state
   buttonEvent: ButtonEventEnums;
-  changeValue: string;
+  changeValue: string = "";
   cssStyleTag: string = "";
   cssClass: string = "";
   imageButtonEvent: ButtonEventEnums;
@@ -136,26 +136,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   clickevent: string; // holds the value of the button that has been clicked
   imageUrl: ICssStyles;
-  // isDirty: boolean = false;
-  // imageBackGroundColor: ICssStyles;
-  // imageTop: ICssStyles;
-  // imageLeft: ICssStyles;
-  // imageHeight: ICssStyles;
-  // imageWidth: ICssStyles;
-
+  
   handleClick(event: ButtonEventEnums) {
     switch (event) {
       case ButtonEventEnums.Edit:
         this.setEdit();
-        break;
-      // case ButtonEventEnums.IncreaseFontSize:
-      //   this.changeValue = Math.random().toString();
-      //   this.buttonEvent = event;
-      //   break;
-      // case ButtonEventEnums.DecreaseFontSize:
-      //   this.changeValue = Math.random().toString();
-      //   this.buttonEvent = event
-      //   break;
       case ButtonEventEnums.FontFamily:
         this.isShowFontPicker = !this.isShowFontPicker;
         break;
@@ -208,10 +193,15 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.buttonEvent = ButtonEventEnums.Publish;
         break;
       default:
-        this.styleGeneratorService.processButtonClick(this.buttonEvent);
+        let result = this.styleGeneratorService.processButtonClick(this.buttonEvent);
+        console.log('result =',result )
+        console.log(this.styleGeneratorService.value);
+        console.log(this.styleGeneratorService.cssStyleTag);
         this.changeValue = this.styleGeneratorService.value;
         this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
         this.cssClass = this.styleGeneratorService.cssClass;
+        this.buttonEvent = event;
+        break;
     }
   }
 
@@ -226,9 +216,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
+   
+    this.styleGeneratorService.processButtonClick(ButtonEventEnums.FontFamily, font);
     this.buttonEvent = ButtonEventEnums.FontFamily;
     this.changeValue = font;
-    this.styleGeneratorService.processButtonClick(this.buttonEvent, font);
     this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
   }
 
