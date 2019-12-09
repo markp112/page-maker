@@ -10,8 +10,26 @@ import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 export class StylesGeneratorService {
   private textStyles: TextStyles;
   private imageStyles: ImageStyles;
+  
+  private _cssStyleTag: string;
+  private _cssClass: string;
+  private _value: string;
+  
+  public get cssStyleTag(): string{
+    return this._cssStyleTag;
+  }
 
-  constructor() { }
+  public get cssClass(): string {
+    return this._cssClass;
+  }
+
+  public get value (){
+    return this._value;
+  }
+  constructor() {
+    this.textStyles = new TextStyles();
+    this.imageStyles = new ImageStyles();
+  }
 
   public setTextStyle(styleElement: string, value: string ){
     this.textStyles[styleElement] = value;
@@ -37,59 +55,52 @@ export class StylesGeneratorService {
     return this.imageStyles.getStyles();
   }
 
-  public cssStyleTag: string;
-  private cssClass: string;
-  public value: string;
 
 
-  public processButtonClick(buttonEvent: ButtonEventEnums){
-    if (buttonEvent === ButtonEventEnums.VerticalAlignBottom || buttonEvent === ButtonEventEnums.VerticalAlignTop || buttonEvent === ButtonEventEnums.VerticalAlignCenter) {
+
+  public processButtonClick(buttonEvent: ButtonEventEnums, propertyValue: string = ""){
+    this._value = "";
+    this._cssClass = "";
+    this._cssStyleTag = "";
+
+    if (buttonEvent === ButtonEventEnums.VerticalAlignBottom 
+      || buttonEvent === ButtonEventEnums.VerticalAlignTop 
+      || buttonEvent === ButtonEventEnums.VerticalAlignCenter) {
       this.textStyles.fontVerticalAlignment = buttonEvent.toString()
-      this.cssClass = buttonEvent.toString();
-    } else if (buttonEvent === ButtonEventEnums.AlignRight || buttonEvent === ButtonEventEnums.AlignLeft || event === ButtonEventEnums.AlignCenter
-      || event === ButtonEventEnums.Justify)
-
-    )
-
+      this._cssClass = buttonEvent.toString();
+    } else if (buttonEvent === ButtonEventEnums.AlignRight 
+      || buttonEvent === ButtonEventEnums.AlignLeft 
+      || buttonEvent === ButtonEventEnums.AlignCenter
+      || buttonEvent === ButtonEventEnums.Justify){
+        this.textStyles.fontHorizontalAlignment = buttonEvent.toString();
+        this._cssClass = buttonEvent.toString();
+    } 
     switch (buttonEvent) {
-      case ButtonEventEnums.VerticalAlignTop:
-        this.textStyles.fontVerticalAlignment = buttonEvent.toString()
-        this.cssClass = buttonEvent.toString();
-        break;
-      case ButtonEventEnums.VerticalAlignCenter:
-        this.updateTextAlignment(buttonClickedEvent);
-        break;
       case ButtonEventEnums.FontFamily:
-        console.log(this.textStyles);
-        this.textStyles.fontFamily = this.changedValue;
-        this.updateElement("font-family", `${this.textStyles.fontFamily}`);
+        this.textStyles.fontFamily = propertyValue;
+        this._cssStyleTag = "font-family";
         break;
       case ButtonEventEnums.IncreaseFontSize:
         this.textStyles.incrementDecrementFont(1);
-        this.updateElement("font-size", `${this.textStyles.fontSize}px`);
+        this._value = this.textStyles.fontSize.toString();
+        this._cssStyleTag = "font-size.px";
         break;
       case ButtonEventEnums.DecreaseFontSize:
         this.textStyles.incrementDecrementFont(-1);
-        this.updateElement("font-size", `${this.textStyles.fontSize}px`);
+        this._value = this.textStyles.fontSize.toString();
+        this._cssStyleTag = "font-size.px";
         break;
       case ButtonEventEnums.ForeColour:
-        this.textStyles.foreColour = this.changedValue;
-        this.updateElement("color", `${this.textStyles.foreColour}`);
+        this.textStyles.foreColour = propertyValue;
+        this._cssStyleTag = "color";
         break;
       case ButtonEventEnums.BackgroundColour:
-        this.textStyles.fontBackgroundColour = this.changedValue;
-        this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
+        this.textStyles.fontBackgroundColour = propertyValue;
+        this._cssStyleTag = "background-color";
         break;
-      case ButtonEventEnums.Edit:
-        this.isEditingText = !this.isEditingText;
-        break;
-      case ButtonEventEnums.Save:
-        this.stylesCreated.emit(this.buildStylesArray());
-        break;
-      case ButtonEventEnums.UpdateRecord:
-        this.stylesUpdated.emit(this.buildStylesArray());
-        break;
+      
     }
   }
-
 }
+
+

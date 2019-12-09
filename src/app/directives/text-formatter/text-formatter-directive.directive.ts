@@ -9,6 +9,8 @@ import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 export class TextFormatterDirectiveDirective implements OnChanges {
   @Input() buttonEvent: ButtonEventEnums;
   @Input() changedValue: string;
+  @Input() cssStyleTag: string;
+  @Input() cssClass: string;
   @Input() setTextStyles: TextStyles;
   @Output() stylesUpdated = new EventEmitter<ICssStyles[]>();
   @Output() stylesCreated = new EventEmitter<ICssStyles[]>();
@@ -24,10 +26,13 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    console.log(changes)
     if(changes.setTextStyles){
       this.textStyles = this.setTextStyles;
       this.applyAllStyles();
-    }else{
+    }else if (changes.cssStyleTag) {
+      this.updateElement(this.cssStyleTag, this.changedValue)
+    }
 
       let buttonClicked: ButtonEventEnums;
       if (changes.buttonEvent) {
@@ -38,48 +43,43 @@ export class TextFormatterDirectiveDirective implements OnChanges {
       }
       this.respondToButtonClick(this.buttonEvent);
     }
-  }
-
+  
   private respondToButtonClick(buttonClickedEvent: ButtonEventEnums) {
-    switch (buttonClickedEvent) {
-      case ButtonEventEnums.VerticalAlignmentChanged:
-        this.updateTextAlignment(buttonClickedEvent);
-        break;
-      case ButtonEventEnums.HorizontalAlignmentChanged:
-        this.updateTextAlignment(buttonClickedEvent);
-        break;
-      case ButtonEventEnums.FontFamily:
-        console.log(this.textStyles);
-        this.textStyles.fontFamily = this.changedValue;
-        this.updateElement("font-family", `${this.textStyles.fontFamily}`);
-        break;
-      case ButtonEventEnums.IncreaseFontSize:
-        this.textStyles.incrementDecrementFont(1);
-        this.updateElement("font-size", `${this.textStyles.fontSize}px`);
-        break;
-      case ButtonEventEnums.DecreaseFontSize:
-        this.textStyles.incrementDecrementFont(-1);
-        this.updateElement("font-size", `${this.textStyles.fontSize}px`);
-        break;
-      case ButtonEventEnums.ForeColour:
-        this.textStyles.foreColour = this.changedValue;
-        this.updateElement("color", `${this.textStyles.foreColour}`);
-        break;
-      case ButtonEventEnums.BackgroundColour:
-        this.textStyles.fontBackgroundColour = this.changedValue;
-        this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
-        break;
-      case ButtonEventEnums.Edit:
-        this.isEditingText = !this.isEditingText;
-        break;
-      case ButtonEventEnums.Save:
-        this.stylesCreated.emit(this.buildStylesArray());
-        break;
-      case ButtonEventEnums.UpdateRecord:
-        this.stylesUpdated.emit(this.buildStylesArray());
-        break;
+      if (this.cssClass === ""){
+
+      }else {
+        this.updateElement(this.cssStyleTag, this.changedValue)
+      }
+
+      //   this.updateElement("font-family", `${this.textStyles.fontFamily}`);
+      //   break;
+      // case ButtonEventEnums.IncreaseFontSize:
+      //   this.textStyles.incrementDecrementFont(1);
+      //   this.updateElement("font-size", `${this.textStyles.fontSize}px`);
+      //   break;
+      // case ButtonEventEnums.DecreaseFontSize:
+      //   this.textStyles.incrementDecrementFont(-1);
+      //   this.updateElement("font-size", `${this.textStyles.fontSize}px`);
+      //   break;
+      // case ButtonEventEnums.ForeColour:
+      //   this.textStyles.foreColour = this.changedValue;
+      //   this.updateElement("color", `${this.textStyles.foreColour}`);
+      //   break;
+      // case ButtonEventEnums.BackgroundColour:
+      //   this.textStyles.fontBackgroundColour = this.changedValue;
+      //   this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
+      //   break;
+      // case ButtonEventEnums.Edit:
+      //   this.isEditingText = !this.isEditingText;
+      //   break;
+      // case ButtonEventEnums.Save:
+      //   this.stylesCreated.emit(this.buildStylesArray());
+      //   break;
+      // case ButtonEventEnums.UpdateRecord:
+      //   this.stylesUpdated.emit(this.buildStylesArray());
+      //   break;
     }
-  }
+  
 
   private applyAllStyles(){
     this.updateElement("font-family", `${this.textStyles.fontFamily}`);

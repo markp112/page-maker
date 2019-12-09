@@ -7,7 +7,7 @@ import {
   imgSizeButtons
 } from "src/assets/data/mock/image-toolbar";
 // interface intialisers
-import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
+// import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
 import { initSqImgTxtPage } from "../../../../assets/data/interface-initialisers/page-square-image-text-initial";
 import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
@@ -29,7 +29,7 @@ import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 import { ImageStyles } from 'src/app/models/classes/image-styles/image-styles'
-import { text } from '@fortawesome/fontawesome-svg-core';
+
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -44,7 +44,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private fontService: FontsService,
     private pageBuilder: PageBuilderService,
     private styleGeneratorService: StylesGeneratorService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.pageMaster = initSqImgTxtPage();
@@ -52,8 +52,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutText = initLayoutSquareImgTxtText();
     this.layoutImageParent = initLayoutSquareImgTxtImageParent();
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
-    // this.imageStyles = initImageStylesInitial();
 
+    // this.imageStyles = initImageStylesInitial();
 
     // this.imageBackGroundColor = this.getStyleValue(
     //   initImageStylesInitial(),
@@ -83,8 +83,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
-    this.textEditButtonsGrp3 = builder.build(ToolbarTypesEnum.TextColourSettings);
-    this.textEditButtonsGrp4 = builder.build(ToolbarTypesEnum.VerticalAlignment);
+    this.textEditButtonsGrp3 = builder.build(
+      ToolbarTypesEnum.TextColourSettings
+    );
+    this.textEditButtonsGrp4 = builder.build(
+      ToolbarTypesEnum.VerticalAlignment
+    );
   }
 
   // buttons for toolbar
@@ -100,6 +104,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   // boolean flags for managing state
   buttonEvent: ButtonEventEnums;
   changeValue: string;
+  cssStyleTag: string = "";
+  cssClass: string = "";
   imageButtonEvent: ButtonEventEnums;
   imageChangedValue: string;
 
@@ -125,9 +131,9 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutImageChild: ILayout;
   //variables linked to the image
   textStyles: TextStyles;
-  immageStyles: ImageStyles;
+  imageStyles: ImageStyles;
   // imageStyles: ICssStyles[];
-  path: string = config.imageFilePath;
+
   clickevent: string; // holds the value of the button that has been clicked
   imageUrl: ICssStyles;
   // isDirty: boolean = false;
@@ -142,14 +148,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
       case ButtonEventEnums.Edit:
         this.setEdit();
         break;
-      case ButtonEventEnums.IncreaseFontSize:
-        this.changeValue = Math.random().toString();
-        this.buttonEvent = event;
-        break;
-      case ButtonEventEnums.DecreaseFontSize:
-        this.changeValue = Math.random().toString();
-        this.buttonEvent = event
-        break;
+      // case ButtonEventEnums.IncreaseFontSize:
+      //   this.changeValue = Math.random().toString();
+      //   this.buttonEvent = event;
+      //   break;
+      // case ButtonEventEnums.DecreaseFontSize:
+      //   this.changeValue = Math.random().toString();
+      //   this.buttonEvent = event
+      //   break;
       case ButtonEventEnums.FontFamily:
         this.isShowFontPicker = !this.isShowFontPicker;
         break;
@@ -167,7 +173,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
         break;
       case ButtonEventEnums.ImageBackgroundColour:
         this.isShowColourPicker = !this.isShowColourPicker;
-        this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
+        this.isEditingImageBackgroundColor = !this
+          .isEditingImageBackgroundColor;
         break;
       case ButtonEventEnums.ImageDecreaseSize:
         this.imageButtonEvent = event;
@@ -201,15 +208,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.buttonEvent = ButtonEventEnums.Publish;
         break;
       default:
-        this.changeValue = event.toString();
-        if(event === ButtonEventEnums.AlignRight || event === ButtonEventEnums.AlignLeft || event === ButtonEventEnums.AlignCenter
-          || event === ButtonEventEnums.Justify)
-          this.buttonEvent = ButtonEventEnums.HorizontalAlignmentChanged;
-        else if (event === ButtonEventEnums.VerticalAlignBottom || event === ButtonEventEnums.VerticalAlignTop || event === ButtonEventEnums.VerticalAlignCenter) {
-          this.buttonEvent = ButtonEventEnums.VerticalAlignmentChanged;
-        }
+        this.styleGeneratorService.processButtonClick(this.buttonEvent);
+        this.changeValue = this.styleGeneratorService.value;
+        this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
+        this.cssClass = this.styleGeneratorService.cssClass;
     }
-
   }
 
   //event handlers
@@ -223,8 +226,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.changeValue = font;
     this.buttonEvent = ButtonEventEnums.FontFamily;
+    this.changeValue = font;
+    this.styleGeneratorService.processButtonClick(this.buttonEvent, font);
+    this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
   }
 
   setEdit() {
@@ -233,30 +238,41 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
   }
 
-  handleTextEditorClick(){
-    this.showTextEditor = !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
+  handleTextEditorClick() {
+    this.showTextEditor =
+      !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
     this.isEditing = true;
   }
 
-  getStyleValue(stylesArray: ICssStyles[], styleTofind: cssStyleEnum): ICssStyles {
+  getStyleValue(
+    stylesArray: ICssStyles[],
+    styleTofind: cssStyleEnum
+  ): ICssStyles {
     return stylesArray.filter(
-      style => style.pmStyleProperty === styleTofind)[0];
+      style => style.pmStyleProperty === styleTofind
+    )[0];
   }
 
   setColor(color: string) {
     if (this.isEditingColor) {
-      this.changeValue = color;
       this.buttonEvent = ButtonEventEnums.ForeColour;
+      this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
+      this.changeValue = color;
+      this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
       this.changeValue = color;
-      this.buttonEvent = ButtonEventEnums.BackgroundColour
+      this.buttonEvent = ButtonEventEnums.BackgroundColour;
+      this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
+      this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
       this.imageButtonEvent = ButtonEventEnums.ImageBackgroundColour;
       this.imageChangedValue = color;
+      this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
+      this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
@@ -275,7 +291,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleUrl(url: string) {
     this.showURLLink = !this.showURLLink;
-    this.imageButtonEvent = ButtonEventEnums.imageUrl;
+    // this.imageButtonEvent = ButtonEventEnums.imageUrl;
     this.changeValue = url;
     this.imageUrl.value = url;
   }
@@ -306,8 +322,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutText.styles = stylesArray;
     this.removeUserControlledElementsFromMasterLayout();
     this.pageMasterLayout.children[0].children.push(this.layoutText);
-    this.layoutImageParent.styles.push(this.imageBackGroundColor);
-    this.layoutImageChild.styles = this.buildStyleArrayImage();
+    // this.layoutImageParent.styles.push(this.imageBackGroundColor);
+    // this.layoutImageChild.styles = this.buildStyleArrayImage();
     this.layoutImageParent.children.push(this.layoutImageChild);
     this.pageMasterLayout.children[0].children.push(this.layoutImageParent);
     return this.pageMasterLayout;
@@ -318,12 +334,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.buttonEvent = ButtonEventEnums.UpdateRecord;
     } else {
       this.buttonEvent = ButtonEventEnums.Save;
-    };
+    }
   }
 
   createRecord(stylesArray: ICssStyles[]) {
     this.pageMaster = {
-
       uid: "",
       pageRef: "12",
       pageName: "page 1",
@@ -350,8 +365,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   // update the record in fireBase
-  updateRecord(stylesArray:ICssStyles[]) {
-    console.log("update Record:",stylesArray)
+  updateRecord(stylesArray: ICssStyles[]) {
+    console.log("update Record:", stylesArray);
     this.pageMaster.layout = this.assemblePage(stylesArray);
     this.pageService
       .updateRecord(this.pageMaster)
@@ -364,38 +379,38 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
-    if(layoutType == PageAreaTypesEnum.textArea) {
+    if (layoutType == PageAreaTypesEnum.textArea) {
       this.textStyles = new TextStyles();
       this.textStyles.setStyles(styles);
-      console.log(this.textStyles)
+      console.log(this.textStyles);
     }
-    styles.forEach(style => {
-      switch (style.pmStyleProperty) {
-        case cssStyleEnum.backgroundColor:
-          if (layoutType === PageAreaTypesEnum.imageArea)
-            this.imageBackGroundColor = style;
-          break;
-        case cssStyleEnum.height:
-          this.imageHeight = style;
-          break
-        case cssStyleEnum.left:
-          this.imageLeft = style;
-          break;
-        case cssStyleEnum.top:
-          this.imageTop = style;
-          break;
-        case cssStyleEnum.url:
-          this.imageUrl = style;
-          break;
-        case cssStyleEnum.width:
-          this.imageWidth = style;
-          break;
-      }
-    });
+    // styles.forEach(style => {
+    //   switch (style.pmStyleProperty) {
+    //     case cssStyleEnum.backgroundColor:
+    //       if (layoutType === PageAreaTypesEnum.imageArea)
+    //         this.imageBackGroundColor = style;
+    //       break;
+    //     case cssStyleEnum.height:
+    //       this.imageHeight = style;
+    //       break
+    //     case cssStyleEnum.left:
+    //       this.imageLeft = style;
+    //       break;
+    //     case cssStyleEnum.top:
+    //       this.imageTop = style;
+    //       break;
+    //     case cssStyleEnum.url:
+    //       this.imageUrl = style;
+    //       break;
+    //     case cssStyleEnum.width:
+    //       this.imageWidth = style;
+    //       break;
+    //   }
+    // });
   }
 
   processLayoutContent(layouts: ILayout[]): void {
-      layouts.forEach(childLayout => {
+    layouts.forEach(childLayout => {
       this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
       if (childLayout.layoutType === PageAreaTypesEnum.textArea)
         this.layoutText.content = childLayout.content;
