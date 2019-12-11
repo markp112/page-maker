@@ -26,63 +26,43 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log("changes = ",changes)
     if(changes.setTextStyles){
       this.textStyles = this.setTextStyles;
       this.applyAllStyles();
     }
+    if(changes.cssClass){
 
+    }
       let buttonClicked: ButtonEventEnums;
       if (changes.buttonEvent) {
         buttonClicked = changes.buttonEvent.currentValue;
         this.lastButtonClick = buttonClicked;
       } else {
-        console.log(this.lastButtonClick.toString())
+        
         buttonClicked = this.lastButtonClick;
       }
       this.respondToButtonClick(buttonClicked);
     }
 
   private respondToButtonClick(buttonClickedEvent: ButtonEventEnums) {
-    console.log('button clicked = %c⧭', 'color: #f2ceb6', buttonClickedEvent);
+    if (buttonClickedEvent === ButtonEventEnums.AlignCenter 
+      || buttonClickedEvent === ButtonEventEnums.AlignLeft
+      || buttonClickedEvent === ButtonEventEnums.Justify
+      || buttonClickedEvent === ButtonEventEnums.AlignRight) {
 
-    console.log('css Class = %c⧭', 'color: #f2ceb6', this.cssClass);
-     if(buttonClickedEvent === ButtonEventEnums.HorizontalAlignmentChanged
-      || buttonClickedEvent === ButtonEventEnums.VerticalAlignmentChanged){
-
+        this.textStyles.fontHorizontalAlignment = this.cssClass;
+        console.log('changed value%c%s', 'color: #f2ceb6', this.cssClass);
+        this.updateTextAlignment();
+      }
+      if (buttonClickedEvent === ButtonEventEnums.VerticalAlignBottom
+      || buttonClickedEvent === ButtonEventEnums.VerticalAlignCenter
+      || buttonClickedEvent === ButtonEventEnums.VerticalAlignTop
+      ){
+        this.textStyles.fontVerticalAlignment = this.cssClass;
+        this.updateTextAlignment();
       }else {
-
-        console.log('%c⧭', 'color: #00e600', this.changedValue, this.cssStyleTag );
         this.updateElement(this.cssStyleTag, this.changedValue)
       }
-
-      //   this.updateElement("font-family", `${this.textStyles.fontFamily}`);
-      //   break;
-      // case ButtonEventEnums.IncreaseFontSize:
-      //   this.textStyles.incrementDecrementFont(1);
-      //   this.updateElement("font-size", `${this.textStyles.fontSize}px`);
-      //   break;
-      // case ButtonEventEnums.DecreaseFontSize:
-      //   this.textStyles.incrementDecrementFont(-1);
-      //   this.updateElement("font-size", `${this.textStyles.fontSize}px`);
-      //   break;
-      // case ButtonEventEnums.ForeColour:
-      //   this.textStyles.foreColour = this.changedValue;
-      //   this.updateElement("color", `${this.textStyles.foreColour}`);
-      //   break;
-      // case ButtonEventEnums.BackgroundColour:
-      //   this.textStyles.fontBackgroundColour = this.changedValue;
-      //   this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
-      //   break;
-      // case ButtonEventEnums.Edit:
-      //   this.isEditingText = !this.isEditingText;
-      //   break;
-      // case ButtonEventEnums.Save:
-      //   this.stylesCreated.emit(this.buildStylesArray());
-      //   break;
-      // case ButtonEventEnums.UpdateRecord:
-      //   this.stylesUpdated.emit(this.buildStylesArray());
-      //   break;
     }
 
 
@@ -99,23 +79,12 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     return this.textStyles.getStyles();
   }
 
-  private updateTextAlignment(alignment: ButtonEventEnums) {
-    switch (alignment) {
-      case ButtonEventEnums.HorizontalAlignmentChanged:
-        this.textStyles.fontHorizontalAlignment = this.changedValue;
-        break;
-      case ButtonEventEnums.VerticalAlignmentChanged:
-        this.textStyles.fontVerticalAlignment = this.changedValue;
-        break;
-    }
+  private updateTextAlignment() {
     this.removeClasses();
     this.applyClasses();
   }
 
   private updateElement(styleElement: string, value: string) {
-    console.log('%c%s', 'color: #00a3cc', value);
-    console.log('%c%s', 'color: #00e600', styleElement);
-
     this.el.nativeElement.style[styleElement] = value;
   }
 
@@ -135,9 +104,12 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   private applyClasses() {
-    if (!this.isEditingText)
+    // if (!this.isEditingText){
     this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
     this.renderer.addClass(this.el.nativeElement, this.textStyles.fontHorizontalAlignment);
+    console.log('%c⧭', 'color: #00a3cc', this.textStyles.fontHorizontalAlignment);
     this.renderer.addClass(this.el.nativeElement, this.textStyles.fontVerticalAlignment);
+    console.log('%c⧭', 'color: #aa00ff', this.textStyles.fontVerticalAlignment);
+  // }
   }
 }

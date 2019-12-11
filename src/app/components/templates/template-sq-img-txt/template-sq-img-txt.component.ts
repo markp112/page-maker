@@ -141,6 +141,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     switch (event) {
       case ButtonEventEnums.Edit:
         this.setEdit();
+        break;
       case ButtonEventEnums.FontFamily:
         this.isShowFontPicker = !this.isShowFontPicker;
         break;
@@ -193,10 +194,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.buttonEvent = ButtonEventEnums.Publish;
         break;
       default:
-        let result = this.styleGeneratorService.processButtonClick(this.buttonEvent);
-        console.log('result =',result )
-        console.log(this.styleGeneratorService.value);
-        console.log(this.styleGeneratorService.cssStyleTag);
+        this.styleGeneratorService.processButtonClick(event);
         this.changeValue = this.styleGeneratorService.value;
         this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
         this.cssClass = this.styleGeneratorService.cssClass;
@@ -216,7 +214,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-   
     this.styleGeneratorService.processButtonClick(ButtonEventEnums.FontFamily, font);
     this.buttonEvent = ButtonEventEnums.FontFamily;
     this.changeValue = font;
@@ -240,8 +237,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     styleTofind: cssStyleEnum
   ): ICssStyles {
     return stylesArray.filter(
-      style => style.pmStyleProperty === styleTofind
-    )[0];
+      style => style.pmStyleProperty === styleTofind)[0];
   }
 
   setColor(color: string) {
@@ -336,7 +332,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
       template: pageTemplates.sqImgText,
       layout: this.assemblePage(stylesArray)
     };
-    console.log("%c⧭", "color: #e50000", this.pageMaster);
+    
     this.pageService
       .addRecord(this.pageMaster)
       .then(result => {
@@ -357,7 +353,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   // update the record in fireBase
   updateRecord(stylesArray: ICssStyles[]) {
-    console.log("update Record:", stylesArray);
     this.pageMaster.layout = this.assemblePage(stylesArray);
     this.pageService
       .updateRecord(this.pageMaster)
@@ -373,7 +368,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
     if (layoutType == PageAreaTypesEnum.textArea) {
       this.textStyles = new TextStyles();
       this.textStyles.setStyles(styles);
-      console.log(this.textStyles);
     }
     // styles.forEach(style => {
     //   switch (style.pmStyleProperty) {
