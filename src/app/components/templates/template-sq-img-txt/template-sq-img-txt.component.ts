@@ -53,38 +53,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutImageParent = initLayoutSquareImgTxtImageParent();
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
 
-    // this.imageStyles = initImageStylesInitial();
-
-    // this.imageBackGroundColor = this.getStyleValue(
-    //   initImageStylesInitial(),
-    //   cssStyleEnum.backgroundColor
-    // );
-    // this.imageUrl = this.getStyleValue(
-    //   initImageStylesInitial(),
-    //   cssStyleEnum.url
-    // );
-    // this.imageTop = this.getStyleValue(
-    //   initImageStylesInitial(),
-    //   cssStyleEnum.top
-    // );
-    // this.imageLeft = this.getStyleValue(
-    //   initImageStylesInitial(),
-    //   cssStyleEnum.left
-    // );
-    // this.imageHeight = this.getStyleValue(
-    //   initImageStylesInitial(),
-    //   cssStyleEnum.height
-    // );
-    // this.imageWidth = this.getStyleValue(
-    //   initImageStylesInitial(),
-    //   cssStyleEnum.width
-    // );
     let builder = new ToolBarBuilder();
 
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
     this.textEditButtonsGrp3 = builder.build(
-      ToolbarTypesEnum.TextColourSettings
+    ToolbarTypesEnum.TextColourSettings
     );
     this.textEditButtonsGrp4 = builder.build(
       ToolbarTypesEnum.VerticalAlignment
@@ -108,7 +82,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
   cssClass: string = "";
   imageButtonEvent: ButtonEventEnums;
   imageChangedValue: string;
-
   isEditing: boolean = false;
   showTextEditor: boolean = false;
   isShowFontPicker: boolean = false;
@@ -130,8 +103,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutImageParent: ILayout;
   layoutImageChild: ILayout;
   //variables linked to the image
-  textStyles: TextStyles;
-  imageStyles: ImageStyles;
+  // textStyles: TextStyles;
+  // imageStyles: ImageStyles;
   // imageStyles: ICssStyles[];
 
   clickevent: string; // holds the value of the button that has been clicked
@@ -257,7 +230,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
     if (this.isEditingImageBackgroundColor) {
       this.imageButtonEvent = ButtonEventEnums.ImageBackgroundColour;
-      this.imageChangedValue = color;
+      this.imageChangedValue= color;
       this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
       this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
@@ -366,8 +339,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
     if (layoutType == PageAreaTypesEnum.textArea) {
-      this.textStyles = new TextStyles();
-      this.textStyles.setStyles(styles);
+      // this.textStyles = new TextStyles();
+      // this.textStyles.setStyles(styles);
     }
     // styles.forEach(style => {
     //   switch (style.pmStyleProperty) {
