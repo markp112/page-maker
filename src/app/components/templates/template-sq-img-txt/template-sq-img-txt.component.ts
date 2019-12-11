@@ -29,6 +29,8 @@ import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 import { ImageStyles } from 'src/app/models/classes/image-styles/image-styles'
+import { IButtonEvent } from 'src/app/models/interfaces/button-event';
+import { ButtonCommandTypesEnum } from 'src/app/models/enums/Button-Command-Type-enums';
 
 
 @Component({
@@ -78,8 +80,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   // boolean flags for managing state
   buttonEvent: ButtonEventEnums;
   changeValue: string = "";
-  cssStyleTag: string = "";
-  cssClass: string = "";
+
   imageButtonEvent: ButtonEventEnums;
   imageChangedValue: string;
   isEditing: boolean = false;
@@ -102,16 +103,21 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutText: ILayout;
   layoutImageParent: ILayout;
   layoutImageChild: ILayout;
-  //variables linked to the image
-  // textStyles: TextStyles;
-  // imageStyles: ImageStyles;
-  // imageStyles: ICssStyles[];
+
 
   clickevent: string; // holds the value of the button that has been clicked
   imageUrl: ICssStyles;
-  
-  handleClick(event: ButtonEventEnums) {
-    switch (event) {
+
+  handleClick(event: IButtonEvent) {
+
+    if(event.buttonCommandType === ButtonCommandTypesEnum.Command){
+      this.processEventCommand(event.eventName)
+    }else if(event.buttonCommandType === ButtonCommandTypesEnum.TextStyler){
+      this.buttonEvent = event.eventName;
+    }
+  }
+  processEventCommand(eventName: ButtonEventEnums) {
+    switch (eventName) {
       case ButtonEventEnums.Edit:
         this.setEdit();
         break;
@@ -136,22 +142,22 @@ export class TemplateSqImgTxtComponent implements OnInit {
           .isEditingImageBackgroundColor;
         break;
       case ButtonEventEnums.ImageDecreaseSize:
-        this.imageButtonEvent = event;
+        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.ImageIncreaseSize:
-        this.imageButtonEvent = event;
+        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.ImageLeft:
-        this.imageButtonEvent = event;
+        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.ImageRight:
-        this.imageButtonEvent = event;
+        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.ImageUp:
-        this.imageButtonEvent = event;
+        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.ImageDown:
-        this.imageButtonEvent = event;
+        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.UploadUrl:
         this.showURLLink = !this.showURLLink;
@@ -167,11 +173,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.buttonEvent = ButtonEventEnums.Publish;
         break;
       default:
-        this.styleGeneratorService.processButtonClick(event);
-        this.changeValue = this.styleGeneratorService.value;
-        this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
-        this.cssClass = this.styleGeneratorService.cssClass;
-        this.buttonEvent = event;
+
         break;
     }
   }
@@ -187,10 +189,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
   handleSelectFont(font: string) {
     this.isShowFontPicker = false;
-    this.styleGeneratorService.processButtonClick(ButtonEventEnums.FontFamily, font);
     this.buttonEvent = ButtonEventEnums.FontFamily;
     this.changeValue = font;
-    this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
   }
 
   setEdit() {
@@ -200,39 +200,28 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   handleTextEditorClick() {
-    this.showTextEditor =
-      !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
+    this.showTextEditor = !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
     this.isEditing = true;
   }
 
-  getStyleValue(
-    stylesArray: ICssStyles[],
-    styleTofind: cssStyleEnum
-  ): ICssStyles {
-    return stylesArray.filter(
-      style => style.pmStyleProperty === styleTofind)[0];
+  getStyleValue( stylesArray: ICssStyles[], styleTofind: cssStyleEnum ): ICssStyles {
+    return stylesArray.filter(style => style.pmStyleProperty === styleTofind)[0];
   }
 
   setColor(color: string) {
     if (this.isEditingColor) {
       this.buttonEvent = ButtonEventEnums.ForeColour;
-      this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
       this.changeValue = color;
-      this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingColor = !this.isEditingColor;
     }
     if (this.isEditingBackgroundColor) {
       this.changeValue = color;
       this.buttonEvent = ButtonEventEnums.BackgroundColour;
-      this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
-      this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingBackgroundColor = !this.isEditingBackgroundColor;
     }
     if (this.isEditingImageBackgroundColor) {
       this.imageButtonEvent = ButtonEventEnums.ImageBackgroundColour;
       this.imageChangedValue= color;
-      this.styleGeneratorService.processButtonClick(this.buttonEvent, color);
-      this.cssStyleTag = this.styleGeneratorService.cssStyleTag;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;
@@ -305,7 +294,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
       template: pageTemplates.sqImgText,
       layout: this.assemblePage(stylesArray)
     };
-    
+
     this.pageService
       .addRecord(this.pageMaster)
       .then(result => {

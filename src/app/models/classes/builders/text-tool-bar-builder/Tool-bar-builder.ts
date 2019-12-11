@@ -23,9 +23,34 @@ export class ToolBarBuilder {
 
       case ToolbarTypesEnum.VerticalAlignment:
         this.buildTextVerticalAlignment();
+        break;
+      case ToolbarTypesEnum.ImageCaptureButtons:
+        this.buildImageCaptureToolbar();
+        break;
+      case ToolbarTypesEnum.ImagePositionButtons:
+        this.buildImagePositionToolbar();
+        break;
+      case ToolbarTypesEnum.ImageSizeButtons:
+          this.buildImageSizingToolbar();
+          break;
     }
-    console.log('%c⧭', 'color: #f2ceb6', this.toolbar);
+
     return this.toolbar;
+  }
+  buildImagePositionToolbar() {
+    this.toolbar.push(ButtonBuilder.imageLeftButton());
+    this.toolbar.push(ButtonBuilder.imageRightButton());
+    this.toolbar.push(ButtonBuilder.imageUpButton());
+    this.toolbar.push(ButtonBuilder.imageDownButton());
+  }
+  buildImageSizingToolbar() {
+    this.toolbar.push(ButtonBuilder.imageDecreaseSizeButton());
+    this.toolbar.push(ButtonBuilder.imageIncreaseSizeButton());
+  }
+  buildImageCaptureToolbar() {
+    this.toolbar.push(ButtonBuilder.imageUploadButton());
+    this.toolbar.push(ButtonBuilder.imagePasteUrlButton());
+    this.toolbar.push(ButtonBuilder.imageBackgroundColourButton());
   }
 
   private buildTextAlignmentToolBar() {

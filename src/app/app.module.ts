@@ -28,6 +28,7 @@ import { AuthService } from './shared/auth.service';
 import { PageTemplateService } from "./shared/page-template.service";
 import { FireStorageService } from './shared/fire-storage.service';
 import { PageBuilderService } from './shared/page-builder.service';
+import { TextDirectiveFormatterService } from './shared/formatters/text/text-directive-formatter.service'
 
 // Vendor
 import { AngularFireModule } from 'angularfire2';
@@ -88,7 +89,7 @@ import { secrets } from 'secrets';
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence()
   ],
-  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService, PageBuilderService],
+  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService, PageBuilderService, TextDirectiveFormatterService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

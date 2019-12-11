@@ -3,4 +3,7 @@ export enum ToolbarTypesEnum {
   FontSettings,
   TextColourSettings,
   VerticalAlignment,
+  ImageCaptureButtons,
+  ImageSizeButtons,
+  ImagePositionButtons
 }
