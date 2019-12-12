@@ -12,8 +12,8 @@ export class TextDirectiveFormatterService {
   private _cssStyleTag: string;
   private _cssClass: string;
   private _value: string;
-  private _isHorizontalFormatter: false;
-  private _isVerticalFormatter: false;
+  private _isHorizontalFormatter: boolean = false;
+  private _isVerticalFormatter: boolean = false;
 
 constructor() {
     this.textStyles = new TextStyles();
@@ -39,19 +39,17 @@ constructor() {
     return this._isHorizontalFormatter;
   }
 
-
   public getAllTextStyles(): ICssStyles[] {
     return this.textStyles.getStyles();
   }
 
-  public processButtonClick(
-      buttonEvent: ButtonEventEnums,
-      propertyValue: string = ""): void {
+  public processButtonClick(buttonEvent: ButtonEventEnums, propertyValue: string = ""): void {
     this._value = "";
     this._cssClass = "";
     this._cssStyleTag = "";
     this._isVerticalFormatter = false;
     this._isHorizontalFormatter = false;
+
     if (
       buttonEvent === ButtonEventEnums.VerticalAlignBottom ||
       buttonEvent === ButtonEventEnums.VerticalAlignTop ||
@@ -70,10 +68,10 @@ constructor() {
       this._cssClass = buttonEvent.toString();
       this._isHorizontalFormatter = true;
     }
-
     switch (buttonEvent) {
       case ButtonEventEnums.FontFamily:
         this.textStyles.fontFamily = propertyValue;
+        this._value = propertyValue;
         this._cssStyleTag = "font-family";
         break;
       case ButtonEventEnums.IncreaseFontSize:
@@ -88,10 +86,12 @@ constructor() {
         break;
       case ButtonEventEnums.ForeColour:
         this.textStyles.foreColour = propertyValue;
+        this._value = propertyValue;
         this._cssStyleTag = "color";
         break;
       case ButtonEventEnums.BackgroundColour:
         this.textStyles.fontBackgroundColour = propertyValue;
+        this._value = propertyValue;
         this._cssStyleTag = "background-color";
         break;
     }

@@ -1,11 +1,6 @@
-import { Component, OnInit, Input, ɵConsole } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { templateInitial } from "src/assets/data/mock/template-toolbar";
 
-import {
-  imgEditButtons,
-  imgPositionButtons,
-  imgSizeButtons
-} from "src/assets/data/mock/image-toolbar";
 // interface intialisers
 // import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
 import { initSqImgTxtPage } from "../../../../assets/data/interface-initialisers/page-square-image-text-initial";
@@ -27,8 +22,7 @@ import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
-import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
-import { ImageStyles } from 'src/app/models/classes/image-styles/image-styles'
+
 import { IButtonEvent } from 'src/app/models/interfaces/button-event';
 import { ButtonCommandTypesEnum } from 'src/app/models/enums/Button-Command-Type-enums';
 
@@ -59,19 +53,21 @@ export class TemplateSqImgTxtComponent implements OnInit {
 
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
-    this.textEditButtonsGrp3 = builder.build(
-    ToolbarTypesEnum.TextColourSettings
-    );
-    this.textEditButtonsGrp4 = builder.build(
-      ToolbarTypesEnum.VerticalAlignment
-    );
+    this.textEditButtonsGrp3 = builder.build(ToolbarTypesEnum.TextColourSettings);
+    this.textEditButtonsGrp4 = builder.build(ToolbarTypesEnum.VerticalAlignment);
+
+    this.imgEditButtons = builder.build(ToolbarTypesEnum.ImageCaptureButtons);
+    this.imgPositionButtons = builder.build(ToolbarTypesEnum.ImagePositionButtons);
+    this.imgSizeButtons = builder.build(ToolbarTypesEnum.ImageSizeButtons);
+
+    this.nonEditButtons = builder.build(ToolbarTypesEnum.CommandToolbar);
   }
 
   // buttons for toolbar
-  nonEditButtons: IIconButton[] = templateInitial;
-  imgEditButtons: IIconButton[] = imgEditButtons;
-  imgPositionButtons: IIconButton[] = imgPositionButtons;
-  imgSizeButtons: IIconButton[] = imgSizeButtons;
+  nonEditButtons: IIconButton[];
+  imgEditButtons: IIconButton[];
+  imgPositionButtons: IIconButton[];
+  imgSizeButtons: IIconButton[];
   // buttons for text toolbar
   textEditButtonsGrp1: IIconButton[];
   textEditButtonsGrp2: IIconButton[];
@@ -103,16 +99,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
   layoutText: ILayout;
   layoutImageParent: ILayout;
   layoutImageChild: ILayout;
-
-
   clickevent: string; // holds the value of the button that has been clicked
   imageUrl: ICssStyles;
 
   handleClick(event: IButtonEvent) {
-
     if(event.buttonCommandType === ButtonCommandTypesEnum.Command){
       this.processEventCommand(event.eventName)
     }else if(event.buttonCommandType === ButtonCommandTypesEnum.TextStyler){
+      this.changeValue = Math.random().toString();
       this.buttonEvent = event.eventName;
     }
   }
@@ -221,7 +215,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }
     if (this.isEditingImageBackgroundColor) {
       this.imageButtonEvent = ButtonEventEnums.ImageBackgroundColour;
-      this.imageChangedValue= color;
+      this.imageChangedValue = color;
       this.isEditingImageBackgroundColor = !this.isEditingImageBackgroundColor;
     }
     this.isShowColourPicker = !this.isShowColourPicker;

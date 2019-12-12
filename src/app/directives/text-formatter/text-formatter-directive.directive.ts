@@ -20,16 +20,22 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if (changes.buttonClicked) {
+    console.log('changes:%c⧭', 'color: #aa00ff', changes);
+
+    if (changes.buttonEvent) {
       this.processButtonClick();
     }
   }
   processButtonClick() {
     this.textDirectiveFormatter.processButtonClick(this.buttonEvent, this.changedValue);
+    console.log("this.changedValue%c⧭", "color: #733d00", this.changedValue);
+    console.log("this.buttonEvent%c⧭", "color: #e50000", this.buttonEvent);
     this.applyFormatting(this.buttonEvent)
   }
 
   private applyFormatting(buttonClickedEvent: ButtonEventEnums) {
+    console.log('buttonClicked%c%s', 'color: #00bf00', buttonClickedEvent);
+
     if (this.textDirectiveFormatter.isHorizontalFormatter || this.textDirectiveFormatter.isVerticalFormatter) {
       this.updateTextAlignment();
     } else {
@@ -53,6 +59,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   private updateElement(styleElement: string, value: string) {
+    console.log("styleElement", styleElement);
     this.el.nativeElement.style[styleElement] = value;
   }
 

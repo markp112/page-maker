@@ -5,5 +5,7 @@ export enum ToolbarTypesEnum {
   VerticalAlignment,
   ImageCaptureButtons,
   ImageSizeButtons,
-  ImagePositionButtons
+  ImagePositionButtons,
+  CommandToolbar,
+  FontTypesToolbar
 }

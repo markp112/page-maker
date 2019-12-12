@@ -2,7 +2,10 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import  {IGooglefont, } from 'src/app/models/interfaces/google-font-api'
 import { googleFont } from 'src/assets/data/mock/google-font';
 import { FontsService  } from 'src/app/shared/fonts.service';
-import {fontDropDownButtons } from 'src/assets/data/mock/font-dropdown-toolbar'
+import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
+import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
+import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { IButtonEvent } from 'src/app/models/interfaces/button-event';
 // import * as WebFont from "webfontloader";
 
 
@@ -14,26 +17,26 @@ import {fontDropDownButtons } from 'src/assets/data/mock/font-dropdown-toolbar'
 export class FontDropDownComponent implements OnInit {
   googleFont: IGooglefont = googleFont;
   fontFamilies: string[] = [];
-
+  builder: ToolBarBuilder;
   filteredFonts: IGooglefont;
-  toolbarButtons = fontDropDownButtons;
+  toolbarButtons: IIconButton[];
 
   @Output() handleFontSelected: EventEmitter<string> = new EventEmitter();
-
 
   constructor(private fontService: FontsService) {}
 
   ngOnInit() {
     this.fontFamilies = this.fontService.getFontNames();
+    this.builder = new ToolBarBuilder();
+    this.toolbarButtons = this.builder.build(ToolbarTypesEnum.FontTypesToolbar);
   }
 
   handleListItemClick(fontName) {
     this.handleFontSelected.emit(fontName);
   }
 
-  handleButtonClick(whichButton:string):void {
-    console.log("filter =",whichButton)
-    this.fontFamilies = this.fontService.filterFontTypes(whichButton);
+  handleButtonClick(whichButton: IButtonEvent): void {
+    this.fontFamilies = this.fontService.filterFontTypes(whichButton.eventName.toString());
   }
 
   handleSearchInput(searchValue: string) {

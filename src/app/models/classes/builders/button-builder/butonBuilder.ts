@@ -1,27 +1,58 @@
-import { IIconButton } from '../../../interfaces/icon-button-interface';
-import { faWindowClose, faAlignLeft, faAlignCenter, faAlignJustify, faAlignRight, faFont, faPlus, faMinus, faPaintBrush, faPalette, faSortAmountUpAlt, faGripLines, faSortAmountDownAlt, IconDefinition, faUpload, faPaste, faArrowAltCircleLeft, faArrowAltCircleRight, faArrowAltCircleUp, faArrowAltCircleDown, faPlusCircle, faMinusCircle } from "@fortawesome/free-solid-svg-icons";
-import { styles } from '../../../enums/icon-buton-styles.enum';
-import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
-import { ButtonCommandTypesEnum } from 'src/app/models/enums/Button-Command-Type-enums';
-import { IButtonEvent } from 'src/app/models/interfaces/button-event';
-import { icon } from '@fortawesome/fontawesome-svg-core';
+import { IIconButton } from "../../../interfaces/icon-button-interface";
+import {
+  faWindowClose,
+  faAlignLeft,
+  faAlignCenter,
+  faAlignJustify,
+  faAlignRight,
+  faFont,
+  faPlus,
+  faMinus,
+  faPaintBrush,
+  faPalette,
+  faSortAmountUpAlt,
+  faGripLines,
+  faSortAmountDownAlt,
+  IconDefinition,
+  faUpload,
+  faPaste,
+  faArrowAltCircleLeft,
+  faArrowAltCircleRight,
+  faArrowAltCircleUp,
+  faArrowAltCircleDown,
+  faPlusCircle,
+  faMinusCircle,
+  faEdit,
+  faSave,
+  faGripHorizontal,
+  faCloudUploadAlt,
+  faMehBlank
+} from "@fortawesome/free-solid-svg-icons";
+import { styles } from "../../../enums/icon-buton-styles.enum";
+import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
+import { ButtonCommandTypesEnum } from "src/app/models/enums/Button-Command-Type-enums";
+import { IButtonEvent } from "src/app/models/interfaces/button-event";
 
-export class ButtonBuilder {
 
-  private static  buildEventName(buttonCommandType: ButtonCommandTypesEnum ,eventName: ButtonEventEnums): IButtonEvent{
-    let buttonEvent: IButtonEvent;
-    buttonEvent.buttonCommandType = buttonCommandType;
-    buttonEvent.eventName = eventName;
+export class ButtonBuilder { 
+  
+  private static buildEventName( buttonCommandType: ButtonCommandTypesEnum, eventName: ButtonEventEnums ): IButtonEvent {
+    let buttonEvent: IButtonEvent = { buttonCommandType: buttonCommandType, eventName: eventName};
+    // buttonEvent.buttonCommandType = buttonCommandType;
+    // buttonEvent.eventName = eventName;
     return buttonEvent;
   }
-  private static buildButton(eventName: IButtonEvent, enabled: boolean,
-          icon: IconDefinition, text: string =""): IIconButton {
-    let button: IIconButton;
-    button.enabled = enabled;
-    button.eventName = eventName;
-    button.icon = icon;
-    text === "" ? button.style = styles.Icon : button.style = styles.Text;
-    button.text = text;
+
+  private static buildButton(eventName: IButtonEvent, enabled: boolean, icon: IconDefinition, text: string = ""
+  ): IIconButton {
+    let button: IIconButton = {
+    enabled: enabled,
+    eventName: eventName,
+    icon : icon,
+    text: text,
+    style: styles.Icon
+};
+text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
     return button;
   }
 
@@ -29,7 +60,10 @@ export class ButtonBuilder {
     return {
       icon: faWindowClose,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.Cancel),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.Command,
+        ButtonEventEnums.Cancel
+      ),
       style: styles.Icon,
       enabled: true
     };
@@ -40,7 +74,10 @@ export class ButtonBuilder {
       icon: faAlignLeft,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.AlignLeft)
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.AlignLeft
+      )
     };
   }
 
@@ -49,7 +86,10 @@ export class ButtonBuilder {
       icon: faAlignCenter,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.AlignCenter)
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.AlignCenter
+      )
     };
   }
 
@@ -58,7 +98,10 @@ export class ButtonBuilder {
       icon: faAlignJustify,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.Justify)
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.Justify
+      )
     };
   }
 
@@ -67,7 +110,10 @@ export class ButtonBuilder {
       icon: faAlignRight,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.AlignRight),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.AlignRight
+      )
     };
   }
 
@@ -76,9 +122,11 @@ export class ButtonBuilder {
       icon: faFont,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.FontFamily),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.Command,
+        ButtonEventEnums.FontFamily
+      )
     };
-
   }
 
   public static fontIncreaseSizeButton(): IIconButton {
@@ -86,7 +134,10 @@ export class ButtonBuilder {
       icon: faPlus,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.IncreaseFontSize),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.IncreaseFontSize
+      )
     };
   }
 
@@ -95,7 +146,10 @@ export class ButtonBuilder {
       icon: faMinus,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.DecreaseFontSize),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.DecreaseFontSize
+      )
     };
   }
 
@@ -104,7 +158,10 @@ export class ButtonBuilder {
       icon: faPaintBrush,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.ForeColour),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.Command,
+        ButtonEventEnums.ForeColour
+      )
     };
   }
 
@@ -113,7 +170,10 @@ export class ButtonBuilder {
       icon: faPalette,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.BackgroundColour),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.Command,
+        ButtonEventEnums.BackgroundColour
+      )
     };
   }
 
@@ -122,7 +182,10 @@ export class ButtonBuilder {
       icon: faSortAmountUpAlt,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.VerticalAlignTop),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.VerticalAlignTop
+      )
     };
   }
 
@@ -131,7 +194,10 @@ export class ButtonBuilder {
       icon: faGripLines,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.VerticalAlignCenter),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.VerticalAlignCenter
+      )
     };
   }
 
@@ -140,51 +206,152 @@ export class ButtonBuilder {
       icon: faSortAmountDownAlt,
       style: styles.Icon,
       text: "",
-      eventName: this.buildEventName(ButtonCommandTypesEnum.TextStyler, ButtonEventEnums.VerticalAlignBottom),
+      eventName: this.buildEventName(
+        ButtonCommandTypesEnum.TextStyler,
+        ButtonEventEnums.VerticalAlignBottom
+      )
     };
   }
   public static imageUploadButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.UploadFile);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.UploadFile
+    );
     return this.buildButton(eventName, true, faUpload);
   }
 
   public static imagePasteUrlButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.UploadUrl);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.UploadUrl
+    );
     return this.buildButton(eventName, true, faPaste);
   }
 
   public static imageBackgroundColourButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.Command, ButtonEventEnums.ImageBackgroundColour);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.ImageBackgroundColour
+    );
     return this.buildButton(eventName, true, faPalette);
   }
 
   public static imageLeftButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.ImageStyler, ButtonEventEnums.ImageLeft);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.ImageStyler,
+      ButtonEventEnums.ImageLeft
+    );
     return this.buildButton(eventName, true, faArrowAltCircleLeft);
   }
 
   public static imageRightButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.ImageStyler, ButtonEventEnums.ImageRight);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.ImageStyler,
+      ButtonEventEnums.ImageRight
+    );
     return this.buildButton(eventName, true, faArrowAltCircleRight);
   }
 
   public static imageUpButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.ImageStyler, ButtonEventEnums.ImageUp);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.ImageStyler,
+      ButtonEventEnums.ImageUp
+    );
     return this.buildButton(eventName, true, faArrowAltCircleUp);
   }
 
   public static imageDownButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.ImageStyler, ButtonEventEnums.ImageDown);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.ImageStyler,
+      ButtonEventEnums.ImageDown
+    );
     return this.buildButton(eventName, true, faArrowAltCircleDown);
   }
 
   public static imageIncreaseSizeButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.ImageStyler, ButtonEventEnums.ImageIncreaseSize);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.ImageStyler,
+      ButtonEventEnums.ImageIncreaseSize
+    );
     return this.buildButton(eventName, true, faPlusCircle);
   }
 
   public static imageDecreaseSizeButton(): IIconButton {
-    let eventName:IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.ImageStyler, ButtonEventEnums.ImageDecreaseSize);
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.ImageStyler,
+      ButtonEventEnums.ImageDecreaseSize
+    );
     return this.buildButton(eventName, true, faMinusCircle);
+  }
+
+  public static commandEditButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.Edit
+    );
+    return this.buildButton(eventName, true, faEdit);
+  }
+  public static commandSaveButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.Save
+    );
+    return this.buildButton(eventName, true, faSave);
+  }
+
+  public static commandGetDataButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.RetrieveSavedData
+    );
+    return this.buildButton(eventName, true, faGripHorizontal);
+  }
+
+  public static commandPublishButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.Publish
+    );
+    return this.buildButton(eventName, true, faCloudUploadAlt);
+  }
+
+  public static fontTypesDisplayButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.FontTypeDisplay
+    );
+    return this.buildButton(eventName, true, faMehBlank, "d");
+  }
+
+  public static fontTypesMonoSpaceButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.FontTypeMonospace
+    );
+    return this.buildButton(eventName, true, faMehBlank, "m");
+  }
+
+  public static fontTypesHandwritingButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.FontTypeHandwriting
+    );
+    return this.buildButton(eventName, true, faMehBlank, "h");
+  }
+
+  public static fontTypesSerifButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.FontTypeHandwriting
+    );
+    return this.buildButton(eventName, true, faMehBlank, "s");
+  }
+
+  public static fontTypesSansSerifButton(): IIconButton {
+    let eventName: IButtonEvent = this.buildEventName(
+      ButtonCommandTypesEnum.Command,
+      ButtonEventEnums.FontTypeHandwriting
+    );
+    return this.buildButton(eventName, true, faMehBlank, "ss");
   }
 }

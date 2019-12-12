@@ -25,7 +25,7 @@
         </div>
       </div>
     </div>
-    <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}">
+    <!-- <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}">
       <div>
         <img [src]="styleGeneratorService.ImageStyles.url" alt=""  appImageFormatter >
       </div>
@@ -35,7 +35,7 @@
       <div class="img-url-wrapper" *ngIf="showURLLink" >
         <app-url-input (url)="handleUrl($event)" (handleCancelClicked)="handleUrlCancelClicked()"></app-url-input>
       </div>
-    </div>
+    </div> -->
     <div class="text-area"
       appTextFormatterDirective
       [buttonEvent]="buttonEvent"
