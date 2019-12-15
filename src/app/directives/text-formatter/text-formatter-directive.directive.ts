@@ -1,7 +1,5 @@
-import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef, Output, EventEmitter } from '@angular/core';
+import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef } from '@angular/core';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
-import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 import { TextDirectiveFormatterService } from 'src/app/shared/formatters/text/text-directive-formatter.service';
 
 @Directive({
@@ -12,7 +10,6 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   @Input() changedValue: string;
 
   private lastButtonClick: ButtonEventEnums;
-  private isEditingText: boolean = false;
 
   constructor(private el: ElementRef, private renderer: Renderer2, private textDirectiveFormatter: TextDirectiveFormatterService) { }
 
@@ -20,22 +17,20 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    console.log('changes:%c⧭', 'color: #aa00ff', changes);
-
+    if(changes.changedValue && (this.lastButtonClick === ButtonEventEnums.IncreaseFontSize || this.lastButtonClick === ButtonEventEnums.DecreaseFontSize)){
+      this.processButtonClick(this.lastButtonClick);
+    }
     if (changes.buttonEvent) {
-      this.processButtonClick();
+      this.lastButtonClick = this.buttonEvent;
+      this.processButtonClick(this.buttonEvent);
     }
   }
-  processButtonClick() {
-    this.textDirectiveFormatter.processButtonClick(this.buttonEvent, this.changedValue);
-    console.log("this.changedValue%c⧭", "color: #733d00", this.changedValue);
-    console.log("this.buttonEvent%c⧭", "color: #e50000", this.buttonEvent);
-    this.applyFormatting(this.buttonEvent)
+  processButtonClick(buttonClickedEvent: ButtonEventEnums) {
+    this.textDirectiveFormatter.processButtonClick(buttonClickedEvent, this.changedValue);
+    this.applyFormatting(buttonClickedEvent);
   }
 
   private applyFormatting(buttonClickedEvent: ButtonEventEnums) {
-    console.log('buttonClicked%c%s', 'color: #00bf00', buttonClickedEvent);
-
     if (this.textDirectiveFormatter.isHorizontalFormatter || this.textDirectiveFormatter.isVerticalFormatter) {
       this.updateTextAlignment();
     } else {
@@ -59,7 +54,6 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   private updateElement(styleElement: string, value: string) {
-    console.log("styleElement", styleElement);
     this.el.nativeElement.style[styleElement] = value;
   }
 

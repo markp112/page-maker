@@ -17,7 +17,6 @@ import { StylesGeneratorService } from '../../../shared/styles-generator-service
 import { ILayout } from 'src/app/models/interfaces/layout';
 import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTxtImageParent, initLayoutSquareImgTxtImageChild } from 'src/assets/data/interface-initialisers/layout-square-image-text-Initial';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { config } from 'src/assets/data/config.ts/config';
 import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
@@ -39,7 +38,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
     private pageService: PageTemplateService,
     private fontService: FontsService,
     private pageBuilder: PageBuilderService,
-    private styleGeneratorService: StylesGeneratorService
   ) {}
 
   ngOnInit() {
