@@ -26,11 +26,12 @@
       </div>
     </div>
     <!-- <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}"> -->
-      <div class="image-area">
+      <div class="image-area" appImageFormatter     [changedValue]="imageChangedValue">
       <div>
-        <img src="" alt=""  
+        <img src="" alt=""
           appImageFormatter
-          [buttonEvent]="buttonEvent"
+          [buttonEvent]="imageButtonEvent"
+          [changedValue]="imageChangedValue"
         >
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="showUploadImage">

@@ -63,8 +63,6 @@ $toolbar-height: 50px;
   position: relative;
   overflow: hidden;
 
-
-
     .img-upload-buttons-wrapper {
       height: 100%;
       width: 80%;
@@ -86,10 +84,8 @@ $toolbar-height: 50px;
 
     img {
       display: block;
-      max-width: 500px;
-      max-height: 400px;
-      width: width;
-      height: auto;
+      width: 600px;
+      height: 450px;
       object-fit: contain;
       position: absolute;
       top: 0;

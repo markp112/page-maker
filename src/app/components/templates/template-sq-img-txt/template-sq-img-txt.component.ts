@@ -13,7 +13,7 @@ import { PageAreaTypesEnum } from '../../../models/enums/pageAreaTypes.enum';
 import { PageTemplateService } from "../../../shared/page-template.service";
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
-import { StylesGeneratorService } from '../../../shared/styles-generator-service/styles-generator.service'
+// import { StylesGeneratorService } from '../../../shared/styles-generator-service/styles-generator.service'
 import { ILayout } from 'src/app/models/interfaces/layout';
 import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTxtImageParent, initLayoutSquareImgTxtImageChild } from 'src/assets/data/interface-initialisers/layout-square-image-text-Initial';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
@@ -46,14 +46,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.layoutText = initLayoutSquareImgTxtText();
     this.layoutImageParent = initLayoutSquareImgTxtImageParent();
     this.layoutImageChild = initLayoutSquareImgTxtImageChild();
-
     let builder = new ToolBarBuilder();
-
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
     this.textEditButtonsGrp3 = builder.build(ToolbarTypesEnum.TextColourSettings);
     this.textEditButtonsGrp4 = builder.build(ToolbarTypesEnum.VerticalAlignment);
-
     this.imgEditButtons = builder.build(ToolbarTypesEnum.ImageCaptureButtons);
     this.imgPositionButtons = builder.build(ToolbarTypesEnum.ImagePositionButtons);
     this.imgSizeButtons = builder.build(ToolbarTypesEnum.ImageSizeButtons);
@@ -106,6 +103,9 @@ export class TemplateSqImgTxtComponent implements OnInit {
     }else if(event.buttonCommandType === ButtonCommandTypesEnum.TextStyler){
       this.changeValue = Math.random().toString();
       this.buttonEvent = event.eventName;
+    }else if(event.buttonCommandType === ButtonCommandTypesEnum.ImageStyler){
+      this.imageChangedValue = Math.random().toString();
+      this.imageButtonEvent = event.eventName;
     }
   }
   processEventCommand(eventName: ButtonEventEnums) {
@@ -132,24 +132,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingImageBackgroundColor = !this
           .isEditingImageBackgroundColor;
-        break;
-      case ButtonEventEnums.ImageDecreaseSize:
-        this.imageButtonEvent = eventName;
-        break;
-      case ButtonEventEnums.ImageIncreaseSize:
-        this.imageButtonEvent = eventName;
-        break;
-      case ButtonEventEnums.ImageLeft:
-        this.imageButtonEvent = eventName;
-        break;
-      case ButtonEventEnums.ImageRight:
-        this.imageButtonEvent = eventName;
-        break;
-      case ButtonEventEnums.ImageUp:
-        this.imageButtonEvent = eventName;
-        break;
-      case ButtonEventEnums.ImageDown:
-        this.imageButtonEvent = eventName;
         break;
       case ButtonEventEnums.UploadUrl:
         this.showURLLink = !this.showURLLink;
@@ -222,8 +204,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   handleFileUploaded(url: string) {
     this.showUploadImage = !this.showUploadImage;
     this.imageButtonEvent = ButtonEventEnums.UploadUrl;
-    this.changeValue = url;
-    this.imageUrl.value = url;
+    this.imageChangedValue = url;
   }
 
   handleFileUploadCancelClicked() {
@@ -234,8 +215,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
     console.log("HandleUrl")
     this.showURLLink = !this.showURLLink;
     this.imageButtonEvent = ButtonEventEnums.UploadUrl;
-    this.changeValue = url;
-    // this.imageUrl.value = url;
+    this.imageChangedValue = url;
   }
 
   handleUrlCancelClicked() {

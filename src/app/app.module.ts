@@ -39,7 +39,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth'
 // Directives
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { TextFormatterDirectiveDirective } from './directives/text-formatter/text-formatter-directive.directive';
-import { ImageFormatterDirective } from './directives/image-formatter.directive';
+import { ImageFormatterDirective } from './directives//image-formatter/image-formatter.directive';
 
 import { secrets } from 'secrets';
 
@@ -67,7 +67,7 @@ import { secrets } from 'secrets';
     SignUpComponent,
     StatusMessageComponent
   ],
-  
+
   imports: [
     BrowserModule,
     AppRoutingModule,
