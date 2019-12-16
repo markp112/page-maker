@@ -1,43 +1,22 @@
-import { Injectable } from '@angular/core';
-import { ImageStyles } from 'src/app/models/classes/image-styles/image-styles';
-import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
+import { Injectable } from "@angular/core";
+import { ImageStyles } from "src/app/models/classes/image-styles/image-styles";
+import { ICssStyles } from "src/app/models/interfaces/cssStyle";
+import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class ImageFormatterService {
   private imageStyles: ImageStyles;
-  private _cssStyleTag: string;
-  private _value: string;
+  private _cssStyleTag: string[];
+  private _value: string[];
 
-
-  public get cssStyleTag(): string {
+  public get cssStyleTag(): string[] {
     return this._cssStyleTag;
   }
 
-  public get value(): string {
+  public get value(): string[] {
     return this._value;
-  }
-
-  public set value(value: string) {
-    this._value = value;
-  }
-
-  public get height(): string {
-    return `${this.imageStyles.height}px`;
-  }
-
-  public get width(): string {
-    return `${this.imageStyles.width}px`;
-  }
-
-  public get top(): string {
-    return `${this.imageStyles.top}px`;
-  }
-
-  public get left(): string {
-    return `${this.imageStyles.left}px`;
   }
 
   public getAllImageStyles(): ICssStyles[] {
@@ -48,34 +27,53 @@ export class ImageFormatterService {
     this.imageStyles = new ImageStyles();
   }
 
-  public processButtonClick(buttonEvent: ButtonEventEnums, propertyValue: string = ""): void {
+  public processButtonClick(
+    buttonEvent: ButtonEventEnums,
+    propertyValue: string = ""
+  ): void {
+    this._value = [];
+    this._cssStyleTag = [];
     switch (buttonEvent) {
       case ButtonEventEnums.ImageBackgroundColour:
         this.imageStyles.backgroundColour = propertyValue;
-        this._cssStyleTag = "background-color";
-        this._value = propertyValue;
+        this._cssStyleTag.push("background-color");
+        this._value.push(propertyValue);
       case ButtonEventEnums.UploadUrl:
         this.imageStyles.url = propertyValue;
-        this._cssStyleTag = "src";
-        this._value = propertyValue;
+        this._cssStyleTag.push("src");
+        this._value.push(propertyValue);
       case ButtonEventEnums.UploadFile:
         this.imageStyles.url = propertyValue;
-        this._cssStyleTag = "src";
-        this._value = propertyValue;
+        this._cssStyleTag.push("src");
+        this._value.push(propertyValue);
       case ButtonEventEnums.ImageDecreaseSize:
         this.imageStyles.incrementDecrementSize(-1);
-        this._cssStyleTag = "height";
+        this._cssStyleTag.push("height");
+        this._value.push(`${this.imageStyles.height}px`);
+        this._cssStyleTag.push("width");
+        this._value.push(`${this.imageStyles.width}px`);
       case ButtonEventEnums.ImageIncreaseSize:
         this.imageStyles.incrementDecrementSize(1);
+        this._cssStyleTag.push("height");
+        this._value.push(`${this.imageStyles.height}px`);
+        this._cssStyleTag.push("width");
+        this._value.push(`${this.imageStyles.width}px`);
       case ButtonEventEnums.ImageLeft:
         this.imageStyles.moveLeftRightByAmount(1);
+        this._cssStyleTag.push("left");
+        this._value.push(`${this.imageStyles.left}px`);
       case ButtonEventEnums.ImageRight:
         this.imageStyles.moveLeftRightByAmount(-1);
+        this._cssStyleTag.push("left");
+        this._value.push(`${this.imageStyles.left}px`);
       case ButtonEventEnums.ImageUp:
         this.imageStyles.moveUpDownByAmount(1);
+        this._cssStyleTag.push("top");
+        this._value.push(`${this.imageStyles.top}px`);
       case ButtonEventEnums.ImageDown:
         this.imageStyles.moveUpDownByAmount(-1);
+        this._cssStyleTag.push("top");
+        this._value.push(`${this.imageStyles.top}px`);
     }
   }
-
 }
