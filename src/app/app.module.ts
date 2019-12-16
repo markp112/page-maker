@@ -29,14 +29,14 @@ import { PageTemplateService } from "./shared/page-template.service";
 import { FireStorageService } from './shared/fire-storage.service';
 import { PageBuilderService } from './shared/page-builder.service';
 import { TextDirectiveFormatterService } from './shared/formatters/text/text-directive-formatter.service'
-
+import { ImageFormatterService } from './shared/formatters/image-formatter/image-formatter.service'
 // Vendor
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore'
 import { AngularFireAuthModule } from 'angularfire2/auth'
-// directives
+// Directives
 import { DropzoneDirective } from './directives/dropzone.directive';
 import { TextFormatterDirectiveDirective } from './directives/text-formatter/text-formatter-directive.directive';
 import { ImageFormatterDirective } from './directives/image-formatter.directive';
@@ -65,9 +65,9 @@ import { secrets } from 'secrets';
     LoginComponent,
     WelcomeComponent,
     SignUpComponent,
-    StatusMessageComponent,
-
+    StatusMessageComponent
   ],
+  
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -89,7 +89,15 @@ import { secrets } from 'secrets';
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence()
   ],
-  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService, PageBuilderService, TextDirectiveFormatterService],
+  providers: [
+    FontApiService,
+    AuthService,
+    PageTemplateService,
+    FireStorageService,
+    PageBuilderService,
+    TextDirectiveFormatterService,
+    ImageFormatterService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

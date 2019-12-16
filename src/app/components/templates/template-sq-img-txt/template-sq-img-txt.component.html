@@ -25,9 +25,13 @@
         </div>
       </div>
     </div>
-    <!-- <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}">
+    <!-- <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}"> -->
+      <div class="image-area">
       <div>
-        <img [src]="styleGeneratorService.ImageStyles.url" alt=""  appImageFormatter >
+        <img src="" alt=""  
+          appImageFormatter
+          [buttonEvent]="buttonEvent"
+        >
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="showUploadImage">
         <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)" (handleCancelClicked)="handleFileUploadCancelClicked()"></app-file-upload>
@@ -35,7 +39,7 @@
       <div class="img-url-wrapper" *ngIf="showURLLink" >
         <app-url-input (url)="handleUrl($event)" (handleCancelClicked)="handleUrlCancelClicked()"></app-url-input>
       </div>
-    </div> -->
+    </div>
     <div class="text-area"
       appTextFormatterDirective
       [buttonEvent]="buttonEvent"
