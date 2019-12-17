@@ -93,6 +93,28 @@ export class ImageStyles {
     };
   }
 
+  public getASingleStyle(theStyleToGet: cssStyleEnum): ICssStyles {
+    switch (theStyleToGet){
+      case cssStyleEnum.backgroundColor:
+        return this._backgroundColour
+        
+      case cssStyleEnum.height:
+        return this._height;
+        
+      case cssStyleEnum.width:
+        return this._width;
+        
+      case cssStyleEnum.top:
+        return this._top;
+        
+      case cssStyleEnum.left:
+        return this._left;
+      
+        case cssStyleEnum.url:
+          return this._url;
+    }
+  }
+
   public getStyles(): ICssStyles[] {
     this._styles = [];
     this._styles.push(this._backgroundColour);

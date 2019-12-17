@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { ImageStyles } from "src/app/models/classes/image-styles/image-styles";
 import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
+import { cssStyleTagTypesEnum } from 'src/app/models/enums/css-style-tag-types-enum';
+import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 
 @Injectable({
   providedIn: "root"
@@ -23,6 +25,9 @@ export class ImageFormatterService {
     return this.imageStyles.getStyles();
   }
 
+  public getASingleStyle(theStyleToGet: cssStyleEnum):ICssStyles {
+    return this.imageStyles.getASingleStyle(theStyleToGet);
+  }
   constructor() {
     this.imageStyles = new ImageStyles();
   }

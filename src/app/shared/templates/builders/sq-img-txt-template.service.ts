@@ -1,22 +1,22 @@
-import { Injectable } from '@angular/core';
-import { ImageFormatterService } from '../../formatters/image-formatter/image-formatter.service';
-import { TextDirectiveFormatterService } from '../../formatters/text/text-directive-formatter.service';
-import { IPage, pageTemplates } from 'src/app/models/interfaces/page';
-import { ILayout } from 'src/app/models/interfaces/layout';
-import { PageAreaTypesEnum } from 'src/app/models/enums/pageAreaTypes.enum';
-import { HtmlTagsEnum } from 'src/app/models/enums/htmlTags';
-import { cssStyleTagTypesEnum } from 'src/app/models/enums/css-style-tag-types-enum';
-import { initTextStylesInitial } from 'src/assets/data/interface-initialisers/textInitial';
-import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
+import { Injectable } from "@angular/core";
+import { ImageFormatterService } from "../../formatters/image-formatter/image-formatter.service";
+import { TextDirectiveFormatterService } from "../../formatters/text/text-directive-formatter.service";
+import { IPage, pageTemplates } from "src/app/models/interfaces/page";
+import { ILayout } from "src/app/models/interfaces/layout";
+import { PageAreaTypesEnum } from "src/app/models/enums/pageAreaTypes.enum";
+import { HtmlTagsEnum } from "src/app/models/enums/htmlTags";
+import { cssStyleTagTypesEnum } from "src/app/models/enums/css-style-tag-types-enum";
+import { initTextStylesInitial } from "src/assets/data/interface-initialisers/textInitial";
+import { ICssStyles } from "src/app/models/interfaces/cssStyle";
+import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
 
 @Injectable({
   providedIn: "root"
 })
 export class SqImgTxtTemplateService {
   constructor(
-    imageStyles: ImageFormatterService,
-    textStyles: TextDirectiveFormatterService
+    private imageStyles: ImageFormatterService,
+    private textStyles: TextDirectiveFormatterService
   ) {
     this.pageMaster = {
       uid: "",
@@ -79,12 +79,17 @@ export class SqImgTxtTemplateService {
       styleTagType: cssStyleTagTypesEnum.elementTag,
       content: "",
       className: `text-area`,
-      styles: [] = initTextStylesInitial(),
+      styles: [] = this.initTextStylesInitial(),
       children: []
     };
     return layout;
   }
-  private buildAStyleTag(styleTag: string, styleProperty: cssStyleEnum, value: string): ICssStyles {
+
+  private buildAStyleTag(
+    styleTag: string,
+    styleProperty: cssStyleEnum,
+    value: string
+  ): ICssStyles {
     let aStyle: ICssStyles = {
       styleTag: styleTag,
       pmStyleProperty: styleProperty,
@@ -93,14 +98,91 @@ export class SqImgTxtTemplateService {
     return aStyle;
   }
 
-  private initTextStylesInitial = (): ICssStyles[] => {
+  private constructTheImageParentElement = (): ILayout => {
+    const layoutSqImgImage: ILayout = {
+      layoutType: PageAreaTypesEnum.imageArea,
+      cssClass: ` grid-area: image-area;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        overflow: hidden;`,
+      htmlTag: HtmlTagsEnum.div,
+      styleTagType: cssStyleTagTypesEnum.elementTag,
+      content: "",
+      className: `image-area`,
+      styles: [],
+      children: []
+    };
+    let backgroundColor: ICssStyles = this.buildAStyleTag(
+      "background-color",
+      cssStyleEnum.backgroundColor,
+      "rgba(241,242,244,1)"
+    );
+    layoutSqImgImage.styles.push(backgroundColor);
+    return layoutSqImgImage;
+  };
+
+  private addStylesToLayOut(theLayoutElement: ILayout, theStyles: ICssStyles[]){
+    theStyles.forEach(aStyle => {
+      theLayoutElement.styles.push(aStyle);
+    })
+  }
+
+  private constructTheImageElement = () => {
+    let imageLayout: ILayout = {
+      layoutType: PageAreaTypesEnum.imageArea,
+      cssClass: `img {
+          display: block;
+          max-width: 500px;
+          max-height: 400px;
+          object-fit: contain;
+          position: absolute;`,
+      htmlTag: HtmlTagsEnum.img,
+      styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
+      className: "",
+      styles: [] = this.initImageStylesInitial(),
+      content: "",
+      children: []
+    };
+    return imageLayout;
+  };
+
+  private initialiseTextStyles = (): ICssStyles[] => {
     let textElements: ICssStyles[] = [];
-    let color: ICssStyles = this.buildAStyleTag("color", cssStyleEnum.color, "rgba(242,226,213, 1)" );
-    let fontSize: ICssStyles = this.buildAStyleTag("font-size", cssStyleEnum.fontSize, "16");
-    let fontFamily: ICssStyles = this.buildAStyleTag("font-family", cssStyleEnum.fontFamily,  "Monterra");
-    let backgroundColor: ICssStyles = this.buildAStyleTag("background-color", cssStyleEnum.backgroundColor,"rgba(38,1,89, 1)");
-    let horizontalAlign: ICssStyles = this.buildAStyleTag("text-align",cssStyleEnum.horizontalAlignment,"textHorizontalAlignment.alignLeft");
-    let vertcalAlign: ICssStyles = this.buildAStyleTag("justify-content", cssStyleEnum.verticalAlignment,"textVerticalAlignment.alignTop");
+    let color: ICssStyles = this.buildAStyleTag(
+      "color",
+      cssStyleEnum.color,
+      "rgba(242,226,213, 1)"
+    );
+    let fontSize: ICssStyles = this.buildAStyleTag(
+      "font-size",
+      cssStyleEnum.fontSize,
+      "16"
+    );
+    let fontFamily: ICssStyles = this.buildAStyleTag(
+      "font-family",
+      cssStyleEnum.fontFamily,
+      "Monterra"
+    );
+    let backgroundColor: ICssStyles = this.buildAStyleTag(
+      "background-color",
+      cssStyleEnum.backgroundColor,
+      "rgba(38,1,89, 1)"
+    );
+    let horizontalAlign: ICssStyles = this.buildAStyleTag(
+      "text-align",
+      cssStyleEnum.horizontalAlignment,
+      "textHorizontalAlignment.alignLeft"
+    );
+    let vertcalAlign: ICssStyles = this.buildAStyleTag(
+      "justify-content",
+      cssStyleEnum.verticalAlignment,
+      "textVerticalAlignment.alignTop"
+    );
     textElements.push(fontFamily);
     textElements.push(fontSize);
     textElements.push(color);
@@ -110,14 +192,54 @@ export class SqImgTxtTemplateService {
     return textElements;
   };
 
+  private initialiseImageStyles = (): ICssStyles[] => {
+    let styles: ICssStyles[] = [];
+    let backgroundColor: ICssStyles = this.buildAStyleTag(
+      "background-color",
+      cssStyleEnum.backgroundColor,
+      "rgba(241,242,244,1)"
+    );
+    let url: ICssStyles = this.buildAStyleTag(
+      "src",
+      cssStyleEnum.url,
+      "../../../../assets/images/placeholder-image.png"
+    );
+    let height: ICssStyles = this.buildAStyleTag(
+      "height",
+      cssStyleEnum.height,
+      "438"
+    );
+    let width: ICssStyles = this.buildAStyleTag(
+      "width",
+      cssStyleEnum.width,
+      "650"
+    );
+    let top: ICssStyles = this.buildAStyleTag("top", cssStyleEnum.top, "0");
+    let left: ICssStyles = this.buildAStyleTag("left", cssStyleEnum.left, "0");
+    styles.push(height);
+    styles.push(width);
+    styles.push(top);
+    styles.push(left);
+    styles.push(backgroundColor);
+    styles.push(url);
+    return styles;
+  };
+
   public createNewRecord() {
-    this.buildTheImageLayoutStructure();
-    this.buildTheTextLayoutStructure();
+    
+    let imageLayout = this.buildTheImageLayoutStructure();
+    let textLayout = this.buildTheTextLayoutStructure();
   }
-  buildTheImageLayoutStructure() {
-    throw new Error("Method not implemented.");
+
+  buildTheImageLayoutStructure(): ILayout {
+    let theImage: ILayout = this.constructTheImageParentElement();
+    theImage.styles.push(this.imageStyles.getASingleStyle(cssStyleEnum.backgroundColor));
+    let theImageElement = this.constructTheImageElement();
+    this.addStylesToLayOut(theImageElement,this.imageStyles.getAllImageStyles());
+    theImageElement.children.push(theImageElement);
+    return theImage;
   }
-  buildTheTextLayoutStructure() {
+  buildTheTextLayoutStructure(): ILayout {
     throw new Error("Method not implemented.");
   }
 }
