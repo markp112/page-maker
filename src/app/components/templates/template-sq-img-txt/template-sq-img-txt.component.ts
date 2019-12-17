@@ -212,7 +212,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   handleUrl(url: string) {
-    console.log("HandleUrl")
     this.showURLLink = !this.showURLLink;
     this.imageButtonEvent = ButtonEventEnums.UploadUrl;
     this.imageChangedValue = url;
