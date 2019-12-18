@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
   providedIn: "root"
 })
 export class FirebasePageTemplateService {
-  private dbPath = "/pages";
+
   itemCollection: AngularFirestoreCollection<IPage>;
   items: Observable<IPage[]>;
 
@@ -61,8 +61,7 @@ export class FirebasePageTemplateService {
   getRecord(template: pageTemplates): Observable<any> {
     const uid = this.getUid();
     return this.afs
-      .collection<IPage>("pages", ref =>
-        ref
+      .collection<IPage>("pages", ref => ref
           .where("uid", "==", uid)
           .where("template", "==", template)
           .limit(1)

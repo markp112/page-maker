@@ -46,14 +46,14 @@
       [buttonEvent]="buttonEvent"
       [changedValue]="changeValue"
       (click)="handleTextEditorClick()">
-      {{ layoutText.content }}
+      {{ theTextContentService.textContent }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>
         </div>
     </div>
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
-        [textContent]="this.layoutText.content"></app-text-input>
+        [textContent]="theTextContentService.textContent"></app-text-input>
     </div>
   </div>
   <app-status-message [message]='statusMessage' *ngIf="isShowStatus"></app-status-message>

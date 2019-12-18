@@ -14,15 +14,8 @@ import { PageAreaTypesEnum } from "../../../models/enums/pageAreaTypes.enum";
 // services
 
 import { FontsService } from "../../../shared/fonts.service";
-import { PageBuilderService } from "../../../shared/page-builder.service";
-// import { StylesGeneratorService } from '../../../shared/styles-generator-service/styles-generator.service'
 import { ILayout } from "src/app/models/interfaces/layout";
-import {
-  initMasterPageLayout,
-  initLayoutSquareImgTxtText,
-  initLayoutSquareImgTxtImageParent,
-  initLayoutSquareImgTxtImageChild
-} from "src/assets/data/interface-initialisers/layout-square-image-text-Initial";
+
 import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
 import { ToolBarBuilder } from "src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder";
@@ -32,6 +25,7 @@ import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
 import { IButtonEvent } from "src/app/models/interfaces/button-event";
 import { ButtonCommandTypesEnum } from "src/app/models/enums/Button-Command-Type-enums";
 import { SqImgTxtTemplateService } from "src/app/shared/templates/builders/sq-img-txt-template.service";
+import { TextContentService } from 'src/app/shared/text-content/text-content.service';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -42,17 +36,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
   @Input() contentText: string;
 
   constructor(
-    private fontService: FontsService,
-    private thePageConstructorService: SqImgTxtTemplateService
-  ) // private pageBuilder: PageBuilderService,
+    private fontService: FontsService,                        //do not delete required for fonts to update correctly
+    private thePageConstructorService: SqImgTxtTemplateService,
+    private theTextContentService: TextContentService
+  )
   {}
 
   ngOnInit() {
-    this.pageMaster = initSqImgTxtPage();
-    this.pageMasterLayout = initMasterPageLayout();
-    this.layoutText = initLayoutSquareImgTxtText();
-    this.layoutImageParent = initLayoutSquareImgTxtImageParent();
-    this.layoutImageChild = initLayoutSquareImgTxtImageChild();
+
     let builder = new ToolBarBuilder();
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
@@ -102,13 +93,9 @@ export class TemplateSqImgTxtComponent implements OnInit {
     messageType: messageTypes.warning
   };
 
-  pageMaster: IPage;
-  pageMasterLayout: ILayout;
-  layoutText: ILayout;
-  layoutImageParent: ILayout;
-  layoutImageChild: ILayout;
+
   clickevent: string; // holds the value of the button that has been clicked
-  imageUrl: ICssStyles;
+  // imageUrl: ICssStyles;
 
   handleClick(event: IButtonEvent) {
     if (event.buttonCommandType === ButtonCommandTypesEnum.Command) {
@@ -170,7 +157,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   textChanged(content: string) {
-    this.layoutText.content = content;
+    this.theTextContentService.textContent = content;
   }
 
   handleSelectFont(font: string) {
@@ -245,44 +232,24 @@ export class TemplateSqImgTxtComponent implements OnInit {
     this.isShowStatus = true;
     setTimeout(() => {
       this.isShowStatus = false;
-      alert("timeout expired");
+
     }, 3000);
   }
 
-  removeUserControlledElementsFromMasterLayout() {
-    let pageLayouts: ILayout[] = this.pageMasterLayout.children.filter(
-      childElement =>
-        childElement.layoutType === PageAreaTypesEnum.masterPageTemplate
-    );
-    this.pageMasterLayout.children = pageLayouts;
-  }
-
-  assemblePage(stylesArray: ICssStyles[]): ILayout {
-    this.layoutText.styles = stylesArray;
-    this.removeUserControlledElementsFromMasterLayout();
-    this.pageMasterLayout.children[0].children.push(this.layoutText);
-    // this.layoutImageParent.styles.push(this.imageBackGroundColor);
-    // this.layoutImageChild.styles = this.buildStyleArrayImage();
-    this.layoutImageParent.children.push(this.layoutImageChild);
-    this.pageMasterLayout.children[0].children.push(this.layoutImageParent);
-    return this.pageMasterLayout;
-  }
-
   savePage() {
-    if (this.pageMaster.uid != "") {
-      this.buttonEvent = ButtonEventEnums.UpdateRecord;
-    } else {
+    if (this.thePageConstructorService.pageId != "") {
+       this.buttonEvent = ButtonEventEnums.UpdateRecord;
+     } else {
       this.buttonEvent = ButtonEventEnums.Save;
       this.createRecord()
-    }
+     }
   }
 
   createRecord() {
     this.thePageConstructorService
       .createNewRecord()
       .then(result => {
-        if (result.result) {
-          this.pageMaster.id = result.msg;
+        if (result.isSuccessful) {
           this.displayStatusMessage("Content saved", messageTypes.information);
         } else {
           this.displayStatusMessage(
@@ -294,35 +261,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
       .catch(err => {
         this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
       });
-    // this.pageMaster = {
-    //   uid: "",
-    //   pageRef: "12",
-    //   pageName: "page 1",
-    //   template: pageTemplates.sqImgText,
-    //   layout: this.assemblePage(stylesArray)
-    // };
 
-    // this.pageService
-    //   .addRecord(this.pageMaster)
-    //   .then(result => {
-    //     if (result.result) {
-    //       this.pageMaster.id = result.msg;
-    //       this.displayStatusMessage("Content saved", messageTypes.information);
-    //     } else {
-    //       this.displayStatusMessage(
-    //         `Error: ${result.message}`,
-    //         messageTypes.warning
-    //       );
-    //     }
-    //   })
-    //   .catch(err => {
-    //     this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
-    //   });
   }
 
   // update the record in fireBase
   updateRecord(stylesArray: ICssStyles[]) {
-    this.pageMaster.layout = this.assemblePage(stylesArray);
+    // this.pageMaster.layout = this.assemblePage(stylesArray);
     // this.pageService
     //   .updateRecord(this.pageMaster)
     //   .then(res => {
@@ -364,16 +308,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   processLayoutContent(layouts: ILayout[]): void {
-    layouts.forEach(childLayout => {
-      this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
-      if (childLayout.layoutType === PageAreaTypesEnum.textArea)
-        this.layoutText.content = childLayout.content;
-      if (childLayout.children.length > 0)
-        this.processLayoutContent(childLayout.children);
-    });
+    // layouts.forEach(childLayout => {
+    //   this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
+    //   if (childLayout.layoutType === PageAreaTypesEnum.textArea)
+    //     this.layoutText.content = childLayout.content;
+    //   if (childLayout.children.length > 0)
+    //     this.processLayoutContent(childLayout.children);
+    // });
   }
 
   getTemplate() {
+    this.thePageConstructorService.getThePage();
     // this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
     //   let page: IPage = result[0];
     //   this.pageMaster = page;
@@ -383,8 +328,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   publish(stylesArray: ICssStyles[]) {
-    let pageLayout: ILayout = this.assemblePage(stylesArray);
-    this.pageMaster.layout = pageLayout;
+    // let pageLayout: ILayout = this.assemblePage(stylesArray);
+    // this.pageMaster.layout = pageLayout;
     // this.pageBuilder
     //   .createPage(this.pageMaster, "main.css")
     //   .then(result => {

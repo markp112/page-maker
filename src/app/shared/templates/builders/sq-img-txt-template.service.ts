@@ -9,6 +9,9 @@ import { cssStyleTagTypesEnum } from "src/app/models/enums/css-style-tag-types-e
 import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
 import { FirebasePageTemplateService } from '../../firebasePageTemplate.service';
+import { TextContentService } from '../../text-content/text-content.service';
+
+
 
 @Injectable({
   providedIn: "root"
@@ -17,9 +20,11 @@ export class SqImgTxtTemplateService {
   constructor(
     private imageStyles: ImageFormatterService,
     private textStyles: TextDirectiveFormatterService,
+    private theTextContent: TextContentService,
     private cloudStorageService: FirebasePageTemplateService
   ) {
     this.pageMaster = {
+      id: "",
       uid: "",
       pageRef: "12",
       pageName: "page 1",
@@ -27,7 +32,12 @@ export class SqImgTxtTemplateService {
       layout: null
     };
   }
-  pageMaster: IPage;
+  private pageMaster: IPage;
+
+  public get pageId(): string {
+
+    return this.pageMaster.id;
+  }
 
   private constructTheLayoutForThePage(): ILayout {
     let layout: ILayout = {
@@ -80,23 +90,10 @@ export class SqImgTxtTemplateService {
       styleTagType: cssStyleTagTypesEnum.elementTag,
       content: "",
       className: `text-area`,
-      styles: [] = this.initialiseTextStyles(),
+      styles: [],
       children: []
     };
     return layout;
-  }
-
-  private buildAStyleTag(
-    styleTag: string,
-    styleProperty: cssStyleEnum,
-    value: string
-  ): ICssStyles {
-    let aStyle: ICssStyles = {
-      styleTag: styleTag,
-      pmStyleProperty: styleProperty,
-      value: value
-    };
-    return aStyle;
   }
 
   private constructTheImageParentElement = (): ILayout => {
@@ -118,12 +115,7 @@ export class SqImgTxtTemplateService {
       styles: [],
       children: []
     };
-    let backgroundColor: ICssStyles = this.buildAStyleTag(
-      "background-color",
-      cssStyleEnum.backgroundColor,
-      "rgba(241,242,244,1)"
-    );
-    layoutSqImgImage.styles.push(backgroundColor);
+
     return layoutSqImgImage;
   };
 
@@ -145,86 +137,13 @@ export class SqImgTxtTemplateService {
       htmlTag: HtmlTagsEnum.img,
       styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
       className: "",
-      styles: [] = this.initialiseImageStyles(),
+      styles: [],
       content: "",
       children: []
     };
     return imageLayout;
   };
 
-  private initialiseTextStyles = (): ICssStyles[] => {
-    let textElements: ICssStyles[] = [];
-    let color: ICssStyles = this.buildAStyleTag(
-      "color",
-      cssStyleEnum.color,
-      "rgba(242,226,213, 1)"
-    );
-    let fontSize: ICssStyles = this.buildAStyleTag(
-      "font-size",
-      cssStyleEnum.fontSize,
-      "16"
-    );
-    let fontFamily: ICssStyles = this.buildAStyleTag(
-      "font-family",
-      cssStyleEnum.fontFamily,
-      "Monterra"
-    );
-    let backgroundColor: ICssStyles = this.buildAStyleTag(
-      "background-color",
-      cssStyleEnum.backgroundColor,
-      "rgba(38,1,89, 1)"
-    );
-    let horizontalAlign: ICssStyles = this.buildAStyleTag(
-      "text-align",
-      cssStyleEnum.horizontalAlignment,
-      "textHorizontalAlignment.alignLeft"
-    );
-    let vertcalAlign: ICssStyles = this.buildAStyleTag(
-      "justify-content",
-      cssStyleEnum.verticalAlignment,
-      "textVerticalAlignment.alignTop"
-    );
-    textElements.push(fontFamily);
-    textElements.push(fontSize);
-    textElements.push(color);
-    textElements.push(backgroundColor);
-    textElements.push(horizontalAlign);
-    textElements.push(vertcalAlign);
-    return textElements;
-  };
-
-  private initialiseImageStyles = (): ICssStyles[] => {
-    let styles: ICssStyles[] = [];
-    let backgroundColor: ICssStyles = this.buildAStyleTag(
-      "background-color",
-      cssStyleEnum.backgroundColor,
-      "rgba(241,242,244,1)"
-    );
-    let url: ICssStyles = this.buildAStyleTag(
-      "src",
-      cssStyleEnum.url,
-      "../../../../assets/images/placeholder-image.png"
-    );
-    let height: ICssStyles = this.buildAStyleTag(
-      "height",
-      cssStyleEnum.height,
-      "438"
-    );
-    let width: ICssStyles = this.buildAStyleTag(
-      "width",
-      cssStyleEnum.width,
-      "650"
-    );
-    let top: ICssStyles = this.buildAStyleTag("top", cssStyleEnum.top, "0");
-    let left: ICssStyles = this.buildAStyleTag("left", cssStyleEnum.left, "0");
-    styles.push(height);
-    styles.push(width);
-    styles.push(top);
-    styles.push(left);
-    styles.push(backgroundColor);
-    styles.push(url);
-    return styles;
-  };
 
   private constructThePageAndAllItsElements(): ILayout{
     let theImageLayout = this.buildTheImageLayoutStructure();
@@ -235,29 +154,62 @@ export class SqImgTxtTemplateService {
     let theLayoutForThePage = this.constructTheLayoutForThePage();
     theLayoutForThePage.children.push(theLayoutForThePageElements);
     return theLayoutForThePage;
+
   }
 
-  public createNewRecord(): Promise<any> {
-    let theWholePageLayout = this.constructThePageAndAllItsElements();
-    this.pageMaster.layout = theWholePageLayout;
-    return new Promise((resolve, reject)=>{
-      this.cloudStorageService.addRecord(this.pageMaster)
-      .then(result =>  resolve(result))
-      .catch(err => reject(err));
-    })
-  }
 
-  buildTheImageLayoutStructure(): ILayout {
+  private buildTheImageLayoutStructure(): ILayout {
     let theImage: ILayout = this.constructTheImageParentElement();
     theImage.styles.push(this.imageStyles.getASingleStyle(cssStyleEnum.backgroundColor));
     let theImageElement = this.constructTheImageElement();
     this.addStylesToLayOut(theImageElement, this.imageStyles.getAllImageStyles());
-    theImageElement.children.push(theImageElement);
+    theImage.children.push(theImageElement);
     return theImage;
   }
-  buildTheTextLayoutStructure(): ILayout {
+
+  private buildTheTextLayoutStructure(): ILayout {
     let theTextElement: ILayout  = this.constructTheLayoutForTheTextElement();
     this.addStylesToLayOut(theTextElement,this.textStyles.getAllTextStyles());
+    theTextElement.content = this.theTextContent.textContent;
     return theTextElement;
+  }
+
+  private  getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData:IPage) {
+    thePageLayoutData.layout.children.forEach(childLayout => {
+      switch (childLayout.layoutType) {
+        case  PageAreaTypesEnum.imageArea:
+          this.imageStyles.createStylesFromData(childLayout.styles);
+          break;
+        case PageAreaTypesEnum.textArea:
+          this.textStyles.createStylesFromData(childLayout.styles);
+          if(childLayout.content !="") this.theTextContent.textContent = childLayout.content;
+          break;
+      }
+    })
+  }
+
+  public createNewRecord(): Promise<any> {
+    console.log("Create Record")
+    let theWholePageLayout = this.constructThePageAndAllItsElements();
+    this.pageMaster.layout = theWholePageLayout;
+    return new Promise((resolve, reject)=>{
+      this.cloudStorageService.addRecord(this.pageMaster)
+      .then(result => {
+        this.pageMaster.id = result.msg;
+        resolve(result)
+      })
+      .catch(err => reject(err));
+    })
+  }
+
+  public getThePage():void {
+    this.cloudStorageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
+      let thePageLayoutData:IPage = result[0];
+      console.log('%c⧭', 'color: #aa00ff', this.pageMaster);
+      this.getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData);
+
+    }
+
+    )
   }
 }

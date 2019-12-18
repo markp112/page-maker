@@ -8,7 +8,7 @@ export class ImageStyles {
   private _backgroundColour: ICssStyles;
   private _top: ICssStyles;
   private _left: ICssStyles;
-  private _styles: ICssStyles[];
+
 
   public get url(): string {
     return this._url.value;
@@ -62,7 +62,7 @@ export class ImageStyles {
     width: number = 650, top: number = 0, left: number = 0, backgroundColour: string = "rgba(241,242,244,1)") {
 
     this._url = {
-      styleTag: "url",
+      styleTag: "src",
       pmStyleProperty: cssStyleEnum.url,
       value: url
     };
@@ -97,33 +97,31 @@ export class ImageStyles {
     switch (theStyleToGet){
       case cssStyleEnum.backgroundColor:
         return this._backgroundColour
-        
       case cssStyleEnum.height:
         return this._height;
-        
       case cssStyleEnum.width:
         return this._width;
-        
       case cssStyleEnum.top:
         return this._top;
-        
       case cssStyleEnum.left:
         return this._left;
-      
-        case cssStyleEnum.url:
+      case cssStyleEnum.url:
           return this._url;
     }
   }
 
   public getStyles(): ICssStyles[] {
-    this._styles = [];
-    this._styles.push(this._backgroundColour);
-    this._styles.push(this._url);
-    this._styles.push(this._top);
-    this._styles.push(this._left);
-    this._styles.push(this._height);
-    this._styles.push(this._width);
-    return this._styles;
+    console.log(' getStyles %c%s', 'color: #00e600');
+
+    let styles:ICssStyles[] = [];
+    styles.push(this._backgroundColour);
+    styles.push(this._url);
+    styles.push(this._top);
+    styles.push(this._left);
+    styles.push(this._height);
+    styles.push(this._width);
+    console.log('%c⧭', 'color: #00a3cc', styles);
+    return styles;
   }
 
 

@@ -4,6 +4,7 @@ import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
 import { cssStyleTagTypesEnum } from 'src/app/models/enums/css-style-tag-types-enum';
 import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
+import { parse } from 'querystring';
 
 @Injectable({
   providedIn: "root"
@@ -25,17 +26,14 @@ export class ImageFormatterService {
     return this.imageStyles.getStyles();
   }
 
-  public getASingleStyle(theStyleToGet: cssStyleEnum):ICssStyles {
+  public getASingleStyle(theStyleToGet: cssStyleEnum): ICssStyles {
     return this.imageStyles.getASingleStyle(theStyleToGet);
   }
   constructor() {
     this.imageStyles = new ImageStyles();
   }
 
-  public processButtonClick(
-    buttonEvent: ButtonEventEnums,
-    propertyValue: string = ""
-  ): void {
+  public processButtonClick(buttonEvent: ButtonEventEnums, propertyValue: string = ""): void {
     this._value = [];
     this._cssStyleTag = [];
     switch (buttonEvent) {
@@ -89,5 +87,31 @@ export class ImageFormatterService {
         this._value.push(`${this.imageStyles.top}px`);
         break;
     }
+  }
+
+
+  public createStylesFromData(theStyles: ICssStyles[]) {
+    theStyles.forEach(aStyle => {
+      switch (aStyle.pmStyleProperty){
+        case cssStyleEnum.backgroundColor:
+            this.imageStyles.backgroundColour = aStyle.value;
+            break;
+        case cssStyleEnum.height:
+          this.imageStyles.height = parseInt(aStyle.value);
+          break;
+        case cssStyleEnum.width:
+          this.imageStyles.width = parseInt(aStyle.value);
+          break;
+        case cssStyleEnum.left:
+          this.imageStyles.left = parseInt(aStyle.value)
+          break;
+        case cssStyleEnum.top:
+          this.imageStyles.top = parseInt(aStyle.value);
+          break;
+        case cssStyleEnum.url:
+          this.imageStyles.url = aStyle.value;
+          break;
+      }
+    })
   }
 }
