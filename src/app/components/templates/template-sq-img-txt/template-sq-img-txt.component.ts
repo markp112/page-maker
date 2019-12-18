@@ -273,10 +273,11 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.buttonEvent = ButtonEventEnums.UpdateRecord;
     } else {
       this.buttonEvent = ButtonEventEnums.Save;
+      this.createRecord()
     }
   }
 
-  createRecord(stylesArray: ICssStyles[]) {
+  createRecord() {
     this.thePageConstructorService
       .createNewRecord()
       .then(result => {
@@ -384,15 +385,15 @@ export class TemplateSqImgTxtComponent implements OnInit {
   publish(stylesArray: ICssStyles[]) {
     let pageLayout: ILayout = this.assemblePage(stylesArray);
     this.pageMaster.layout = pageLayout;
-    this.pageBuilder
-      .createPage(this.pageMaster, "main.css")
-      .then(result => {
-        this.statusMessage = result;
-        this.isShowStatus = !this.isShowStatus;
-      })
-      .catch(err => {
-        this.statusMessage = err;
-        this.isShowStatus = !this.isShowStatus;
-      });
+    // this.pageBuilder
+    //   .createPage(this.pageMaster, "main.css")
+    //   .then(result => {
+    //     this.statusMessage = result;
+    //     this.isShowStatus = !this.isShowStatus;
+    //   })
+    //   .catch(err => {
+    //     this.statusMessage = err;
+    //     this.isShowStatus = !this.isShowStatus;
+    //   });
   }
 }
