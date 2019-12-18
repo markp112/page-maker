@@ -10,12 +10,15 @@ import { Observable } from 'rxjs';
 @Injectable({
   providedIn: "root"
 })
-export class PageTemplateService {
+export class FirebasePageTemplateService {
   private dbPath = "/pages";
   itemCollection: AngularFirestoreCollection<IPage>;
   items: Observable<IPage[]>;
 
-  result: { result: boolean; msg: string } = { result: false, msg: "" };
+  result: { isSuccessful: boolean; msg: string } = {
+    isSuccessful: false,
+    msg: ""
+  };
 
   pagesRef: AngularFirestoreCollection<IPage>;
 
@@ -37,48 +40,51 @@ export class PageTemplateService {
         this.pagesRef
           .add(pageRecord)
           .then(res => {
-            this.result.result = true;
+            this.result.isSuccessful = true;
             this.result.msg = res.id;
             resolve(this.result);
           })
           .catch(err => {
             console.log(err);
-            this.result.result = false;
+            this.result.isSuccessful = false;
             this.result.msg = err;
             reject(this.result);
           });
       } else {
-        this.result.result = false;
+        this.result.isSuccessful = false;
         this.result.msg = "Not logged in";
         reject(this.result);
       }
     });
   }
 
-  getRecord(template: pageTemplates):Observable<any>{
+  getRecord(template: pageTemplates): Observable<any> {
     const uid = this.getUid();
-    return this.afs.collection<IPage>('pages', (ref => ref.where("uid","==",uid)
-        .where("template","==",template)
-        .limit(1))).valueChanges();
+    return this.afs
+      .collection<IPage>("pages", ref =>
+        ref
+          .where("uid", "==", uid)
+          .where("template", "==", template)
+          .limit(1)
+      )
+      .valueChanges();
   }
 
-  updateRecord(pageRecord: IPage):Promise<any> {
-    return new Promise((resolve,reject) =>{
-      const coll = this.afs.collection ('pages').doc(pageRecord.uid);
-      coll.set(pageRecord)
-      .then(res =>{
-        this.result.result=true;
-        this.result.msg="Record updated";
-        resolve(this.result);
-      })
-      .catch (err =>{
-        this.result.result = false;
-        this.result.msg = err;
-        reject(this.result);
-
-      })
-
-
-    })
+  updateRecord(pageRecord: IPage): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const coll = this.afs.collection("pages").doc(pageRecord.uid);
+      coll
+        .set(pageRecord)
+        .then(res => {
+          this.result.isSuccessful = true;
+          this.result.msg = "Record updated";
+          resolve(this.result);
+        })
+        .catch(err => {
+          this.result.isSuccessful = false;
+          this.result.msg = err;
+          reject(this.result);
+        });
+    });
   }
 }

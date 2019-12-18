@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { PageTemplateService } from './page-template.service';
+import { FirebasePageTemplateService } from './firebasePageTemplate.service';
 
 describe('SavePageService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

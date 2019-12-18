@@ -1,30 +1,37 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { templateInitial } from "src/assets/data/mock/template-toolbar";
 
 // interface intialisers
 // import { initImageStylesInitial } from "../../../../assets/data/interface-initialisers/imageInitial";
 import { initSqImgTxtPage } from "../../../../assets/data/interface-initialisers/page-square-image-text-initial";
-import { IStatusMessage, messageTypes } from "../../../models/interfaces/status-message";
+import {
+  IStatusMessage,
+  messageTypes
+} from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
 import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
-import { PageAreaTypesEnum } from '../../../models/enums/pageAreaTypes.enum';
+import { PageAreaTypesEnum } from "../../../models/enums/pageAreaTypes.enum";
 
 // services
-import { PageTemplateService } from "../../../shared/page-template.service";
+
 import { FontsService } from "../../../shared/fonts.service";
 import { PageBuilderService } from "../../../shared/page-builder.service";
 // import { StylesGeneratorService } from '../../../shared/styles-generator-service/styles-generator.service'
-import { ILayout } from 'src/app/models/interfaces/layout';
-import { initMasterPageLayout, initLayoutSquareImgTxtText, initLayoutSquareImgTxtImageParent, initLayoutSquareImgTxtImageChild } from 'src/assets/data/interface-initialisers/layout-square-image-text-Initial';
-import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
-import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
-import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
-import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
-import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
+import { ILayout } from "src/app/models/interfaces/layout";
+import {
+  initMasterPageLayout,
+  initLayoutSquareImgTxtText,
+  initLayoutSquareImgTxtImageParent,
+  initLayoutSquareImgTxtImageChild
+} from "src/assets/data/interface-initialisers/layout-square-image-text-Initial";
+import { ICssStyles } from "src/app/models/interfaces/cssStyle";
+import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
+import { ToolBarBuilder } from "src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder";
+import { ToolbarTypesEnum } from "src/app/models/enums/toolbar-types-enum";
+import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
 
-import { IButtonEvent } from 'src/app/models/interfaces/button-event';
-import { ButtonCommandTypesEnum } from 'src/app/models/enums/Button-Command-Type-enums';
-
+import { IButtonEvent } from "src/app/models/interfaces/button-event";
+import { ButtonCommandTypesEnum } from "src/app/models/enums/Button-Command-Type-enums";
+import { SqImgTxtTemplateService } from "src/app/shared/templates/builders/sq-img-txt-template.service";
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -35,10 +42,10 @@ export class TemplateSqImgTxtComponent implements OnInit {
   @Input() contentText: string;
 
   constructor(
-    private pageService: PageTemplateService,
     private fontService: FontsService,
-    private pageBuilder: PageBuilderService,
-  ) {}
+    private thePageConstructorService: SqImgTxtTemplateService
+  ) // private pageBuilder: PageBuilderService,
+  {}
 
   ngOnInit() {
     this.pageMaster = initSqImgTxtPage();
@@ -49,10 +56,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
     let builder = new ToolBarBuilder();
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
-    this.textEditButtonsGrp3 = builder.build(ToolbarTypesEnum.TextColourSettings);
-    this.textEditButtonsGrp4 = builder.build(ToolbarTypesEnum.VerticalAlignment);
+    this.textEditButtonsGrp3 = builder.build(
+      ToolbarTypesEnum.TextColourSettings
+    );
+    this.textEditButtonsGrp4 = builder.build(
+      ToolbarTypesEnum.VerticalAlignment
+    );
     this.imgEditButtons = builder.build(ToolbarTypesEnum.ImageCaptureButtons);
-    this.imgPositionButtons = builder.build(ToolbarTypesEnum.ImagePositionButtons);
+    this.imgPositionButtons = builder.build(
+      ToolbarTypesEnum.ImagePositionButtons
+    );
     this.imgSizeButtons = builder.build(ToolbarTypesEnum.ImageSizeButtons);
 
     this.nonEditButtons = builder.build(ToolbarTypesEnum.CommandToolbar);
@@ -98,12 +111,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imageUrl: ICssStyles;
 
   handleClick(event: IButtonEvent) {
-    if(event.buttonCommandType === ButtonCommandTypesEnum.Command){
-      this.processEventCommand(event.eventName)
-    }else if(event.buttonCommandType === ButtonCommandTypesEnum.TextStyler){
+    if (event.buttonCommandType === ButtonCommandTypesEnum.Command) {
+      this.processEventCommand(event.eventName);
+    } else if (event.buttonCommandType === ButtonCommandTypesEnum.TextStyler) {
       this.changeValue = Math.random().toString();
       this.buttonEvent = event.eventName;
-    }else if(event.buttonCommandType === ButtonCommandTypesEnum.ImageStyler){
+    } else if (event.buttonCommandType === ButtonCommandTypesEnum.ImageStyler) {
       this.imageChangedValue = Math.random().toString();
       this.imageButtonEvent = event.eventName;
     }
@@ -147,7 +160,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
         this.buttonEvent = ButtonEventEnums.Publish;
         break;
       default:
-
         break;
     }
   }
@@ -174,12 +186,18 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   handleTextEditorClick() {
-    this.showTextEditor = !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
+    this.showTextEditor =
+      !this.showTextEditor && this.isEditing && !this.isShowColourPicker;
     this.isEditing = true;
   }
 
-  getStyleValue( stylesArray: ICssStyles[], styleTofind: cssStyleEnum ): ICssStyles {
-    return stylesArray.filter(style => style.pmStyleProperty === styleTofind)[0];
+  getStyleValue(
+    stylesArray: ICssStyles[],
+    styleTofind: cssStyleEnum
+  ): ICssStyles {
+    return stylesArray.filter(
+      style => style.pmStyleProperty === styleTofind
+    )[0];
   }
 
   setColor(color: string) {
@@ -259,16 +277,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   createRecord(stylesArray: ICssStyles[]) {
-    this.pageMaster = {
-      uid: "",
-      pageRef: "12",
-      pageName: "page 1",
-      template: pageTemplates.sqImgText,
-      layout: this.assemblePage(stylesArray)
-    };
-
-    this.pageService
-      .addRecord(this.pageMaster)
+    this.thePageConstructorService
+      .createNewRecord()
       .then(result => {
         if (result.result) {
           this.pageMaster.id = result.msg;
@@ -283,19 +293,43 @@ export class TemplateSqImgTxtComponent implements OnInit {
       .catch(err => {
         this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
       });
+    // this.pageMaster = {
+    //   uid: "",
+    //   pageRef: "12",
+    //   pageName: "page 1",
+    //   template: pageTemplates.sqImgText,
+    //   layout: this.assemblePage(stylesArray)
+    // };
+
+    // this.pageService
+    //   .addRecord(this.pageMaster)
+    //   .then(result => {
+    //     if (result.result) {
+    //       this.pageMaster.id = result.msg;
+    //       this.displayStatusMessage("Content saved", messageTypes.information);
+    //     } else {
+    //       this.displayStatusMessage(
+    //         `Error: ${result.message}`,
+    //         messageTypes.warning
+    //       );
+    //     }
+    //   })
+    //   .catch(err => {
+    //     this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
+    //   });
   }
 
   // update the record in fireBase
   updateRecord(stylesArray: ICssStyles[]) {
     this.pageMaster.layout = this.assemblePage(stylesArray);
-    this.pageService
-      .updateRecord(this.pageMaster)
-      .then(res => {
-        this.displayStatusMessage("Record Updated", messageTypes.information);
-      })
-      .catch(err => {
-        this.displayStatusMessage(err.message, messageTypes.error);
-      });
+    // this.pageService
+    //   .updateRecord(this.pageMaster)
+    //   .then(res => {
+    //     this.displayStatusMessage("Record Updated", messageTypes.information);
+    //   })
+    //   .catch(err => {
+    //     this.displayStatusMessage(err.message, messageTypes.error);
+    //   });
   }
 
   getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
@@ -339,12 +373,12 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getTemplate() {
-    this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
-      let page: IPage = result[0];
-      this.pageMaster = page;
-      this.fontService.getFontNames();
-      this.processLayoutContent(page.layout.children);
-    });
+    // this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
+    //   let page: IPage = result[0];
+    //   this.pageMaster = page;
+    //   this.fontService.getFontNames();
+    //   this.processLayoutContent(page.layout.children);
+    // });
   }
 
   publish(stylesArray: ICssStyles[]) {

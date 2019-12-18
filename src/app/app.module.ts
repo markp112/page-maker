@@ -25,7 +25,7 @@ import { StatusMessageComponent } from './components/status-message/status-messa
 // Services
 import { FontApiService }  from './shared/font-api.service';
 import { AuthService } from './shared/auth.service';
-import { PageTemplateService } from "./shared/page-template.service";
+import { FirebasePageTemplateService } from "./shared/firebasePageTemplate.service";
 import { FireStorageService } from './shared/fire-storage.service';
 import { PageBuilderService } from './shared/page-builder.service';
 import { TextDirectiveFormatterService } from './shared/formatters/text/text-directive-formatter.service'
@@ -92,7 +92,7 @@ import { secrets } from 'secrets';
   providers: [
     FontApiService,
     AuthService,
-    PageTemplateService,
+    FirebasePageTemplateService,
     FireStorageService,
     PageBuilderService,
     TextDirectiveFormatterService,

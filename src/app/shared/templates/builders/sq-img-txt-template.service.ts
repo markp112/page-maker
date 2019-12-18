@@ -6,9 +6,9 @@ import { ILayout } from "src/app/models/interfaces/layout";
 import { PageAreaTypesEnum } from "src/app/models/enums/pageAreaTypes.enum";
 import { HtmlTagsEnum } from "src/app/models/enums/htmlTags";
 import { cssStyleTagTypesEnum } from "src/app/models/enums/css-style-tag-types-enum";
-import { initTextStylesInitial } from "src/assets/data/interface-initialisers/textInitial";
 import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
+import { FirebasePageTemplateService } from '../../firebasePageTemplate.service';
 
 @Injectable({
   providedIn: "root"
@@ -16,7 +16,8 @@ import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
 export class SqImgTxtTemplateService {
   constructor(
     private imageStyles: ImageFormatterService,
-    private textStyles: TextDirectiveFormatterService
+    private textStyles: TextDirectiveFormatterService,
+    private cloudStorageService: FirebasePageTemplateService
   ) {
     this.pageMaster = {
       uid: "",
@@ -79,7 +80,7 @@ export class SqImgTxtTemplateService {
       styleTagType: cssStyleTagTypesEnum.elementTag,
       content: "",
       className: `text-area`,
-      styles: [] = this.initTextStylesInitial(),
+      styles: [] = this.initialiseTextStyles(),
       children: []
     };
     return layout;
@@ -144,7 +145,7 @@ export class SqImgTxtTemplateService {
       htmlTag: HtmlTagsEnum.img,
       styleTagType: cssStyleTagTypesEnum.elementTag, // is this a css class or a standard html element being styled
       className: "",
-      styles: [] = this.initImageStylesInitial(),
+      styles: [] = this.initialiseImageStyles(),
       content: "",
       children: []
     };
@@ -225,21 +226,38 @@ export class SqImgTxtTemplateService {
     return styles;
   };
 
-  public createNewRecord() {
-    
-    let imageLayout = this.buildTheImageLayoutStructure();
-    let textLayout = this.buildTheTextLayoutStructure();
+  private constructThePageAndAllItsElements(): ILayout{
+    let theImageLayout = this.buildTheImageLayoutStructure();
+    let theTextLayout = this.buildTheTextLayoutStructure();
+    let theLayoutForThePageElements = this.constructTheLayoutForThePageElements();
+    theLayoutForThePageElements.children.push(theImageLayout);
+    theLayoutForThePageElements.children.push(theTextLayout);
+    let theLayoutForThePage = this.constructTheLayoutForThePage();
+    theLayoutForThePage.children.push(theLayoutForThePageElements);
+    return theLayoutForThePage;
+  }
+
+  public createNewRecord(): Promise<any> {
+    let theWholePageLayout = this.constructThePageAndAllItsElements();
+    this.pageMaster.layout = theWholePageLayout;
+    return new Promise((resolve, reject)=>{
+      this.cloudStorageService.addRecord(this.pageMaster)
+      .then(result =>  resolve(result))
+      .catch(err => reject(err));
+    })
   }
 
   buildTheImageLayoutStructure(): ILayout {
     let theImage: ILayout = this.constructTheImageParentElement();
     theImage.styles.push(this.imageStyles.getASingleStyle(cssStyleEnum.backgroundColor));
     let theImageElement = this.constructTheImageElement();
-    this.addStylesToLayOut(theImageElement,this.imageStyles.getAllImageStyles());
+    this.addStylesToLayOut(theImageElement, this.imageStyles.getAllImageStyles());
     theImageElement.children.push(theImageElement);
     return theImage;
   }
   buildTheTextLayoutStructure(): ILayout {
-    throw new Error("Method not implemented.");
+    let theTextElement: ILayout  = this.constructTheLayoutForTheTextElement();
+    this.addStylesToLayOut(theTextElement,this.textStyles.getAllTextStyles());
+    return theTextElement;
   }
 }
