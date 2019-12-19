@@ -10,6 +10,7 @@ import { ICssStyles } from "src/app/models/interfaces/cssStyle";
 import { cssStyleEnum } from "src/app/models/enums/cssStylesEnum";
 import { FirebasePageTemplateService } from '../../firebasePageTemplate.service';
 import { TextContentService } from '../../text-content/text-content.service';
+import { AuthService } from '../../auth.service';
 
 
 
@@ -18,6 +19,7 @@ import { TextContentService } from '../../text-content/text-content.service';
 })
 export class SqImgTxtTemplateService {
   constructor(
+    private auth: AuthService,
     private imageStyles: ImageFormatterService,
     private textStyles: TextDirectiveFormatterService,
     private theTextContent: TextContentService,
@@ -25,7 +27,7 @@ export class SqImgTxtTemplateService {
   ) {
     this.pageMaster = {
       id: "",
-      uid: "",
+      uid: auth.getUserID(),
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
@@ -182,10 +184,11 @@ export class SqImgTxtTemplateService {
           break;
         case PageAreaTypesEnum.textArea:
           this.textStyles.createStylesFromData(childLayout.styles);
-          if(childLayout.content !="") this.theTextContent.textContent = childLayout.content;
+          if(childLayout.content !== "") this.theTextContent.textContent = childLayout.content;
           break;
       }
     })
+
   }
 
   public createNewRecord(): Promise<any> {

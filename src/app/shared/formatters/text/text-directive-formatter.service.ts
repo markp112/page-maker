@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { TextStyles } from 'src/app/models/classes/text-styles/text-styles';
 import { ICssStyles } from 'src/app/models/interfaces/cssStyle';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
+import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TextDirectiveFormatterService {
+
 
   private textStyles: TextStyles;
   private _cssStyleTag: string;
@@ -15,9 +17,9 @@ export class TextDirectiveFormatterService {
   private _isHorizontalFormatter: boolean = false;
   private _isVerticalFormatter: boolean = false;
 
-constructor() {
+  constructor() {
     this.textStyles = new TextStyles();
-}
+  }
 
   public get cssStyleTag(): string {
     return this._cssStyleTag;
@@ -96,4 +98,33 @@ constructor() {
         break;
     }
   }
+
+  public createStylesFromData(theStyles: ICssStyles[]): void {
+    theStyles.forEach(aStyle => {
+      switch (aStyle.pmStyleProperty) {
+        case cssStyleEnum.color:
+          this.textStyles.foreColour = aStyle.value;
+          break;
+        case cssStyleEnum.fontFamily:
+          this.textStyles.fontFamily = aStyle.value;
+          break;
+        case cssStyleEnum.fontSize:
+          this.textStyles.fontSize = parseInt(aStyle.value);
+          break;
+        case cssStyleEnum.justify:
+          this.textStyles.fontHorizontalAlignment = aStyle.value
+          break;
+        case cssStyleEnum.horizontalAlignment:
+          this.textStyles.fontHorizontalAlignment = aStyle.value;
+          break;
+        case cssStyleEnum.verticalAlignment:
+          this.textStyles.fontVerticalAlignment = aStyle.value;
+          break;
+        case cssStyleEnum.backgroundColor:
+          this.textStyles.fontBackgroundColour = aStyle.value;
+          break;
+      }
+    });
+  }
+
 }

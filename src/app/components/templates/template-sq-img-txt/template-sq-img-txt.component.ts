@@ -318,7 +318,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getTemplate() {
+
     this.thePageConstructorService.getThePage();
+
+    this.changeValue = ""
+    this.imageChangedValue = ""
+    this.buttonEvent = ButtonEventEnums.RetrieveAllStyles;
+    this.imageButtonEvent = ButtonEventEnums.RetrieveAllStyles;
     // this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
     //   let page: IPage = result[0];
     //   this.pageMaster = page;

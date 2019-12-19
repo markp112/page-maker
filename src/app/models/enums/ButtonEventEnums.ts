@@ -22,6 +22,7 @@ export enum ButtonEventEnums {
   UploadFile,
   Publish,
   Cancel,
+  RetrieveAllStyles,
 
   // alignment selectors
   HorizontalAlignmentChanged,
