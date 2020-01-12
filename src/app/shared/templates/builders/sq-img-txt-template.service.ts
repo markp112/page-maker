@@ -121,7 +121,7 @@ export class SqImgTxtTemplateService {
     return layoutSqImgImage;
   };
 
-  private addStylesToLayOut(theLayoutElement: ILayout, theStyles: ICssStyles[]){
+  private addStylesToLayOut(theLayoutElement: ILayout, theStyles: ICssStyles[]) {
     theStyles.forEach(aStyle => {
       theLayoutElement.styles.push(aStyle);
     })
@@ -147,7 +147,7 @@ export class SqImgTxtTemplateService {
   };
 
 
-  private constructThePageAndAllItsElements(): ILayout{
+  private constructThePageAndAllItsElements(): ILayout {
     let theImageLayout = this.buildTheImageLayoutStructure();
     let theTextLayout = this.buildTheTextLayoutStructure();
     let theLayoutForThePageElements = this.constructTheLayoutForThePageElements();
@@ -170,47 +170,57 @@ export class SqImgTxtTemplateService {
   }
 
   private buildTheTextLayoutStructure(): ILayout {
-    let theTextElement: ILayout  = this.constructTheLayoutForTheTextElement();
-    this.addStylesToLayOut(theTextElement,this.textStyles.getAllTextStyles());
+    let theTextElement: ILayout = this.constructTheLayoutForTheTextElement();
+    this.addStylesToLayOut(theTextElement, this.textStyles.getAllTextStyles());
     theTextElement.content = this.theTextContent.textContent;
     return theTextElement;
   }
 
-  private  getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData:IPage) {
-    thePageLayoutData.layout.children.forEach(childLayout => {
-      switch (childLayout.layoutType) {
-        case  PageAreaTypesEnum.imageArea:
-          this.imageStyles.createStylesFromData(childLayout.styles);
+  private extractTheLayoutsFromThePage(theLayouts: ILayout[]): void {
+    theLayouts.forEach(theLayout => {
+      switch (theLayout.layoutType) {
+        case PageAreaTypesEnum.imageArea:
+          console.log("Processing Image")
+          this.imageStyles.createStylesFromData(theLayout.styles);
           break;
         case PageAreaTypesEnum.textArea:
-          this.textStyles.createStylesFromData(childLayout.styles);
-          if(childLayout.content !== "") this.theTextContent.textContent = childLayout.content;
+          console.log("Processing Text")
+          this.textStyles.createStylesFromData(theLayout.styles);
+          if (theLayout.content !== "") this.theTextContent.textContent = theLayout.content;
           break;
       }
-    })
+      if (theLayout.children.length > 0) this.extractTheLayoutsFromThePage(theLayout.children)
 
+    });
+  }
+
+  private getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData: IPage): void {
+    console.log("thePageLayoutData", thePageLayoutData)
+    this.extractTheLayoutsFromThePage(thePageLayoutData.layout.children)
   }
 
   public createNewRecord(): Promise<any> {
     console.log("Create Record")
     let theWholePageLayout = this.constructThePageAndAllItsElements();
     this.pageMaster.layout = theWholePageLayout;
-    return new Promise((resolve, reject)=>{
+    return new Promise((resolve, reject) => {
       this.cloudStorageService.addRecord(this.pageMaster)
-      .then(result => {
-        this.pageMaster.id = result.msg;
-        resolve(result)
-      })
-      .catch(err => reject(err));
+        .then(result => {
+          this.pageMaster.id = result.msg;
+          resolve(result)
+        })
+        .catch(err => reject(err));
     })
   }
 
-  public getThePage():void {
-    this.cloudStorageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
-      let thePageLayoutData:IPage = result[0];
-      console.log('%c⧭', 'color: #aa00ff', this.pageMaster);
-      this.getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData);
-
+  public getThePage(): Promise<any> {
+    return new Promise((resolve) => {
+      this.cloudStorageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
+        let thePageLayoutData: IPage = result[0];
+        console.log('%c⧭', 'color: #aa00ff', thePageLayoutData);
+        this.getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData);
+        resolve();
+      })
     }
 
     )

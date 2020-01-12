@@ -36,14 +36,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
   @Input() contentText: string;
 
   constructor(
-    private fontService: FontsService,                        //do not delete required for fonts to update correctly
     private thePageConstructorService: SqImgTxtTemplateService,
-    private theTextContentService: TextContentService
-  )
-  {}
+    private theTextContentService: TextContentService,
+    private fontService: FontsService//do not delete required for fonts to update correctly
+
+  ) {}
 
   ngOnInit() {
-
+  //build the toolbars
     let builder = new ToolBarBuilder();
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
     this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
@@ -237,12 +237,13 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   savePage() {
+    console.log("this.thePageConstructorService",this.thePageConstructorService)
     if (this.thePageConstructorService.pageId != "") {
-       this.buttonEvent = ButtonEventEnums.UpdateRecord;
-     } else {
+      this.buttonEvent = ButtonEventEnums.UpdateRecord;
+    } else {
       this.buttonEvent = ButtonEventEnums.Save;
       this.createRecord()
-     }
+    }
   }
 
   createRecord() {
@@ -318,13 +319,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   getTemplate() {
-
-    this.thePageConstructorService.getThePage();
-
-    this.changeValue = ""
+    console.log(" this.thePageConstructorService this.thePageConstructorService", this.thePageConstructorService)
+    this.thePageConstructorService.getThePage()
+    .then( () =>{
+      this.changeValue = ""
     this.imageChangedValue = ""
+    console.log("the page is got??")
     this.buttonEvent = ButtonEventEnums.RetrieveAllStyles;
     this.imageButtonEvent = ButtonEventEnums.RetrieveAllStyles;
+    })
+
+
     // this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
     //   let page: IPage = result[0];
     //   this.pageMaster = page;

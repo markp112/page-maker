@@ -30,6 +30,7 @@ import { FireStorageService } from './shared/fire-storage.service';
 import { PageBuilderService } from './shared/page-builder.service';
 import { TextDirectiveFormatterService } from './shared/formatters/text/text-directive-formatter.service'
 import { ImageFormatterService } from './shared/formatters/image-formatter/image-formatter.service'
+import { SqImgTxtTemplateService } from './shared/templates/builders/sq-img-txt-template.service'
 // Vendor
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
@@ -97,7 +98,8 @@ import { secrets } from 'secrets';
     FireStorageService,
     PageBuilderService,
     TextDirectiveFormatterService,
-    ImageFormatterService
+    ImageFormatterService,
+    SqImgTxtTemplateService
   ],
   bootstrap: [AppComponent]
 })

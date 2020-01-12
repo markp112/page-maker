@@ -13,7 +13,5 @@ export interface IPage {
   pageRef: string     // unique ID of this page
   pageName: string,   // the name of the page as in home about etc
   template: pageTemplates,  // what template has this page been built on
-  // textAreas: IText[], //stores the formating and content for each text area element
-  // imageAreas: IImage[] // stores the formatting and content for each page area element
   layout: ILayout,
 }

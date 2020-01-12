@@ -1,6 +1,7 @@
 import { Directive, OnChanges, Input, SimpleChanges, Renderer2, ElementRef } from '@angular/core';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { TextDirectiveFormatterService } from 'src/app/shared/formatters/text/text-directive-formatter.service';
+import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 
 @Directive({
   selector: "[appTextFormatterDirective]"
@@ -17,6 +18,7 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+
     if(changes.changedValue && (this.lastButtonClick === ButtonEventEnums.IncreaseFontSize || this.lastButtonClick === ButtonEventEnums.DecreaseFontSize)){
       this.processButtonClick(this.lastButtonClick);
     }
@@ -26,8 +28,19 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     }
   }
   processButtonClick(buttonClickedEvent: ButtonEventEnums) {
+    if(buttonClickedEvent === ButtonEventEnums.RetrieveAllStyles){
+     // this.updateTextAlignment();
+      this.textDirectiveFormatter.getAllTextStyles().forEach(style => {
+        this.updateElement(style.styleTag, style.value);
+        if(style.pmStyleProperty === cssStyleEnum.horizontalAlignment || style.pmStyleProperty === cssStyleEnum.verticalAlignment){
+          this.applyAClass(style.value);
+
+        }
+      });
+    } else {
     this.textDirectiveFormatter.processButtonClick(buttonClickedEvent, this.changedValue);
     this.applyFormatting(buttonClickedEvent);
+    }
   }
 
   private applyFormatting(buttonClickedEvent: ButtonEventEnums) {
@@ -38,14 +51,6 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     }
   }
 
-  private applyAllStyles() {
-    // this.updateElement("font-family", `${this.textStyles.fontFamily}`);
-    // this.updateElement("background-color", `${this.textStyles.fontBackgroundColour}`);
-    // this.updateElement("color", `${this.textStyles.foreColour}`);
-    // this.updateElement("font-size", `${this.textStyles.fontSize}px`);
-    // this.removeClasses();
-    // this.applyClasses();
-  }
 
 
   private updateTextAlignment() {
@@ -76,6 +81,11 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     this.removeClass("text-area-non-edit");
   }
 
+  //refactore the below two functions
+  private applyAClass(className: string){
+    this.renderer.addClass(this.el.nativeElement, className);
+
+  }
   private applyClasses() {
     this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
     this.renderer.addClass(this.el.nativeElement, this.textDirectiveFormatter.cssClass);

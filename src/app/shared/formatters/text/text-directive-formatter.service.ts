@@ -100,6 +100,7 @@ export class TextDirectiveFormatterService {
   }
 
   public createStylesFromData(theStyles: ICssStyles[]): void {
+    console.log("the Styles", theStyles)
     theStyles.forEach(aStyle => {
       switch (aStyle.pmStyleProperty) {
         case cssStyleEnum.color:
