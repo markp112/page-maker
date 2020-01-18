@@ -36,7 +36,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   @Input() contentText: string;
 
   constructor(
-    private thePageConstructorService: SqImgTxtTemplateService,
+    private _thePageConstructorService: SqImgTxtTemplateService,
     private theTextContentService: TextContentService,
     private fontService: FontsService//do not delete required for fonts to update correctly
 
@@ -237,8 +237,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   savePage() {
-    console.log("this.thePageConstructorService",this.thePageConstructorService)
-    if (this.thePageConstructorService.pageId != "") {
+    if (this._thePageConstructorService.pageId != "") {
       this.buttonEvent = ButtonEventEnums.UpdateRecord;
     } else {
       this.buttonEvent = ButtonEventEnums.Save;
@@ -247,7 +246,8 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   createRecord() {
-    this.thePageConstructorService
+
+    this._thePageConstructorService
       .createNewRecord()
       .then(result => {
         if (result.isSuccessful) {
@@ -278,64 +278,26 @@ export class TemplateSqImgTxtComponent implements OnInit {
     //   });
   }
 
-  getStylesFromLoadedData(styles: ICssStyles[], layoutType: PageAreaTypesEnum) {
-    if (layoutType == PageAreaTypesEnum.textArea) {
-      // this.textStyles = new TextStyles();
-      // this.textStyles.setStyles(styles);
-    }
-    // styles.forEach(style => {
-    //   switch (style.pmStyleProperty) {
-    //     case cssStyleEnum.backgroundColor:
-    //       if (layoutType === PageAreaTypesEnum.imageArea)
-    //         this.imageBackGroundColor = style;
-    //       break;
-    //     case cssStyleEnum.height:
-    //       this.imageHeight = style;
-    //       break
-    //     case cssStyleEnum.left:
-    //       this.imageLeft = style;
-    //       break;
-    //     case cssStyleEnum.top:
-    //       this.imageTop = style;
-    //       break;
-    //     case cssStyleEnum.url:
-    //       this.imageUrl = style;
-    //       break;
-    //     case cssStyleEnum.width:
-    //       this.imageWidth = style;
-    //       break;
-    //   }
-    // });
-  }
 
-  processLayoutContent(layouts: ILayout[]): void {
-    // layouts.forEach(childLayout => {
-    //   this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
-    //   if (childLayout.layoutType === PageAreaTypesEnum.textArea)
-    //     this.layoutText.content = childLayout.content;
-    //   if (childLayout.children.length > 0)
-    //     this.processLayoutContent(childLayout.children);
-    // });
-  }
+
+  // processLayoutContent(layouts: ILayout[]): void {
+  //   // layouts.forEach(childLayout => {
+  //   //   this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
+  //   //   if (childLayout.layoutType === PageAreaTypesEnum.textArea)
+  //   //     this.layoutText.content = childLayout.content;
+  //   //   if (childLayout.children.length > 0)
+  //   //     this.processLayoutContent(childLayout.children);
+  //   // });
+  // }
 
   getTemplate() {
-    console.log(" this.thePageConstructorService this.thePageConstructorService", this.thePageConstructorService)
-    this.thePageConstructorService.getThePage()
-    .then( () =>{
+    this._thePageConstructorService.getThePage()
+    .then(() =>{
       this.changeValue = ""
-    this.imageChangedValue = ""
-    console.log("the page is got??")
-    this.buttonEvent = ButtonEventEnums.RetrieveAllStyles;
-    this.imageButtonEvent = ButtonEventEnums.RetrieveAllStyles;
+      this.imageChangedValue = ""
+      this.imageButtonEvent = ButtonEventEnums.RetrieveAllStyles;
+      this.buttonEvent = ButtonEventEnums.RetrieveAllStyles;
     })
-
-
-    // this.pageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
-    //   let page: IPage = result[0];
-    //   this.pageMaster = page;
-    //   this.fontService.getFontNames();
-    //   this.processLayoutContent(page.layout.children);
-    // });
   }
 
   publish(stylesArray: ICssStyles[]) {

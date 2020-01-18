@@ -28,9 +28,14 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     }
   }
   processButtonClick(buttonClickedEvent: ButtonEventEnums) {
+    //if loading the page from the database apply all styles
     if(buttonClickedEvent === ButtonEventEnums.RetrieveAllStyles){
      // this.updateTextAlignment();
+     this.removeClasses();
       this.textDirectiveFormatter.getAllTextStyles().forEach(style => {
+        if(style.pmStyleProperty === cssStyleEnum.fontSize){
+          this.updateElement(style.styleTag, `${style.value}px`);
+        }
         this.updateElement(style.styleTag, style.value);
         if(style.pmStyleProperty === cssStyleEnum.horizontalAlignment || style.pmStyleProperty === cssStyleEnum.verticalAlignment){
           this.applyAClass(style.value);
@@ -51,11 +56,9 @@ export class TextFormatterDirectiveDirective implements OnChanges {
     }
   }
 
-
-
   private updateTextAlignment() {
     this.removeClasses();
-    this.applyClasses();
+    this.applyAClass(this.textDirectiveFormatter.cssClass);
   }
 
   private updateElement(styleElement: string, value: string) {
@@ -83,11 +86,12 @@ export class TextFormatterDirectiveDirective implements OnChanges {
 
   //refactore the below two functions
   private applyAClass(className: string){
+    this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
     this.renderer.addClass(this.el.nativeElement, className);
 
   }
-  private applyClasses() {
-    this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
-    this.renderer.addClass(this.el.nativeElement, this.textDirectiveFormatter.cssClass);
-  }
+  // private applyClasses() {
+  //   this.renderer.addClass(this.el.nativeElement, "text-area-non-edit");
+  //   this.renderer.addClass(this.el.nativeElement,this.textDirectiveFormatter.cssClass );
+  // }
 }

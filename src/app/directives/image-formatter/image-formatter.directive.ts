@@ -1,6 +1,7 @@
 import { Directive, ElementRef, Input, SimpleChanges } from '@angular/core';
 import { ButtonEventEnums } from 'src/app/models/enums/ButtonEventEnums';
 import { ImageFormatterService } from 'src/app/shared/formatters/image-formatter/image-formatter.service'
+import { cssStyleEnum } from 'src/app/models/enums/cssStylesEnum';
 
 
 @Directive({
@@ -13,12 +14,13 @@ export class ImageFormatterDirective {
 
   private lastButtonClick: ButtonEventEnums;
 
-  constructor(private el: ElementRef, private imageFormatter: ImageFormatterService) { }
+  constructor(private el: ElementRef, private _imageFormatter: ImageFormatterService) { }
 
   ngOnChanges(changes: SimpleChanges) {
+
     if (changes.changedValue) {
       this.lastButtonClick = this.buttonEvent;
-      this.respondToBButtonClick(this.buttonEvent);
+      this.respondToButtonClick(this.buttonEvent);
     } else {
       let buttonClicked: ButtonEventEnums;
       if (changes.buttonEvent) {
@@ -27,17 +29,45 @@ export class ImageFormatterDirective {
       } else {
         buttonClicked = this.lastButtonClick;
       }
-      this.respondToBButtonClick(this.buttonEvent);
+      this.respondToButtonClick(this.buttonEvent);
     }
   }
 
-  respondToBButtonClick(buttonEvent: ButtonEventEnums) {
-    this.imageFormatter.processButtonClick(buttonEvent, this.changedValue);
-    this.imageFormatter.cssStyleTag.forEach((style, index) => {
+  respondToButtonClick(buttonEvent: ButtonEventEnums) {
+    if(buttonEvent !== ButtonEventEnums.RetrieveAllStyles){
+      this._imageFormatter.processButtonClick(buttonEvent, this.changedValue);
+      this.processStyleChangeTriggeredByUser();
+    }else {
+      this.processAllStyles()
+    }
+  }
+
+  private processStyleChangeTriggeredByUser(){
+    this._imageFormatter.cssStyleTag.forEach((style, index) => {
       if (style == "src") {
-        this.updateElementSrc(this.imageFormatter.value[index]);
+        this.updateElementSrc(this._imageFormatter.value[index]);
       } else {
-        this.updateElement(style, this.imageFormatter.value[index]);
+        this.updateElement(style, this._imageFormatter.value[index]);
+      }
+    })
+  }
+
+  private processAllStyles(){
+    this._imageFormatter.getAllImageStyles().forEach(style =>{
+      switch (style.pmStyleProperty){
+        case cssStyleEnum.backgroundColor:
+          this.updateElement(style.styleTag, style.value);
+          break;
+        case cssStyleEnum.url:
+          this.updateElementSrc(style.value);
+          break;
+        default:
+          this.updateElement(style.styleTag, `${style.value}px`);
+      }
+      if(style.pmStyleProperty === cssStyleEnum.backgroundColor){
+
+      }else {
+
       }
     })
   }
@@ -49,6 +79,4 @@ export class ImageFormatterDirective {
   private updateElementSrc(url: string) {
     this.el.nativeElement.src = url;
   }
-
-
 }

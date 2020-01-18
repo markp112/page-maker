@@ -26,7 +26,7 @@ export class LoginComponent implements OnInit {
       .signInRegular(this.user)
       .then(result => {
         if (this.auth.isLoggedIn) {
-          
+          console.log("this.auth", this.auth)
           this.router.navigate(["template"]);
         }
       })

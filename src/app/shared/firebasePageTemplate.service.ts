@@ -28,6 +28,7 @@ export class FirebasePageTemplateService {
 
   getUid(): string {
     if (this.auth.isLoggedIn) {
+
       return this.auth.getUserID();
     } else return null;
   }
@@ -37,6 +38,9 @@ export class FirebasePageTemplateService {
     return new Promise((resolve, reject) => {
       pageRecord.uid = this.getUid();
       if (pageRecord.uid) {
+        // this.afs.firestore.app.auth().onAuthStateChanged(user =>{
+        //   console.log("user = ", user);
+        // })
         this.pagesRef
           .add(pageRecord)
           .then(res => {
@@ -45,7 +49,7 @@ export class FirebasePageTemplateService {
             resolve(this.result);
           })
           .catch(err => {
-            console.log(err);
+            console.log("firebase Error:",err);
             this.result.isSuccessful = false;
             this.result.msg = err;
             reject(this.result);
