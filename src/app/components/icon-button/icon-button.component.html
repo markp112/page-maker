@@ -1,10 +1,13 @@
 <section>
     <p class="text-style" *ngIf="iconButton.style === styles.Text" (click)="buttonClick()">{{ iconButton.text }}</p>
-    <button [disabled]=!iconButton.enabled>
-      <fa-icon  *ngIf="iconButton.style === styles.Icon"
-        [icon]="iconButton.icon"
-        (click)="buttonClick()"
-        [ngClass]="{disabled: !iconButton.enabled}">
-      </fa-icon>
-    </button>
+    <div class="button-wrapper">
+      <button [disabled]=!iconButton.enabled class="has-tooltip">
+        <fa-icon  *ngIf="iconButton.style === styles.Icon"
+          [icon]="iconButton.icon"
+          (click)="buttonClick()"
+          [ngClass]="{disabled: !iconButton.enabled}">
+        </fa-icon>
+      </button>
+      <span class='tooltip blue'><p>{{ iconButton.tooltip }}</p></span>
+  </div>
 </section>

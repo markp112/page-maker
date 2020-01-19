@@ -34,8 +34,8 @@ import { ButtonCommandTypesEnum } from "src/app/models/enums/Button-Command-Type
 import { IButtonEvent } from "src/app/models/interfaces/button-event";
 
 
-export class ButtonBuilder { 
-  
+export class ButtonBuilder {
+
   private static buildEventName( buttonCommandType: ButtonCommandTypesEnum, eventName: ButtonEventEnums ): IButtonEvent {
     let buttonEvent: IButtonEvent = { buttonCommandType: buttonCommandType, eventName: eventName};
     // buttonEvent.buttonCommandType = buttonCommandType;
@@ -44,15 +44,17 @@ export class ButtonBuilder {
   }
 
   private static buildButton(eventName: IButtonEvent, enabled: boolean, icon: IconDefinition, text: string = ""
-  ): IIconButton {
+    , tooltip: string = ""): IIconButton {
     let button: IIconButton = {
-    enabled: enabled,
-    eventName: eventName,
-    icon : icon,
-    text: text,
-    style: styles.Icon
-};
-text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
+      enabled: enabled,
+      eventName: eventName,
+      icon : icon,
+      text: text,
+      style: styles.Icon,
+
+    };
+    text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
+    if(tooltip){ button.tooltip = tooltip};
     return button;
   }
 
@@ -65,7 +67,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
         ButtonEventEnums.Cancel
       ),
       style: styles.Icon,
-      enabled: true
+      enabled: true,
+      tooltip: "cancel"
     };
   }
 
@@ -77,7 +80,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.AlignLeft
-      )
+      ),
+      tooltip: "align text left"
     };
   }
 
@@ -89,7 +93,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.AlignCenter
-      )
+      ),
+      tooltip: "center text"
     };
   }
 
@@ -101,7 +106,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.Justify
-      )
+      ),
+      tooltip: "justify text"
     };
   }
 
@@ -113,7 +119,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.AlignRight
-      )
+      ),
+      tooltip: "align text right"
     };
   }
 
@@ -125,7 +132,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.Command,
         ButtonEventEnums.FontFamily
-      )
+      ),
+      tooltip: "change font"
     };
   }
 
@@ -137,7 +145,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.IncreaseFontSize
-      )
+      ),
+      tooltip: "increase font size"
     };
   }
 
@@ -149,7 +158,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.DecreaseFontSize
-      )
+      ),
+      tooltip: "decrease font size"
     };
   }
 
@@ -161,7 +171,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.Command,
         ButtonEventEnums.ForeColour
-      )
+      ),
+      tooltip: "text colour"
     };
   }
 
@@ -173,7 +184,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.Command,
         ButtonEventEnums.BackgroundColour
-      )
+      ),
+      tooltip: "background colour"
     };
   }
 
@@ -185,7 +197,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.VerticalAlignTop
-      )
+      ),
+      tooltip: "align text top"
     };
   }
 
@@ -197,7 +210,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.VerticalAlignCenter
-      )
+      ),
+      tooltip: "vertical align center"
     };
   }
 
@@ -209,7 +223,8 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       eventName: this.buildEventName(
         ButtonCommandTypesEnum.TextStyler,
         ButtonEventEnums.VerticalAlignBottom
-      )
+      ),
+      tooltip: "align text bottom"
     };
   }
   public static imageUploadButton(): IIconButton {
@@ -217,7 +232,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.UploadFile
     );
-    return this.buildButton(eventName, true, faUpload);
+    return this.buildButton(eventName, true, faUpload,"","upload from local");
   }
 
   public static imagePasteUrlButton(): IIconButton {
@@ -225,7 +240,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.UploadUrl
     );
-    return this.buildButton(eventName, true, faPaste);
+    return this.buildButton(eventName, true, faPaste,"","paste www url");
   }
 
   public static imageBackgroundColourButton(): IIconButton {
@@ -233,7 +248,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.ImageBackgroundColour
     );
-    return this.buildButton(eventName, true, faPalette);
+    return this.buildButton(eventName, true, faPalette,"","background colour");
   }
 
   public static imageLeftButton(): IIconButton {
@@ -241,7 +256,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.ImageStyler,
       ButtonEventEnums.ImageLeft
     );
-    return this.buildButton(eventName, true, faArrowAltCircleLeft);
+    return this.buildButton(eventName, true, faArrowAltCircleLeft,"","move left");
   }
 
   public static imageRightButton(): IIconButton {
@@ -249,7 +264,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.ImageStyler,
       ButtonEventEnums.ImageRight
     );
-    return this.buildButton(eventName, true, faArrowAltCircleRight);
+    return this.buildButton(eventName, true, faArrowAltCircleRight,"","move right");
   }
 
   public static imageUpButton(): IIconButton {
@@ -257,7 +272,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.ImageStyler,
       ButtonEventEnums.ImageUp
     );
-    return this.buildButton(eventName, true, faArrowAltCircleUp);
+    return this.buildButton(eventName, true, faArrowAltCircleUp,"","move up");
   }
 
   public static imageDownButton(): IIconButton {
@@ -265,7 +280,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.ImageStyler,
       ButtonEventEnums.ImageDown
     );
-    return this.buildButton(eventName, true, faArrowAltCircleDown);
+    return this.buildButton(eventName, true, faArrowAltCircleDown,"","move down");
   }
 
   public static imageIncreaseSizeButton(): IIconButton {
@@ -273,7 +288,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.ImageStyler,
       ButtonEventEnums.ImageIncreaseSize
     );
-    return this.buildButton(eventName, true, faPlusCircle);
+    return this.buildButton(eventName, true, faPlusCircle,"","increase size");
   }
 
   public static imageDecreaseSizeButton(): IIconButton {
@@ -281,7 +296,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.ImageStyler,
       ButtonEventEnums.ImageDecreaseSize
     );
-    return this.buildButton(eventName, true, faMinusCircle);
+    return this.buildButton(eventName, true, faMinusCircle,"","decrease size");
   }
 
   public static commandEditButton(): IIconButton {
@@ -289,14 +304,14 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.Edit
     );
-    return this.buildButton(eventName, true, faEdit);
+    return this.buildButton(eventName, true, faEdit,"","edit template");
   }
   public static commandSaveButton(): IIconButton {
     let eventName: IButtonEvent = this.buildEventName(
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.Save
     );
-    return this.buildButton(eventName, true, faSave);
+    return this.buildButton(eventName, true, faSave,"","save changes");
   }
 
   public static commandGetDataButton(): IIconButton {
@@ -304,7 +319,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.RetrieveSavedData
     );
-    return this.buildButton(eventName, true, faGripHorizontal);
+    return this.buildButton(eventName, true, faGripHorizontal,"","retrieve content");
   }
 
   public static commandPublishButton(): IIconButton {
@@ -312,7 +327,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.Publish
     );
-    return this.buildButton(eventName, true, faCloudUploadAlt);
+    return this.buildButton(eventName, true, faCloudUploadAlt,"","publish template");
   }
 
   public static fontTypesDisplayButton(): IIconButton {
@@ -320,7 +335,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.FontTypeDisplay
     );
-    return this.buildButton(eventName, true, faMehBlank, "d");
+    return this.buildButton(eventName, true, faMehBlank, "d","display");
   }
 
   public static fontTypesMonoSpaceButton(): IIconButton {
@@ -328,7 +343,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.FontTypeMonospace
     );
-    return this.buildButton(eventName, true, faMehBlank, "m");
+    return this.buildButton(eventName, true, faMehBlank, "m","monotype");
   }
 
   public static fontTypesHandwritingButton(): IIconButton {
@@ -336,7 +351,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.FontTypeHandwriting
     );
-    return this.buildButton(eventName, true, faMehBlank, "h");
+    return this.buildButton(eventName, true, faMehBlank, "h","handwriting");
   }
 
   public static fontTypesSerifButton(): IIconButton {
@@ -344,7 +359,7 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.FontTypeHandwriting
     );
-    return this.buildButton(eventName, true, faMehBlank, "s");
+    return this.buildButton(eventName, true, faMehBlank, "s","serif");
   }
 
   public static fontTypesSansSerifButton(): IIconButton {
@@ -352,6 +367,6 @@ text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
       ButtonCommandTypesEnum.Command,
       ButtonEventEnums.FontTypeHandwriting
     );
-    return this.buildButton(eventName, true, faMehBlank, "ss");
+    return this.buildButton(eventName, true, faMehBlank, "ss","sans serif");
   }
 }
