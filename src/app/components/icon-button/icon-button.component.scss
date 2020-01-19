@@ -1,33 +1,98 @@
-@import '../../../styles.scss';
+@import "../../../styles.scss";
+
+$blue: #47b8e0;
+
 section {
-    margin: 1px;
-    cursor: pointer;
+  margin: 1px;
+  cursor: pointer;
+
   button {
     border: none;
-  }
-  fa-icon {
-      width: 100%;
-      height: 100%;
-      display: inline-block;
-      background-color: $primary-1-hex;
-      color: $primary-text-hex;
-      text-align: center;
-      padding: $content-spacing;
-      -webkit-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
-      -moz-box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
-      box-shadow: inset 10px 15px 39px -6px rgba(0,0,0,0.58);
+    display: inline-block;
 
-      &:hover {
-          background-color: rgb(189, 173, 173);
-          cursor: pointer;
-      }
-      .disabled {
-        cursor: default;
-        background-color: $seconday-text-hex;
-      }
+    -webkit-transition: 0.15s ease-in-out;
+    -moz-transition: 0.15s ease-in-out;
+    transition: 0.15s ease-in-out;
+  }
+
+  .has-tooltip:hover + .tooltip,
+  .has-tooltip:focus + .tooltip,
+  .has-tooltip.hover + .tooltip {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1) rotate(0deg);
+    pointer-events: inherit;
+  }
+
+  .tooltip {
+    display: block;
+    position: absolute;
+    font-size: 0.9em;
+    top: 0px;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.75) rotate(5deg);
+    transform-origin: bottom center;
+    padding: 7px 7px;
+    border-radius: 5px;
+    background: $dark-grey-rgba-75;
+    text-align: center;
+    color: white;
+    transition: 0.15s ease-in-out;
+    opacity: 0;
+    width: auto;
+    max-width: 100vw;
+    pointer-events: none;
+    z-index: 5;
+
+
+    &:hover {
+      opacity: 1;
+      transform: translate(-50%, -100%) scale(1) rotate(0deg);
+      pointer-events: inherit;
+    }
+
+    &:after {
+      content: '';
+      display: block;
+      margin: 0 auto;
+      width: 0;
+      height: 0;
+      border: 5px solid transparent;
+      border-top: 5px solid rgba(0, 0, 0, 0.75);
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translate(-50%, 100%);
+    }
+  }
+
+  .button-wrapper {
+    position: relative;
+  }
+  }
+
+
+fa-icon {
+  width: 100%;
+  height: 100%;
+  display: inline-block;
+  background-color: $primary-1-hex;
+  color: $primary-text-hex;
+  text-align: center;
+  padding: $content-spacing;
+  -webkit-box-shadow: inset 10px 15px 39px -6px rgba(0, 0, 0, 0.58);
+  -moz-box-shadow: inset 10px 15px 39px -6px rgba(0, 0, 0, 0.58);
+  box-shadow: inset 10px 15px 39px -6px rgba(0, 0, 0, 0.58);
+
+  &:hover {
+    background-color: rgb(189, 173, 173);
+    cursor: pointer;
+  }
+  .disabled {
+    cursor: default;
+    background-color: $seconday-text-hex;
+  }
 }
 
 .text-style {
- @include text-button;
-}
+  @include text-button;
 }

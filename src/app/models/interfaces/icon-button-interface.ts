@@ -8,4 +8,5 @@ export interface IIconButton {
     eventName: IButtonEvent;
     style: styles;
     enabled?: boolean;
+    tooltip?: string;
 }
