@@ -23,22 +23,25 @@ export class SqImgTxtTemplateService {
     private imageStyles: ImageFormatterService,
     private textStyles: TextDirectiveFormatterService,
     private theTextContent: TextContentService,
-    private cloudStorageService: FirebasePageTemplateService
+    private _CloudDatabaseService: FirebasePageTemplateService
   ) {
     this.pageMaster = {
       id: "",
-      uid: auth.getUserID(),
+      uid: this.auth.getUserID(),
       pageRef: "12",
       pageName: "page 1",
       template: pageTemplates.sqImgText,
       layout: null
     };
   }
-  private pageMaster: IPage;
+
+  pageMaster: IPage;
 
   public get pageId(): string {
-
+    console.log("pageId-->",this.pageMaster.id)
+    console.log('%c⧭', 'color: #e50000', this.pageMaster);
     return this.pageMaster.id;
+
   }
 
   private constructTheLayoutForThePage(): ILayout {
@@ -200,11 +203,10 @@ export class SqImgTxtTemplateService {
   }
 
   public createNewRecord(): Promise<any> {
-    console.log("Create Record")
     let theWholePageLayout = this.constructThePageAndAllItsElements();
     this.pageMaster.layout = theWholePageLayout;
     return new Promise((resolve, reject) => {
-      this.cloudStorageService.addRecord(this.pageMaster)
+      this._CloudDatabaseService.addRecord(this.pageMaster)
         .then(result => {
           this.pageMaster.id = result.msg;
           resolve(result)
@@ -213,9 +215,24 @@ export class SqImgTxtTemplateService {
     })
   }
 
+  public updateRecord(): Promise<any>{
+    console.log("Update Record")
+    let theWholePageLayout = this.constructThePageAndAllItsElements();
+    this.pageMaster.layout = theWholePageLayout;
+    console.log('%c⧭', 'color: #00e600', this.pageMaster);
+
+    return new Promise((resolve, reject) => {
+      this._CloudDatabaseService.updateRecord(this.pageMaster)
+        .then(result => {
+          resolve(result);
+        })
+        .catch(err => reject(err));
+    })
+  }
+
   public getThePage(): Promise<any> {
     return new Promise((resolve) => {
-      this.cloudStorageService.getRecord(pageTemplates.sqImgText).subscribe(result => {
+      this._CloudDatabaseService.getRecord(pageTemplates.sqImgText).subscribe(result => {
         let thePageLayoutData: IPage = result[0];
         console.log('%c⧭', 'color: #aa00ff', thePageLayoutData);
         this.getTheReturnedDataIntoTheDirectiveServices(thePageLayoutData);

@@ -237,16 +237,17 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   savePage() {
-    if (this._thePageConstructorService.pageId != "") {
-      this.buttonEvent = ButtonEventEnums.UpdateRecord;
-    } else {
+    console.log('this._thePageConstructorService','%c⧭', 'color: #00a3cc', this._thePageConstructorService);
+    console.log('%c⧭', 'color: #aa00ff', this._thePageConstructorService.pageId ,'pageId = ');
+    if (this._thePageConstructorService.pageId === "") {
       this.buttonEvent = ButtonEventEnums.Save;
       this.createRecord()
+    } else {
+      this.updateRecord();
     }
   }
 
   createRecord() {
-
     this._thePageConstructorService
       .createNewRecord()
       .then(result => {
@@ -266,7 +267,24 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   // update the record in fireBase
-  updateRecord(stylesArray: ICssStyles[]) {
+  private updateRecord() {
+    this._thePageConstructorService
+      .updateRecord()
+      .then(result => {
+        if (result.isSuccessful) {
+          this.displayStatusMessage("Content updated", messageTypes.information);
+        } else {
+          this.displayStatusMessage(
+            `Error: ${result.message}`,
+            messageTypes.warning
+          );
+        }
+      })
+      .catch(err => {
+        this.displayStatusMessage(`Error: ${err.message}`, messageTypes.error);
+      });
+
+
     // this.pageMaster.layout = this.assemblePage(stylesArray);
     // this.pageService
     //   .updateRecord(this.pageMaster)
@@ -277,18 +295,6 @@ export class TemplateSqImgTxtComponent implements OnInit {
     //     this.displayStatusMessage(err.message, messageTypes.error);
     //   });
   }
-
-
-
-  // processLayoutContent(layouts: ILayout[]): void {
-  //   // layouts.forEach(childLayout => {
-  //   //   this.getStylesFromLoadedData(childLayout.styles, childLayout.layoutType);
-  //   //   if (childLayout.layoutType === PageAreaTypesEnum.textArea)
-  //   //     this.layoutText.content = childLayout.content;
-  //   //   if (childLayout.children.length > 0)
-  //   //     this.processLayoutContent(childLayout.children);
-  //   // });
-  // }
 
   getTemplate() {
     this._thePageConstructorService.getThePage()

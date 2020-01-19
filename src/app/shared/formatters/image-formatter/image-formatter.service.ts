@@ -109,7 +109,6 @@ export class ImageFormatterService {
           this.imageStyles.top = parseInt(aStyle.value);
           break;
         case cssStyleEnum.url:
-          console.log(" URL = ", aStyle.value)
           this.imageStyles.url = aStyle.value;
           break;
       }

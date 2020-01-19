@@ -28,7 +28,6 @@ export class FirebasePageTemplateService {
 
   getUid(): string {
     if (this.auth.isLoggedIn) {
-
       return this.auth.getUserID();
     } else return null;
   }
@@ -49,7 +48,7 @@ export class FirebasePageTemplateService {
             resolve(this.result);
           })
           .catch(err => {
-            console.log("firebase Error:",err);
+            console.log("firebase Error:", err);
             this.result.isSuccessful = false;
             this.result.msg = err;
             reject(this.result);
@@ -60,6 +59,28 @@ export class FirebasePageTemplateService {
         reject(this.result);
       }
     });
+  }
+
+  public updateRecordpageRecord(pageRecord: IPage): Promise<any> {
+    pageRecord.uid = this.getUid();
+    return new Promise((resolve,reject)=>{
+      if (pageRecord.uid) {
+        this.pagesRef
+          .doc(pageRecord.id).update(pageRecord)
+          .then(res => {
+            this.result.isSuccessful = true;
+            this.result.msg = "Record updated";
+            resolve(this.result);
+          })
+          .catch(err => {
+            console.log("firebase Error:", err);
+            this.result.isSuccessful = false;
+            this.result.msg = err;
+            reject(this.result);
+          });
+      }
+    })
+
   }
 
   getRecord(template: pageTemplates): Observable<any> {
