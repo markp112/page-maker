@@ -25,9 +25,14 @@
         </div>
       </div>
     </div>
-    <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}">
+    <!-- <div class="image-area" [ngStyle]="{'background-color':imageBackGroundColor.value}"> -->
+      <div class="image-area" appImageFormatter     [changedValue]="imageChangedValue">
       <div>
-        <img [src]="imageUrl.value" alt=""  appImageFormatter  [height]="imageHeight.value" [width]="imageWidth.value" [left]="imageLeft.value" [top]="imageTop.value">
+        <img src="" alt=""
+          appImageFormatter
+          [buttonEvent]="imageButtonEvent"
+          [changedValue]="imageChangedValue"
+        >
       </div>
       <div class="img-upload-buttons-wrapper" *ngIf="showUploadImage">
         <app-file-upload  [path]="this.path" (handleFileUploadComplete)="handleFileUploaded($event)" (handleCancelClicked)="handleFileUploadCancelClicked()"></app-file-upload>
@@ -37,25 +42,18 @@
       </div>
     </div>
     <div class="text-area"
-      appTextFormatter
-      [fontSize]="fontSize.value"
-      [fontFamily]="fontFamily.value"
-      [foreColor]="fontColor.value"
-      [backColor]="fontBackgroundColor.value"
-      [textEvent]="clickevent"
-      [horizontalAlignment]="fontHorizontalAlignment.value"
-      [verticalAlignment]="fontVerticalAlignment.value"
-      [isEditingText]="showTextEditor"
-
-      (click)="showTextEditor=!showTextEditor && isEditing && !isShowColourPicker">
-      {{ layoutText.content }}
+      appTextFormatterDirective
+      [buttonEvent]="buttonEvent"
+      [changedValue]="changeValue"
+      (click)="handleTextEditorClick()">
+      {{ theTextContentService.textContent }}
         <div class="color-picker-wrapper" *ngIf="isShowColourPicker">
           <app-color-picker-wrapper (handleColorSelected)="setColor($event)"></app-color-picker-wrapper>
         </div>
     </div>
     <div class="text-editor" *ngIf="showTextEditor">
       <app-text-input  (closeEvent)="closeTextInput()" (textChangedEvent)="textChanged($event)"
-        [textContent]="this.layoutText.content"></app-text-input>
+        [textContent]="theTextContentService.textContent"></app-text-input>
     </div>
   </div>
   <app-status-message [message]='statusMessage' *ngIf="isShowStatus"></app-status-message>

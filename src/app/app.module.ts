@@ -25,22 +25,26 @@ import { StatusMessageComponent } from './components/status-message/status-messa
 // Services
 import { FontApiService }  from './shared/font-api.service';
 import { AuthService } from './shared/auth.service';
-import { PageTemplateService } from "./shared/page-template.service";
+import { FirebasePageTemplateService } from "./shared/firebasePageTemplate.service";
 import { FireStorageService } from './shared/fire-storage.service';
 import { PageBuilderService } from './shared/page-builder.service';
-
+import { TextDirectiveFormatterService } from './shared/formatters/text/text-directive-formatter.service'
+import { ImageFormatterService } from './shared/formatters/image-formatter/image-formatter.service'
+import { SqImgTxtTemplateService } from './shared/templates/builders/sq-img-txt-template.service'
 // Vendor
 import { AngularFireModule } from 'angularfire2';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFirestoreModule } from 'angularfire2/firestore'
 import { AngularFireAuthModule } from 'angularfire2/auth'
-// directives
+// Directives
 import { DropzoneDirective } from './directives/dropzone.directive';
-import { TextFormatterDirective } from './directives/text-formatter.directive';
-import { ImageFormatterDirective } from './directives/image-formatter.directive';
+import { TextFormatterDirectiveDirective } from './directives/text-formatter/text-formatter-directive.directive';
+import { ImageFormatterDirective } from './directives//image-formatter/image-formatter.directive';
 
 import { secrets } from 'secrets';
+
+
 // import { messaging } from 'firebase';
 
 
@@ -58,17 +62,14 @@ import { secrets } from 'secrets';
     UrlInputComponent,
     FileUploadComponent,
     DropzoneDirective,
-    TextFormatterDirective,
+    TextFormatterDirectiveDirective,
     ImageFormatterDirective,
     LoginComponent,
     WelcomeComponent,
     SignUpComponent,
-    StatusMessageComponent,
-
-
-
-
+    StatusMessageComponent
   ],
+
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -90,7 +91,16 @@ import { secrets } from 'secrets';
     AngularFireAuthModule,
     AngularFirestoreModule.enablePersistence()
   ],
-  providers: [FontApiService, AuthService, PageTemplateService, FireStorageService, PageBuilderService],
+  providers: [
+    FontApiService,
+    AuthService,
+    FirebasePageTemplateService,
+    FireStorageService,
+    PageBuilderService,
+    TextDirectiveFormatterService,
+    ImageFormatterService,
+    SqImgTxtTemplateService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

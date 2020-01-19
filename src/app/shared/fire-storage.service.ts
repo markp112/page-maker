@@ -18,7 +18,6 @@ export class FireStorageService {
 
   writeNewFile(filename: string, folder: string, fileContent: string):Promise<IStatusMessage> {
 
-
     let bucket:string = `${folder}/${filename}`;
     return new Promise((resolve, reject) => {
       this.ref = this.afStorage.ref(bucket);

@@ -61,6 +61,6 @@ logout(): void {
 getUserID():string {
   if(this.isLoggedIn){
     return this.userDetails.uid;
-  }
+  } else return "";
 }
 }
