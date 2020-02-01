@@ -1,0 +1,21 @@
+@import '../../../../../styles.scss';
+
+.drop-down-wrapper {
+    position: absolute;
+    width: auto;
+    max-width: 50vw;
+    height: auto;
+    max-height: 100vh;
+    padding: $content-spacing / 2;
+    border: 0.5px solid $dark-grey;
+    font-size: 0.9em;
+
+    ul {
+        text-decoration: none;
+    }
+
+    .selected {
+        background-color: $secondaary-text-hex;
+    }
+}
+

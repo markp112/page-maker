@@ -1,0 +1,11 @@
+<section>
+    <div class="drop-down-wrapper">
+        <ul>
+            <li *ngfor="listItem of listItems.listItems" 
+            id="listItem.id" 
+            [ngClass]="{'selected': listItem.selected }
+            (click)="C(listItem.id)"
+            >{{ listItem.listItem }}</li>
+        </ul>
+    </div>
+</section>
