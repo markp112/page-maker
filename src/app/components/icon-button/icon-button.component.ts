@@ -17,15 +17,16 @@ export class IconButtonComponent implements OnInit {
 
   showIcon: boolean = true;
 
-  buttonClick() {
-    this.clickEvent.emit(this.iconButton.eventName);
-  }
 
   constructor() {}
 
   ngOnInit() {
     this.iconButton.style === styles.Icon
-      ? (this.showIcon = true)
-      : (this.showIcon = false);
+    ? (this.showIcon = true)
+    : (this.showIcon = false);
+  }
+
+  buttonClick() {
+    this.clickEvent.emit(this.iconButton.eventName);
   }
 }

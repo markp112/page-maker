@@ -10,4 +10,7 @@ import { DropDownComponent } from './drop-down/drop-down.component';
     CommonModule
   ]
 })
-export class DropDownModule { }
+export class DropDownModule {
+
+
+}

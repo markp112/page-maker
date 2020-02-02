@@ -9,9 +9,10 @@ export class ListItem  {
         return this._listItems;
     }
 }
-
+// defines the interface for the content of the drop down list
+//
 export interface IListItem {
-    id: number;
-    listItem: string;
-    isSelected: boolean;
+    id: number;                   // unique id of item
+    listItem: string;             // oontent to be displayed
+    isSelected: boolean;          // current selected item
 }
