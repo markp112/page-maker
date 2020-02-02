@@ -54,7 +54,7 @@ export class ButtonBuilder {
 
     };
     text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
-    if(tooltip){ button.tooltip = tooltip};
+    if(tooltip){ button.tooltip = tooltip };
     return button;
   }
 

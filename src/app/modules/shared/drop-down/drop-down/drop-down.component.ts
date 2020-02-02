@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { ListItem } from 'src/app/modules/shared/drop-down/drop-down/models/model';
+import { ListItem, IListItem } from 'src/app/modules/shared/drop-down/drop-down/models/model';
 
 @Component({
   selector: 'app-drop-down',
@@ -8,18 +8,28 @@ import { ListItem } from 'src/app/modules/shared/drop-down/drop-down/models/mode
 })
 export class DropDownComponent implements OnInit {
 
-  @Input() listItems: ListItem;
+  @Input() listItems: IListItem [];
+  @Output () selectedItem: EventEmitter<IListItem> = new EventEmitter();
 
-  @Output () selectedItem: EventEmitter<number> = new EventEmitter();
-
-
+  isDropDownExpanded: boolean = false;
+  selectedValue: string;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  onItemClicked(event: string): void {
-    this.selectedItem.emit(parseInt(event));
+  expandDropDown() {
+    console.log("called")
+    this.isDropDownExpanded = !this.isDropDownExpanded;
+  }
+
+  onListItemClicked(event: number): void {
+    let selectedItem:IListItem =this.listItems.filter(item => {
+      return (item.id === event) ;
+    })[0]
+    this.selectedValue = selectedItem.listItem;
+    this.isDropDownExpanded = !this.isDropDownExpanded;
+    this.selectedItem.emit(selectedItem);
   }
 }

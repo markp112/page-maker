@@ -1,21 +1,79 @@
 @import '../../../../../styles.scss';
+/* You can add global styles to this file, and also import other style files */
+$drop-width: 50px;
+$drop-height: 25px;
 
-.drop-down-wrapper {
-    position: absolute;
-    width: auto;
-    max-width: 50vw;
-    height: auto;
-    max-height: 100vh;
-    padding: $content-spacing / 2;
-    border: 0.5px solid $dark-grey;
-    font-size: 0.9em;
+.drop-down-input {
+  position: relative;
+  padding: $content-spacing 0px 0px $content-spacing;
 
-    ul {
-        text-decoration: none;
+  input {
+    width: $drop-width;
+    height: $drop-height;
+    // position: absolute;
+
+  }
+
+  a {
+    position: relative;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+
+    img {
+      top: 5px;
+      right: 20px;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+
+      &:hover {
+        cursor: pointer;
+      }
     }
-
-    .selected {
-        background-color: $secondaary-text-hex;
-    }
+  }
 }
 
+.drop-down-wrapper {
+  position: absolute;
+  top: $drop-height * 3.4;
+  left: 36px;
+  transform: translate(-50%, -50%);
+
+  ul {
+    background-color: #0563af;
+    color: white;
+
+    width: $drop-width;
+    border: none;
+    font-size: 1em;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    -webkit-appearance: button;
+    appearance: button;
+    outline: none;
+
+    li {
+      padding: $content-spacing /2;
+      &:hover {
+        cursor: pointer;
+        background-color: $secondary-text-hex;
+
+        width: 100%;
+      }
+    }
+  }
+  &:hover::before {
+    color: rgba(255, 255, 255, 0.6);
+    background-color: rgba(255, 255, 255, 0.2);
+    visibility: hidden;
+  }
+
+}
+
+.is-not-visible {
+  visibility: hidden;
+}
+
+.is-visible {
+  visibility: visible;
+}
