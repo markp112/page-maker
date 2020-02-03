@@ -4,12 +4,13 @@ $drop-width: 50px;
 $drop-height: 25px;
 
 .drop-down-input {
-  position: relative;
+
   padding: $content-spacing 0px 0px $content-spacing;
 
   input {
     width: $drop-width;
     height: $drop-height;
+    position: relative;
     // position: absolute;
 
   }
@@ -36,17 +37,15 @@ $drop-height: 25px;
 
 .drop-down-wrapper {
   position: absolute;
-  top: $drop-height * 3.4;
-  left: 36px;
-  transform: translate(-50%, -50%);
+  top: $drop-height * 1.6;
+  left: 10px;
 
   ul {
     background-color: #0563af;
     color: white;
-
     width: $drop-width;
     border: none;
-    font-size: 1em;
+    font-size: .8em;
     box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
     -webkit-appearance: button;
     appearance: button;
@@ -76,4 +75,9 @@ $drop-height: 25px;
 
 .is-visible {
   visibility: visible;
+}
+
+.selected-item {
+  background-color: $secondary-2-hex;
+  color:white;
 }

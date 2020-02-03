@@ -25,11 +25,22 @@ export class DropDownComponent implements OnInit {
   }
 
   onListItemClicked(event: number): void {
-    let selectedItem:IListItem =this.listItems.filter(item => {
+    this.clearSelectedItem(event);
+    let selectedItem:IListItem = this.listItems.filter(item => {
       return (item.id === event) ;
     })[0]
+
     this.selectedValue = selectedItem.listItem;
     this.isDropDownExpanded = !this.isDropDownExpanded;
     this.selectedItem.emit(selectedItem);
+  }
+
+  clearSelectedItem(selectedId: number) {
+    this.listItems = this.listItems.map(item => {
+      item.id === selectedId  ? item.isSelected =true : item.isSelected=false;
+      return item;
+    }
+
+      );
   }
 }

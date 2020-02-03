@@ -21,15 +21,14 @@ ul {
   height: 400px;
   padding: $content-spacing;
   background-color: $primary-text-hex;
-
-
-    overflow-y: scroll;
+  overflow-y: scroll;
 
     li {
       padding: $content-spacing / 5;
-      cursor: pointer;
-      &:hover{
-        background-color: $seconday-text-hex;
+
+      &:hover {
+        cursor: pointer;
+        background-color: $secondary-text-hex;
       }
     }
   }

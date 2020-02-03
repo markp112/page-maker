@@ -1,13 +1,17 @@
 
 <div class="drop-down-input">
   <input type="text" value="{{selectedValue}}">
-  <a href="#">
+  <a>
     <img src="../../../../../assets/icons/arrow_down.png" alt="drop down arrow"  (click)="expandDropDown()">
   </a>
 
   <div class="drop-down-wrapper" [ngClass]="{'is-not-visible': !isDropDownExpanded, 'is-visible': isDropDownExpanded}">
-    <ul name="" id="">
-      <li value="listItem.id" *ngFor="let listItem of listItems" (click)="onListItemClicked(listItem.id)"> {{ listItem.listItem }}</li>
+    <ul>
+      <li value="listItem.id" *ngFor="let listItem of listItems"
+        [ngClass]="{'selected-item': listItem.isSelected}"
+        (click)="onListItemClicked(listItem.id)">
+        {{ listItem.listItem }}
+      </li>
     </ul>
 
   </div>

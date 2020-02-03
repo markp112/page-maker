@@ -6,7 +6,7 @@
     border: 1px solid $secondary-2-hex;
     background-color: $secondary-2-hex;
     @include flex-row(space-between);
-    
+
     .status-icon{
         padding: $content-spacing / 2;
         width: 10%;
@@ -14,7 +14,7 @@
         align-self: center;
         text-align: center;
     }
-    
+
     p {
         padding: $content-spacing / 2;
         background-color: white;
@@ -32,5 +32,5 @@
 }
 
 .info {
-    color: $seconday-text-hex;
+    color: $secondary-text-hex;
 }

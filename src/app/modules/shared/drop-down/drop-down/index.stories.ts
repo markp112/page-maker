@@ -8,7 +8,14 @@ import { moduleMetadata, storiesOf } from '@storybook/angular';
 import { DropDownComponent } from '@app/modules/shared/drop-down/drop-down/drop-down.component';
 import { IListItem, ListItem } from '@app/modules/shared/drop-down/drop-down/models/model'
 
-let listItem: IListItem[] =
+const data: IListItem = {
+    id: 4,
+    listItem: "14",
+    isSelected: false
+}
+
+
+export const listItem: IListItem[] =
   [
     {
       id: 1,
@@ -27,10 +34,40 @@ let listItem: IListItem[] =
     },
 ];
 
+export const listItemLarge: IListItem[] = [];
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+listItemLarge.push(data);
+
+export const listItemSelected: IListItem[] =
+[
+  {
+    id: 1,
+    listItem: "8",
+    isSelected: false
+  },
+  {
+    id: 2,
+    listItem: "10",
+    isSelected: true
+  },
+  {
+    id: 3,
+    listItem: "12",
+    isSelected: false
+  },
+];
+
 export default {
   title: 'DropDown',
   component: DropDownComponent,
-  parameters:{
+  parameters: {
     notes: 'The drop down component takes in an array of IListItems and returns the selected item'
   }
 };
@@ -43,3 +80,17 @@ export const DropDownComp = () => (
 
 });
 
+export const DropDownLargeData = () => (
+  {
+    component: DropDownComponent,
+      props: { listItems: listItemLarge },
+
+  });
+
+
+export const DropDownItemSelected = () => (
+  {
+    component: DropDownComponent,
+      props: { listItems: listItemSelected,},
+
+  });

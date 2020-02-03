@@ -8,8 +8,8 @@
       width: 100%;
       height: 30px;
       font-size: 1em !important;
-      color: $seconday-text-hex;
-      border: 1px solid darken($seconday-text-hex, $amount: 10);
+      color: $secondary-text-hex;
+      border: 1px solid darken($secondary-text-hex, $amount: 10);
       @include flex-row(flex-end);
 
     .text-area {
@@ -26,6 +26,6 @@
         max-width: 500px;
         max-height: 300px;
         font-family: Verdana, Geneva, Tahoma, sans-serif;
-    
+
     }
 }
