@@ -21,7 +21,7 @@ import { LoginComponent } from './components/auth/login/login.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { SignUpComponent } from './components/auth/sign-up/sign-up.component';
 import { StatusMessageComponent } from './components/status-message/status-message.component';
-
+import { DropDownModule } from '@app/modules/shared/drop-down/drop-down.module';
 // Services
 import { FontApiService }  from './shared/font-api.service';
 import { AuthService } from './shared/auth.service';
@@ -43,6 +43,7 @@ import { TextFormatterDirectiveDirective } from './directives/text-formatter/tex
 import { ImageFormatterDirective } from './directives//image-formatter/image-formatter.directive';
 
 import { secrets } from 'secrets';
+import { FontComponent } from './modules/shared/toolbars/font/font.component';
 
 
 // import { messaging } from 'firebase';
@@ -67,7 +68,9 @@ import { secrets } from 'secrets';
     LoginComponent,
     WelcomeComponent,
     SignUpComponent,
-    StatusMessageComponent
+    StatusMessageComponent,
+    FontComponent,
+
   ],
 
   imports: [
@@ -77,6 +80,7 @@ import { secrets } from 'secrets';
     FontAwesomeModule,
     ColorPickerModule,
     HttpClientModule,
+    DropDownModule,
     AngularFireModule.initializeApp({
       apiKey: secrets.google.webAPIKey,
       authDomain: secrets.google.authDomain,

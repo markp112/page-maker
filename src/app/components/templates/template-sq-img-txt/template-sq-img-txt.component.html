@@ -20,8 +20,14 @@
           (clickEvent)="handleClick($event)">
         </app-toolbar-group>
         <app-toolbar-group *ngIf="isEditing" [buttons]="textEditButtonsGrp3" (clickEvent)="handleClick($event)"></app-toolbar-group>
+        <app-font (fontSelected)="handleSelectFont($event)"
+          (fontSizeChanged)="handleFontSizeChange()">
+        </app-font>
         <div class="font-wrapper">
-          <app-font-drop-down *ngIf="isShowFontPicker" (handleFontSelected)="handleSelectFont($event)"></app-font-drop-down>
+          <app-font-drop-down *ngIf="isShowFontPicker"
+            (fontSelected)="handleSelectFont()"
+
+          ></app-font-drop-down>
         </div>
       </div>
     </div>

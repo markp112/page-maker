@@ -1,0 +1,10 @@
+<div class="wrapper">
+  <div class="font-wrapper">
+    <app-icon-button [iconButton]="fontSelector" (clickEvent)="clickEventHandler($event)"></app-icon-button>
+    <div class="font-wrapper">
+      <app-font-drop-down *ngIf="isShowFontPicker" (handleFontSelected)="handleSelectFont($event)"></app-font-drop-down>
+    </div>
+
+  </div>
+    <app-drop-down  [listItems]="fontSizeSelector.listData" (onItemSelected)="onItemSelected($event)"></app-drop-down>
+</div>

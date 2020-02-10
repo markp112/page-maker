@@ -1,5 +1,5 @@
 import { ButtonBuilder } from "./butonBuilder";
-import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
+import { IIconButton } from "@app/models/interfaces/icon-button";
 import { styles } from "src/app/models/enums/icon-buton-styles.enum";
 import {
   faWindowClose,

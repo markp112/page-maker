@@ -18,20 +18,23 @@ export class TextFormatterDirectiveDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-
-    if(changes.changedValue && (this.lastButtonClick === ButtonEventEnums.IncreaseFontSize || this.lastButtonClick === ButtonEventEnums.DecreaseFontSize)){
-      this.processButtonClick(this.lastButtonClick);
-    }
+    console.log("Chnages=",changes)
+    // if(changes.changedValue && (this.lastButtonClick === ButtonEventEnums.IncreaseFontSize || this.lastButtonClick === ButtonEventEnums.DecreaseFontSize)){
+    //   this.processButtonClick(this.lastButtonClick);
+    // }
     if (changes.buttonEvent) {
       this.lastButtonClick = this.buttonEvent;
       this.processButtonClick(this.buttonEvent);
+    } else {
+      this.processButtonClick(this.lastButtonClick);
     }
   }
+
   processButtonClick(buttonClickedEvent: ButtonEventEnums) {
     //if loading the page from the database apply all styles
     if(buttonClickedEvent === ButtonEventEnums.RetrieveAllStyles){
      // this.updateTextAlignment();
-     this.removeClasses();
+      this.removeClasses();
       this.textDirectiveFormatter.getAllTextStyles().forEach(style => {
         if(style.pmStyleProperty === cssStyleEnum.fontSize){
           this.updateElement(style.styleTag, `${style.value}px`);

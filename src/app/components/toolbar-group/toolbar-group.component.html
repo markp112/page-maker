@@ -1,5 +1,8 @@
-<section>
     <div class="wrapper">
-        <app-icon-button *ngFor="let button of buttons" [iconButton]="button" (clickEvent)="clickEventHandler($event)"></app-icon-button>
+      <span  *ngFor="let button of buttons">
+
+        <app-icon-button *ngIf="checkType(button)" [iconButton]="button" (clickEvent)="clickEventHandler($event)"></app-icon-button>
+        <app-drop-down  *ngelse [listItems]="button.listItems" (onItemSelected)="onItemSelected($event)"></app-drop-down>
+      </span>
+
     </div>
-</section>

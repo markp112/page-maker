@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output,  EventEmitter  } from '@angular/core';
-import { IIconButton } from "src/app/models/interfaces/icon-button-interface"
+import { IIconButton } from "@app/models/interfaces/icon-button"
 import { styles } from "src/app/models/enums/icon-buton-styles.enum"
 import { IButtonEvent } from 'src/app/models/interfaces/button-event';
 

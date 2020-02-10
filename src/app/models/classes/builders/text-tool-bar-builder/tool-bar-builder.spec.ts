@@ -1,5 +1,5 @@
 import { ToolBarBuilder} from './tool-bar-builder';
-import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { IIconButton } from '@app/models/interfaces/icon-button';
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
 
 describe('ToolBarBuilder', () => {

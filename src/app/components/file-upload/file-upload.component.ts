@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { IconButtonComponent } from '../icon-button/icon-button.component';
 import { styles } from 'src/app/models/enums/icon-buton-styles.enum';
-import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { IIconButton } from '@app/models/interfaces/icon-button';
 import { ButtonBuilder } from 'src/app/models/classes/builders/button-builder/butonBuilder';
 
 @Component({

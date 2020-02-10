@@ -8,6 +8,9 @@ import { DropDownComponent } from './drop-down/drop-down.component';
   declarations: [DropDownComponent],
   imports: [
     CommonModule
+  ],
+  exports: [
+    DropDownComponent,
   ]
 })
 export class DropDownModule {

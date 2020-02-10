@@ -1,4 +1,4 @@
-import { IIconButton } from "../../../interfaces/icon-button-interface";
+import { IIconButton, SelectList } from "../../../interfaces/icon-button";
 import {
   faWindowClose,
   faAlignLeft,
@@ -32,6 +32,7 @@ import { styles } from "../../../enums/icon-buton-styles.enum";
 import { ButtonEventEnums } from "src/app/models/enums/ButtonEventEnums";
 import { ButtonCommandTypesEnum } from "src/app/models/enums/Button-Command-Type-enums";
 import { IButtonEvent } from "src/app/models/interfaces/button-event";
+import { IListItem } from '@app/modules/shared/drop-down/drop-down/models/model';
 
 
 export class ButtonBuilder {
@@ -56,6 +57,19 @@ export class ButtonBuilder {
     text === "" ? (button.style = styles.Icon) : (button.style = styles.Text);
     if(tooltip){ button.tooltip = tooltip };
     return button;
+  }
+
+  private static buildSelectList(eventName: IButtonEvent, enabled: boolean, listItems: IListItem[]): SelectList {
+    let selectList: SelectList = {
+      enabled:enabled,
+      eventName: eventName,
+      icon: faMehBlank,
+      listData: listItems,
+      style: styles.Text,
+      text:"",
+      tooltip: "Select font size",
+    }
+    return selectList;
   }
 
   public static cancelButton(): IIconButton {
@@ -368,5 +382,11 @@ export class ButtonBuilder {
       ButtonEventEnums.FontTypeHandwriting
     );
     return this.buildButton(eventName, true, faMehBlank, "ss","sans serif");
+  }
+
+  public static selectList(listItems: IListItem[]): SelectList {
+    let eventName: IButtonEvent = this.buildEventName(ButtonCommandTypesEnum.TextStyler,  ButtonEventEnums.ChangeFontSize);
+    console.log("Select list -",this.buildSelectList(eventName, true, listItems))
+    return this.buildSelectList(eventName, true, listItems);
   }
 }

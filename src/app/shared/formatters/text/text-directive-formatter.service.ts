@@ -76,6 +76,10 @@ export class TextDirectiveFormatterService {
         this._value = propertyValue;
         this._cssStyleTag = "font-family";
         break;
+      case ButtonEventEnums.ChangeFontSize:
+        this._cssStyleTag = "font-size";
+        this._value = `${propertyValue}px`;
+        break;
       case ButtonEventEnums.IncreaseFontSize:
         this.textStyles.incrementDecrementFont(1);
         this._value = `${this.textStyles.fontSize}px`;

@@ -8,7 +8,7 @@ import {
   messageTypes
 } from "../../../models/interfaces/status-message";
 import { IPage, pageTemplates } from "../../../models/interfaces/page";
-import { IIconButton } from "src/app/models/interfaces/icon-button-interface";
+import { IIconButton } from "@app/models/interfaces/icon-button";
 import { PageAreaTypesEnum } from "../../../models/enums/pageAreaTypes.enum";
 
 // services
@@ -26,6 +26,8 @@ import { IButtonEvent } from "src/app/models/interfaces/button-event";
 import { ButtonCommandTypesEnum } from "src/app/models/enums/Button-Command-Type-enums";
 import { SqImgTxtTemplateService } from "src/app/shared/templates/builders/sq-img-txt-template.service";
 import { TextContentService } from 'src/app/shared/text-content/text-content.service';
+import { IListItem } from '@app/modules/shared/drop-down/drop-down/models/model';
+import { DropDownModule } from '@app/modules/shared/drop-down/drop-down.module';
 
 @Component({
   selector: "app-template-sq-img-txt",
@@ -45,19 +47,20 @@ export class TemplateSqImgTxtComponent implements OnInit {
   ngOnInit() {
   //build the toolbars
     let builder = new ToolBarBuilder();
+    console.log("NgonInit Called")
     this.textEditButtonsGrp1 = builder.build(ToolbarTypesEnum.TextAlignment);
-    this.textEditButtonsGrp2 = builder.build(ToolbarTypesEnum.FontSettings);
-    this.textEditButtonsGrp3 = builder.build(
-      ToolbarTypesEnum.TextColourSettings
-    );
-    this.textEditButtonsGrp4 = builder.build(
-      ToolbarTypesEnum.VerticalAlignment
-    );
-    this.imgEditButtons = builder.build(ToolbarTypesEnum.ImageCaptureButtons);
-    this.imgPositionButtons = builder.build(
-      ToolbarTypesEnum.ImagePositionButtons
-    );
-    this.imgSizeButtons = builder.build(ToolbarTypesEnum.ImageSizeButtons);
+
+    // this.textEditButtonsGrp3 = builder.build(
+    //   ToolbarTypesEnum.TextColourSettings
+    // );
+    // this.textEditButtonsGrp4 = builder.build(
+    //   ToolbarTypesEnum.VerticalAlignment
+    // );
+    // this.imgEditButtons = builder.build(ToolbarTypesEnum.ImageCaptureButtons);
+    // this.imgPositionButtons = builder.build(
+    //   ToolbarTypesEnum.ImagePositionButtons
+    // );
+    // this.imgSizeButtons = builder.build(ToolbarTypesEnum.ImageSizeButtons);
 
     this.nonEditButtons = builder.build(ToolbarTypesEnum.CommandToolbar);
   }
@@ -80,7 +83,7 @@ export class TemplateSqImgTxtComponent implements OnInit {
   imageChangedValue: string;
   isEditing: boolean = false;
   showTextEditor: boolean = false;
-  isShowFontPicker: boolean = false;
+
   isShowColourPicker: boolean = false;
   isEditingColor: boolean = false;
   isEditingBackgroundColor: boolean = false;
@@ -108,14 +111,14 @@ export class TemplateSqImgTxtComponent implements OnInit {
       this.imageButtonEvent = event.eventName;
     }
   }
+
+
   processEventCommand(eventName: ButtonEventEnums) {
     switch (eventName) {
       case ButtonEventEnums.Edit:
         this.setEdit();
         break;
-      case ButtonEventEnums.FontFamily:
-        this.isShowFontPicker = !this.isShowFontPicker;
-        break;
+
       case ButtonEventEnums.ForeColour:
         this.isShowColourPicker = !this.isShowColourPicker;
         this.isEditingColor = !this.isEditingColor;
@@ -161,9 +164,16 @@ export class TemplateSqImgTxtComponent implements OnInit {
   }
 
   handleSelectFont(font: string) {
-    this.isShowFontPicker = false;
+    console.log('%c%s', 'color: #f2ceb6', font, "handle font  change");
     this.buttonEvent = ButtonEventEnums.FontFamily;
     this.changeValue = font;
+  }
+
+  handleFontSizeChange(fontSize: IListItem){
+
+    console.log('%c%s', 'color: #bb5a19',fontSize, "handle font size change");
+    this.buttonEvent = ButtonEventEnums.ChangeFontSize;
+    this.changeValue = fontSize.listItem;
   }
 
   setEdit() {

@@ -1,21 +1,21 @@
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
-import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { IIconButton } from '@app/models/interfaces/icon-button';
 import { ButtonBuilder } from '../button-builder/butonBuilder';
+import { IListItem } from '@app/modules/shared/drop-down/drop-down/models/model';
 
 export class ToolBarBuilder {
 
   private toolbar: IIconButton[] = [];
 
-  public build(toolBarToBuild: ToolbarTypesEnum): IIconButton[] {
+  public build(toolBarToBuild: ToolbarTypesEnum, data?: IListItem[]): IIconButton[] {
     this.toolbar = [];
     switch (toolBarToBuild) {
       case ToolbarTypesEnum.TextAlignment:
-        console.log("Came here")
         this.buildTextAlignmentToolBar();
         break;
 
       case ToolbarTypesEnum.FontSettings:
-        this.buildFontToolBar();
+        this.buildFontToolBar(data);
         break;
 
       case ToolbarTypesEnum.TextColourSettings:
@@ -87,8 +87,9 @@ buildTextAlignmentToolBar() {
     this.toolbar.push(ButtonBuilder.alignRightButton());
   }
 
-  private buildFontToolBar() {
+  private buildFontToolBar(listItems: IListItem[]) {
     this.toolbar.push(ButtonBuilder.fontSelectionButton());
+    this.toolbar.push(ButtonBuilder.selectList(listItems))
     this.toolbar.push(ButtonBuilder.fontIncreaseSizeButton());
     this.toolbar.push(ButtonBuilder.fontDecreaseSizeButton());
   }

@@ -9,7 +9,7 @@ import { ListItem, IListItem } from 'src/app/modules/shared/drop-down/drop-down/
 export class DropDownComponent implements OnInit {
 
   @Input() listItems: IListItem [];
-  @Output () selectedItem: EventEmitter<IListItem> = new EventEmitter();
+  @Output () onItemSelected: EventEmitter<IListItem> = new EventEmitter();
 
   isDropDownExpanded: boolean = false;
   selectedValue: string;
@@ -20,7 +20,6 @@ export class DropDownComponent implements OnInit {
   }
 
   expandDropDown() {
-    console.log("called")
     this.isDropDownExpanded = !this.isDropDownExpanded;
   }
 
@@ -32,7 +31,7 @@ export class DropDownComponent implements OnInit {
 
     this.selectedValue = selectedItem.listItem;
     this.isDropDownExpanded = !this.isDropDownExpanded;
-    this.selectedItem.emit(selectedItem);
+    this.onItemSelected.emit(selectedItem);
   }
 
   clearSelectedItem(selectedId: number) {

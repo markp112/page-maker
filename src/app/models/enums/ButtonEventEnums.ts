@@ -6,6 +6,7 @@ export enum ButtonEventEnums {
   BackgroundColour,
   IncreaseFontSize,
   DecreaseFontSize,
+  ChangeFontSize,
   ImageBackgroundColour,
   ImageIncreaseSize,
   ImageDecreaseSize,

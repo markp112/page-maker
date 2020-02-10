@@ -66,6 +66,7 @@ export const listItemSelected: IListItem[] =
 
 export default {
   title: 'DropDown',
+  excludeStories: /.*listItem$/,
   component: DropDownComponent,
   parameters: {
     notes: 'The drop down component takes in an array of IListItems and returns the selected item'

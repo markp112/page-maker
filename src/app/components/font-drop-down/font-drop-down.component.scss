@@ -3,6 +3,9 @@
 
 .font-wrapper {
   z-index: 5;
+  position: absolute;
+  top: 20px;
+  left:0px;
   @include box-shadow;
 
 .search-area{

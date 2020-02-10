@@ -1,0 +1,14 @@
+@import 'src/styles.scss';
+
+.wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: $nav-height;
+    margin: 3px;
+}
+
+.font-wrapper {
+  position: relative;
+}

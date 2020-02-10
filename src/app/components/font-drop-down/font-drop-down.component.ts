@@ -4,7 +4,7 @@ import { googleFont } from 'src/assets/data/mock/google-font';
 import { FontsService  } from 'src/app/shared/fonts.service';
 import { ToolBarBuilder } from 'src/app/models/classes/builders/text-tool-bar-builder/Tool-bar-builder';
 import { ToolbarTypesEnum } from 'src/app/models/enums/toolbar-types-enum';
-import { IIconButton } from 'src/app/models/interfaces/icon-button-interface';
+import { IIconButton } from '@app/models/interfaces/icon-button';
 import { IButtonEvent } from 'src/app/models/interfaces/button-event';
 // import * as WebFont from "webfontloader";
 
