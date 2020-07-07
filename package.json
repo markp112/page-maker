@@ -27,7 +27,7 @@
     "@nology/angular-test-simplifier": "^0.1.5",
     "angularfire2": "^5.2.1",
     "firebase": "^7.2.3",
-    "npm": "^6.13.7",
+    "npm": "^6.14.6",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "webfontloader": "^1.6.28",
